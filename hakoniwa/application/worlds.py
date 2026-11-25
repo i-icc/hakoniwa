@@ -10,12 +10,14 @@ from .ports import SandboxError, SandboxFactory, Store
 
 
 def seed_worlds(store: Store, builtin: list[dict]) -> None:
-    """Sample worlds are refreshed from the package on every start."""
+    """Refresh sample worlds, preserving imported versions treated as generated."""
     for w in builtin:
         problems = check_spec(w["spec"]) + check_code(w["code"])
         if problems:
             raise ValueError(f"built-in world '{w['slug']}' is invalid: {problems[:3]}")
-        store.upsert_world(w["slug"], "builtin", w["spec"], w["code"])
+        existing = store.world_by_slug(w["slug"])
+        if existing is None or existing["source"] == "builtin":
+            store.upsert_world(w["slug"], "builtin", w["spec"], w["code"])
 
 
 async def dry_run(sandboxes: SandboxFactory, spec: dict, code: str, *, params: dict | None = None,

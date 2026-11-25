@@ -139,6 +139,10 @@ With no API key the sample worlds still run. Residents then follow each model's 
 7. **History** (top right) lists every run with its cost.
 8. **Models**: click the model name (top right) to choose the model and effort for world design, residents and reports.
 
+Use **Download report (.md)** on a world page to save its scenario, assumptions, run results, and each run's latest saved report in the viewer's language. Downloading makes no AI calls.
+
+Open **Data** to export the SQLite database or restore a Hakoniwa backup. The file includes worlds, run and fork history, reports, and saved model choices. Import replaces the current database contents. Pause runs and wait for other work to finish before transferring data.
+
 Command line:
 
 ```bash

@@ -1,12 +1,17 @@
 """HTTP delivery: a JSON API for the viewer, plus the static viewer itself."""
 from __future__ import annotations
 
+import re
 from contextlib import asynccontextmanager
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 
+from anyio import CancelScope
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
+from starlette.background import BackgroundTask
+from starlette.concurrency import run_in_threadpool
 
 from ..application.estimator import estimate_run
 from ..application.ports import LLMError, SandboxError
@@ -15,6 +20,8 @@ from ..domain.contract import clean_params, default_params
 from ..domain.names import display_name, resident_names
 
 WEB = Path(__file__).resolve().parent / "web"
+SQLITE_MEDIA = "application/vnd.sqlite3"
+TRANSFER_PATHS = {"/api/data/export", "/api/data/import"}
 
 
 def create_app(app_: App | None = None) -> FastAPI:
@@ -30,6 +37,28 @@ def create_app(app_: App | None = None) -> FastAPI:
 
     def A() -> App:
         return state["app"]
+
+    pending = 0
+    transferring = False
+
+    @api.middleware("http")
+    async def guard_transfer(request: Request, call_next):
+        nonlocal pending, transferring
+        path = request.url.path
+        if not path.startswith("/api/"):
+            return await call_next(request)
+        transfer = path in TRANSFER_PATHS
+        if transferring or (transfer and (pending or A().runs.busy or A().designer.busy)):
+            return JSONResponse({"error": "Pause runs and wait for other work to finish before transferring data."},
+                                status_code=409)
+        pending += 1
+        transferring = transfer
+        try:
+            return await call_next(request)
+        finally:
+            pending -= 1
+            if transfer:
+                transferring = False
 
     @api.exception_handler(LLMError)
     async def _llm(_: Request, e: LLMError):
@@ -73,6 +102,35 @@ def create_app(app_: App | None = None) -> FastAPI:
         pub["prices"] = a.settings.prices.get("models", {})
         return pub
 
+    @api.get("/api/data/export")
+    async def export_data():
+        with NamedTemporaryFile(suffix=".sqlite3", delete=False) as f:
+            path = Path(f.name)
+        try:
+            await run_in_threadpool(A().store.backup_to, path)
+        except BaseException:
+            path.unlink(missing_ok=True)
+            raise
+        return FileResponse(path, media_type=SQLITE_MEDIA, filename="hakoniwa.sqlite3",
+                            headers={"Cache-Control": "no-store"}, background=BackgroundTask(path.unlink))
+
+    @api.post("/api/data/import")
+    async def import_data(request: Request):
+        if request.headers.get("content-type", "").split(";", 1)[0].strip().lower() != SQLITE_MEDIA:
+            raise HTTPException(415, f"Send a SQLite file as {SQLITE_MEDIA}.")
+        path = None
+        try:
+            with NamedTemporaryFile(suffix=".sqlite3", delete=False) as f:
+                path = Path(f.name)
+                async for chunk in request.stream():
+                    f.write(chunk)
+            with CancelScope(shield=True):
+                await A().restore_data(path)
+            return {"ok": True}
+        finally:
+            if path is not None:
+                path.unlink(missing_ok=True)
+
     # -- model choices ------------------------------------------------------
     NOT_CHAT = ("embed", "tts", "whisper", "audio", "image", "dall", "sora", "realtime", "moderation", "transcribe", "search", "codex", "healthcare")
 
@@ -115,13 +173,22 @@ def create_app(app_: App | None = None) -> FastAPI:
                 "notes": w.get("notes") or "", "defaults": default_params(w["spec"]),
                 "design_usage": A().store.world_usage(world_id), "runs": [_run_public(r) for r in A().store.runs_for_world(world_id)]}
 
+    @api.get("/api/worlds/{world_id}/report.md")
+    async def world_report(world_id: int, lang: str = "en"):
+        w = world_or_404(world_id)
+        lang = "ja" if lang == "ja" else "en"
+        slug = re.sub(r"[^A-Za-z0-9_-]", "_", w["slug"])
+        return Response(A().observer.world_markdown(w, lang), media_type="text/markdown; charset=utf-8",
+                        headers={"Content-Disposition": f'attachment; filename="{slug}-{lang}.md"',
+                                 "Cache-Control": "no-store"})
+
     @api.delete("/api/worlds/{world_id}")
     async def delete_world(world_id: int):
         w = world_or_404(world_id)
         if w["source"] == "builtin":
             raise HTTPException(400, "sample worlds cannot be deleted")
         for r in A().store.runs_for_world(world_id):
-            A().runs.delete_run(r["id"])
+            await A().runs.delete_run(r["id"])
         A().store.delete_world(world_id)
         return {"ok": True}
 
@@ -204,7 +271,7 @@ def create_app(app_: App | None = None) -> FastAPI:
     @api.delete("/api/runs/{run_id}")
     async def delete_run(run_id: int):
         run_or_404(run_id)
-        A().runs.delete_run(run_id)
+        await A().runs.delete_run(run_id)
         return {"ok": True}
 
     @api.get("/api/runs/{run_id}/ticks")

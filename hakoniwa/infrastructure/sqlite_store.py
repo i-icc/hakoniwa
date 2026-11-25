@@ -6,8 +6,11 @@ import json
 import sqlite3
 import threading
 import time
+from contextlib import closing
 from pathlib import Path
 from typing import Any, Iterable
+
+from ..domain.contract import check_code, check_spec
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS worlds (
@@ -64,17 +67,103 @@ def _j(v: Any) -> str:
     return json.dumps(v, ensure_ascii=False, separators=(",", ":"))
 
 
+class InvalidBackup(ValueError):
+    """A file that cannot be restored as a Hakoniwa database."""
+
+
+_JSON_FIELDS = {
+    "runs": {"config": "object", "params": "object"},
+    "ticks": {"metrics": "object", "view": "object"},
+    "snapshots": {"state": "object", "rng": "array", "params": "object"},
+    "events": {"payload": "object"},
+    "decisions": {"request": "object", "response": "object"},
+    "reports": {"body": "object"},
+    "facts": {"object": None},
+    "settings": {"value": None},
+}
+
+
 class SqliteStore:
     def __init__(self, path: Path | str):
         if str(path) != ":memory:":
             Path(path).parent.mkdir(parents=True, exist_ok=True)
-        self.conn = sqlite3.connect(str(path), check_same_thread=False, isolation_level=None)
+        self.conn = sqlite3.connect(str(path), check_same_thread=False, isolation_level=None, uri=True)
         self.conn.row_factory = sqlite3.Row
         self.lock = threading.RLock()
         with self.lock:
             self.conn.execute("PRAGMA journal_mode=WAL")
             self.conn.execute("PRAGMA synchronous=NORMAL")
+            self.conn.execute("PRAGMA trusted_schema=OFF")
             self.conn.executescript(SCHEMA)
+
+    # -- database transfer --------------------------------------------------
+    def backup_to(self, path: Path) -> None:
+        """Write a standalone snapshot, including committed content in the WAL."""
+        with self.lock, closing(sqlite3.connect(path)) as output:
+            self.conn.backup(output)
+            output.execute("PRAGMA journal_mode=DELETE")
+
+    def restore_from(self, path: Path, builtin: list[dict]) -> None:
+        """Validate the source and atomically replace rows in the local schema."""
+        with self.lock:
+            db = self.conn
+            try:
+                db.execute("ATTACH DATABASE ? AS incoming", (path.resolve().as_uri() + "?mode=ro&immutable=1",))
+                try:
+                    tables, untrusted = self._check_backup(builtin)
+                    with self.tx():
+                        for table in tables:
+                            db.execute(f'DELETE FROM main."{table}"')
+                            db.execute(f'INSERT INTO main."{table}" SELECT * FROM incoming."{table}"')
+                        db.executemany("UPDATE main.worlds SET source='generated' WHERE id=?", untrusted)
+                        self.pause_running_runs()
+                finally:
+                    db.execute("DETACH DATABASE incoming")
+            except sqlite3.Error as e:
+                raise InvalidBackup(f"Could not restore the SQLite backup: {e}") from e
+
+    def _check_backup(self, builtin: list[dict]) -> tuple[list[str], list[tuple[int]]]:
+        def schema(name: str):
+            return self.conn.execute(f"SELECT type, name, tbl_name, sql FROM {name}.sqlite_schema"
+                                     " WHERE name NOT GLOB 'sqlite_*' ORDER BY name").fetchall()
+
+        expected = schema("main")
+        if schema("incoming") != expected:
+            raise InvalidBackup("The file does not have the expected Hakoniwa database schema.")
+        if [row[0] for row in self.conn.execute("PRAGMA incoming.integrity_check")] != ["ok"]:
+            raise InvalidBackup("The SQLite integrity check failed.")
+
+        for table, fields in _JSON_FIELDS.items():
+            for column, kind in fields.items():
+                check = f'CASE WHEN json_valid("{column}") THEN json_type("{column}") = ? ELSE 0 END' if kind else f'json_valid("{column}")'
+                if self.conn.execute(f'SELECT 1 FROM incoming."{table}" WHERE NOT ({check}) LIMIT 1',
+                                     (kind,) if kind else ()).fetchone():
+                    raise InvalidBackup(f"The backup contains invalid data in {table}.{column}.")
+
+        if self.conn.execute(
+            "SELECT 1 FROM incoming.runs r LEFT JOIN incoming.worlds w ON w.id = r.world_id"
+            " WHERE w.id IS NULL OR r.name IS NULL OR r.tick IS NULL OR r.tick < 0"
+            " OR r.status IS NULL OR r.status NOT IN ('created', 'running', 'paused', 'finished', 'failed')"
+            " OR json_type(r.config, '$.ticks') IS NOT 'integer'"
+            " OR r.parent_run_id >= r.id LIMIT 1"
+        ).fetchone():
+            raise InvalidBackup("The backup contains an invalid run.")
+
+        shipped = {w["slug"]: w for w in builtin}
+        untrusted = []
+        for row in self.conn.execute("SELECT id, slug, source, spec, code FROM incoming.worlds"):
+            wid, slug, source, raw_spec, code = row
+            try:
+                spec = json.loads(raw_spec)
+                if not isinstance(slug, str) or not isinstance(code, str) or check_spec(spec) or check_code(code):
+                    raise ValueError
+            except (TypeError, ValueError, AttributeError) as e:
+                raise InvalidBackup(f"The backup contains an invalid world (ID {wid}).") from e
+            local = shipped.get(slug)
+            if source != "generated" and not (source == "builtin" and local and
+                                               local["spec"] == spec and local["code"] == code):
+                untrusted.append((wid,))
+        return [row["name"] for row in expected if row["type"] == "table"], untrusted
 
     # -- low level ----------------------------------------------------------
     def x(self, sql: str, args: Iterable = ()) -> sqlite3.Cursor:
@@ -404,11 +493,19 @@ class _Tx:
 
     def __enter__(self):
         self.db.lock.acquire()
-        self.db.conn.execute("BEGIN")
+        try:
+            self.db.conn.execute("BEGIN")
+        except Exception:
+            self.db.lock.release()
+            raise
         return self.db
 
     def __exit__(self, et, ev, tb):
         try:
             self.db.conn.execute("ROLLBACK" if et else "COMMIT")
+        except sqlite3.Error:
+            if self.db.conn.in_transaction:
+                self.db.conn.rollback()
+            raise
         finally:
             self.db.lock.release()

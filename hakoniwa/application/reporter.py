@@ -19,6 +19,45 @@ class Observer:
             self.store.add_llm_call(run_id, world_id, role, r.model, r.tokens_in, r.tokens_out,
                                     cost_usd(self.prices, r.model, r.tokens_in, r.tokens_out), r.ms, r.estimated)
 
+    def world_markdown(self, world: dict, lang: str) -> str:
+        """Collect the latest saved report per run with a snapshot of its end metrics."""
+        ja = lang == "ja"
+        spec = world["spec"]
+        text = [f"# {T(spec['title'], lang)}", T(spec.get("summary"), lang)]
+        for key, title in (("scenario", "シナリオ" if ja else "Scenario"),
+                           ("assumptions", "前提" if ja else "Assumptions")):
+            content = spec.get(key)
+            if content:
+                text.extend([f"## {title}", "\n".join(f"- {T(item, lang)}" for item in content)
+                             if isinstance(content, list) else T(content, lang)])
+        text.append("## 実行とレポート" if ja else "## Runs and reports")
+        runs = self.store.runs_for_world(world["id"])
+        for run in runs:
+            run_id, tick = run["id"], run["tick"]
+            name = " ".join(run["name"].splitlines())
+            text.append(f"### {name} (#{run_id})")
+            text.append(f"時点 {tick} / {run['config']['ticks']}" if ja else f"Tick {tick} / {run['config']['ticks']}")
+            if run["parent_run_id"] is not None:
+                parent, fork = run["parent_run_id"], run["fork_tick"]
+                text.append(f"実行 #{parent} の時点 {fork} から分岐" if ja else f"Fork of run #{parent} at tick {fork}")
+            frame = self.store.frame(run_id, tick)
+            if frame:
+                metrics = frame["metrics"]
+                lines = [f"- {T(m.get('label', m['id']), lang)}: {metrics[m['id']]:,} {T(m.get('unit'), lang)}".rstrip()
+                         for m in spec["metrics"] if m["id"] in metrics]
+                if lines:
+                    text.append("\n".join(lines))
+            report = self.store.latest_report(run_id)
+            if report and report["body"]:
+                at = report["tick"]
+                text.extend([f"**保存済みレポート（時点 {at}）**" if ja else f"**Saved report (tick {at})**",
+                             T(report["body"], lang)])
+            else:
+                text.append("保存済みレポートはありません。" if ja else "No saved report.")
+        if not runs:
+            text.append("まだ実行がありません。" if ja else "No runs yet.")
+        return "\n\n".join(part for part in text if part) + "\n"
+
     # -- report -------------------------------------------------------------
     def digest(self, run_id: int, compare: list[int] | None = None) -> dict:
         run = self.store.run(run_id)

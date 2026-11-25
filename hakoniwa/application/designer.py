@@ -53,6 +53,10 @@ class WorldDesigner:
         self._tasks: set[asyncio.Task] = set()
         self._next = 1
 
+    @property
+    def busy(self) -> bool:
+        return any(not task.done() for task in self._tasks)
+
     def start(self, scenario: str) -> DesignJob:
         job = DesignJob(id=self._next, scenario=scenario.strip())
         self._next += 1
