@@ -12,7 +12,7 @@
 [![API](https://img.shields.io/badge/API-OpenAI--compatible-6930c3?style=flat-square)](#-configuration)
 [![UI](https://img.shields.io/badge/UI-English%20%7C%20%E6%97%A5%E6%9C%AC%E8%AA%9E-64dfdf?style=flat-square)](#-screenshots)
 
-[English](./README.md) | [設計メモ（日本語）](./docs/DESIGN.ja.md)
+[English](./README.md) | [日本語](./Readme.jp.md) | [設計メモ（日本語）](./docs/DESIGN.ja.md)
 
 </div>
 
