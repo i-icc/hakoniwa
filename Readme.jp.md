@@ -97,6 +97,8 @@ cp .env.example .env        # .env の OPENAI_API_KEY にキーを設定
 docker compose up --build   # http://localhost:8787
 ```
 
+Google Cloud でアカウントを指定して共有するには、[Cloud Run に IAP 付きでデプロイする](./docs/CLOUD_RUN.ja.md) を参照してください。
+
 ### ソースから起動する
 
 #### 必要なツール
