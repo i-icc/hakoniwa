@@ -1,0 +1,45 @@
+{
+  "_note": "USD per 1M tokens. Edit freely. 'verified' says where the number came from; check the provider's pricing page before trusting it.",
+  "models": {
+    "gpt-6-luna": {
+      "in": 0.1,
+      "out": 0.5,
+      "verified": "OpenAI models page, read 2026-11-25"
+    },
+    "gpt-6.1-terra": {
+      "in": 1.0,
+      "out": 5.0,
+      "verified": "OpenAI model page, read 2026-11-25"
+    },
+    "gpt-6.2-sol": {
+      "in": 2.0,
+      "out": 10.0,
+      "verified": "OpenAI models page, read 2026-11-25"
+    },
+    "gpt-6.2-astra": {
+      "in": 8.0,
+      "out": 40.0,
+      "verified": "OpenAI models page, read 2026-11-25"
+    },
+    "claude-haiku-5-5": {
+      "in": 0.1,
+      "out": 0.5,
+      "verified": "Anthropic model table cached 2026-11-03 (prompts up to 100K tokens)"
+    },
+    "claude-sonnet-5-5": {
+      "in": 2.0,
+      "out": 10.0,
+      "verified": "Anthropic model table cached 2026-11-03"
+    },
+    "claude-opus-5-5": {
+      "in": 4.0,
+      "out": 20.0,
+      "verified": "Anthropic model table cached 2026-11-03"
+    },
+    "claude-fable-5-2": {
+      "in": 8.0,
+      "out": 40.0,
+      "verified": "Anthropic model table cached 2026-11-03"
+    }
+  }
+}

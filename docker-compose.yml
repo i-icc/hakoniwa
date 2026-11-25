@@ -1,0 +1,38 @@
+# docker compose up --build   ->   http://localhost:8787
+#
+# Two containers:
+#   hakoniwa - engine, database and viewer. Talks to the AI provider.
+#   sandbox  - runs world models (AI-written Python). It sits on an internal
+#              network with no route to the internet, holds no secrets, has a
+#              read-only filesystem, no capabilities, and starts a fresh
+#              process for every world.
+services:
+  hakoniwa:
+    build: .
+    ports:
+      - "127.0.0.1:8787:8787"      # local only: the viewer has no login
+    env_file: .env
+    environment:
+      HAKONIWA_SANDBOX: remote
+      HAKONIWA_SANDBOX_URL: tcp://sandbox:7070
+      HAKONIWA_DB: /data/hakoniwa.db
+    volumes:
+      - ./data:/data
+    networks: [default, sandbox]
+    depends_on: [sandbox]
+
+  sandbox:
+    build: ./sandbox
+    command: ["python", "-I", "-u", "/sandbox/serve.py"]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 128
+    tmpfs: ["/tmp:size=16m"]
+    networks: [sandbox]
+
+networks:
+  sandbox:
+    internal: true

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hakoniwa</title>
+  <link rel="icon" type="image/svg+xml" href="/icon.svg">
+  <link rel="alternate icon" type="image/png" href="/favicon.png">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="#/"><img class="brand-mark" src="/icon.svg" alt="" width="32" height="32">Hakoniwa</a>
+    <nav id="crumbs" class="crumbs"></nav>
+    <span class="spacer"></span>
+    <a id="nav-history" class="navlink" href="#/history">History</a>
+    <span id="ai-chip" class="chip"></span>
+    <div class="lang" role="group" aria-label="Language">
+      <button id="lang-en" type="button">EN</button>
+      <button id="lang-ja" type="button">日本語</button>
+    </div>
+  </header>
+  <main id="app" class="viz-root"></main>
+  <div id="tooltip" class="tooltip" hidden></div>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

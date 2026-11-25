@@ -1,0 +1,675 @@
+{
+ "slug": "presales",
+ "title": {
+  "en": "Presales department: which team structure works?",
+  "ja": "プリセールス部：どのチーム編成がうまくいくか"
+ },
+ "summary": {
+  "en": "A presales department for server hardware. Deals arrive from sales, engineers size and quote them, customers decide. Try four team structures and see what happens to speed, wins and people.",
+  "ja": "サーバー用 PC のプリセールス部。営業から案件が来て、エンジニアが構成と見積もりを作り、お客さまが決める。4 つのチーム編成を試して、速さ・受注・人への影響を見る。"
+ },
+ "scenario": {
+  "en": "Simulate a presales department that supports sales of server hardware (general servers, GPU / AI servers, storage, network). Deals arrive every day with different sizes, difficulty and deadlines. Compare team structures: one shared pool, product squads, account pods, and a triage desk with specialists. Which one answers fastest, wins most, and burns people out least?",
+  "ja": "サーバー用 PC（汎用サーバー、GPU・AI サーバー、ストレージ、ネットワーク）の営業を支えるプリセールス部をシミュレートしてほしい。案件は毎日届き、金額も難しさも締め切りも違う。チーム編成を比べたい。共有プール、製品別の班、顧客別の担当、一次受付と専門チーム。どれが一番速く答え、一番受注し、人を疲れさせないか。"
+ },
+ "tick": {
+  "unit": {
+   "en": "working day",
+   "ja": "営業日"
+  },
+  "default_ticks": 120,
+  "max_ticks": 500
+ },
+ "questions": [
+  {
+   "en": "Which team structure wins the most revenue over six months?",
+   "ja": "半年で一番受注できるチーム編成はどれか。"
+  },
+  {
+   "en": "Where do deals wait: for a specialist, for a handoff, or for an approval?",
+   "ja": "案件はどこで待たされるか。専門家か、引き継ぎか、承認か。"
+  },
+  {
+   "en": "What breaks first when GPU demand doubles?",
+   "ja": "GPU の需要が 2 倍になったとき、最初に壊れるのはどこか。"
+  }
+ ],
+ "assumptions": [
+  {
+   "en": "Every number is an assumption: deal mix, work hours per stage, skill effects, win rates.",
+   "ja": "案件の構成、工程ごとの作業時間、スキルの効果、受注率は、すべて仮定の値。"
+  },
+  {
+   "en": "The same deals arrive in every branch of a run, so structures can be compared fairly.",
+   "ja": "分岐しても届く案件は同じにしてあるので、編成を公平に比べられる。"
+  },
+  {
+   "en": "Quality depends on the skill of whoever did the work; lateness lowers the chance of winning; public tenders are lost if late.",
+   "ja": "品質は作業した人のスキルで決まる。遅れると受注率が下がる。官公庁の入札は、遅れたら失注とする。"
+  }
+ ],
+ "parameters": [
+  {
+   "id": "org_model",
+   "label": {
+    "en": "Team structure",
+    "ja": "チーム編成"
+   },
+   "type": "choice",
+   "default": "pool",
+   "choices": [
+    {
+     "id": "pool",
+     "label": {
+      "en": "One shared pool",
+      "ja": "共有プール（全員で 1 つの列）"
+     }
+    },
+    {
+     "id": "product_squads",
+     "label": {
+      "en": "Product squads (server / GPU / storage+network)",
+      "ja": "製品別の班（サーバー / GPU / ストレージ・ネットワーク）"
+     }
+    },
+    {
+     "id": "account_pods",
+     "label": {
+      "en": "Account pods (enterprise / public / SMB+startup)",
+      "ja": "顧客別の担当（大企業 / 官公庁 / 中小・スタートアップ）"
+     }
+    },
+    {
+     "id": "triage",
+     "label": {
+      "en": "Triage desk + specialists",
+      "ja": "一次受付 ＋ 専門チーム"
+     }
+    }
+   ],
+   "group": {
+    "en": "Organisation",
+    "ja": "組織"
+   },
+   "source": "scenario"
+  },
+  {
+   "id": "team_size",
+   "label": {
+    "en": "Presales engineers",
+    "ja": "プリセールスの人数"
+   },
+   "type": "int",
+   "default": 12,
+   "min": 4,
+   "max": 40,
+   "step": 1,
+   "unit": {
+    "en": "people",
+    "ja": "人"
+   },
+   "group": {
+    "en": "Organisation",
+    "ja": "組織"
+   },
+   "source": "assumed",
+   "runtime": false
+  },
+  {
+   "id": "sales_reps",
+   "label": {
+    "en": "Sales reps they support",
+    "ja": "支える営業の人数"
+   },
+   "type": "int",
+   "default": 25,
+   "min": 5,
+   "max": 100,
+   "step": 1,
+   "unit": {
+    "en": "people",
+    "ja": "人"
+   },
+   "group": {
+    "en": "Organisation",
+    "ja": "組織"
+   },
+   "source": "assumed",
+   "runtime": false
+  },
+  {
+   "id": "allow_reorg",
+   "label": {
+    "en": "The department head (AI) may reorganise",
+    "ja": "部長（AI）が組織を変えてよい"
+   },
+   "type": "bool",
+   "default": false,
+   "group": {
+    "en": "Organisation",
+    "ja": "組織"
+   },
+   "source": "tool setting"
+  },
+  {
+   "id": "investment_budget",
+   "label": {
+    "en": "Budget for hires, training and tools",
+    "ja": "採用・研修・ツールの予算"
+   },
+   "type": "int",
+   "default": 40000000,
+   "min": 0,
+   "max": 300000000,
+   "step": 5000000,
+   "unit": "JPY",
+   "group": {
+    "en": "Organisation",
+    "ja": "組織"
+   },
+   "source": "assumed",
+   "runtime": false
+  },
+  {
+   "id": "configurator",
+   "label": {
+    "en": "Configuration tool is available",
+    "ja": "構成ツールがある"
+   },
+   "type": "bool",
+   "default": false,
+   "group": {
+    "en": "Organisation",
+    "ja": "組織"
+   },
+   "source": "assumed"
+  },
+  {
+   "id": "deals_per_day",
+   "label": {
+    "en": "New deals per working day",
+    "ja": "1 営業日に届く案件数"
+   },
+   "type": "number",
+   "default": 2.2,
+   "min": 0.2,
+   "max": 12,
+   "step": 0.1,
+   "group": {
+    "en": "Market",
+    "ja": "市場"
+   },
+   "source": "assumed"
+  },
+  {
+   "id": "demand_factor",
+   "label": {
+    "en": "Demand multiplier (1 = normal)",
+    "ja": "需要の倍率（1 = 通常）"
+   },
+   "type": "number",
+   "default": 1.0,
+   "min": 0.2,
+   "max": 3.0,
+   "step": 0.1,
+   "group": {
+    "en": "Market",
+    "ja": "市場"
+   },
+   "source": "assumed"
+  },
+  {
+   "id": "gpu_demand_share",
+   "label": {
+    "en": "Share of deals that are GPU / AI servers",
+    "ja": "GPU・AI サーバーの案件の割合"
+   },
+   "type": "number",
+   "default": 0.25,
+   "min": 0.0,
+   "max": 0.9,
+   "step": 0.05,
+   "group": {
+    "en": "Market",
+    "ja": "市場"
+   },
+   "source": "assumed"
+  },
+  {
+   "id": "extra_seniors",
+   "label": {
+    "en": "Event: seniors joining tomorrow",
+    "ja": "事件：明日加わるシニアの人数"
+   },
+   "type": "int",
+   "default": 0,
+   "min": 0,
+   "max": 6,
+   "step": 1,
+   "group": {
+    "en": "Events",
+    "ja": "事件"
+   },
+   "source": "event"
+  },
+  {
+   "id": "lose_senior",
+   "label": {
+    "en": "Event: the best senior resigns",
+    "ja": "事件：一番のシニアが辞める"
+   },
+   "type": "bool",
+   "default": false,
+   "group": {
+    "en": "Events",
+    "ja": "事件"
+   },
+   "source": "event"
+  }
+ ],
+ "agents": [
+  {
+   "id": "manager",
+   "name": {
+    "en": "Presales manager",
+    "ja": "プリセールスのマネージャー"
+   },
+   "kind": "individual",
+   "persona": "The presales manager, a former engineer. Measured on win rate and on how fast sales gets answers. Tries to protect the team from overload but gives in when a big customer or a senior sales director pushes."
+  },
+  {
+   "id": "department_head",
+   "name": {
+    "en": "Department head",
+    "ja": "部長"
+   },
+   "kind": "individual",
+   "persona": "The head of the department. Owns a limited budget and reports quarterly revenue upward. Prefers changes that show results within a quarter, is sceptical of reorganisations, and worries about losing experienced people."
+  },
+  {
+   "id": "senior_engineers",
+   "name": {
+    "en": "Senior engineers",
+    "ja": "シニアエンジニア"
+   },
+   "kind": "cohort",
+   "persona": "Senior presales engineers, 10+ years. Everyone asks them for help. Proud of accurate designs and unwilling to send out sloppy quotes. They quietly take on overtime, then burn out and get calls from recruiters."
+  },
+  {
+   "id": "mid_engineers",
+   "name": {
+    "en": "Mid-level engineers",
+    "ja": "中堅エンジニア"
+   },
+   "kind": "cohort",
+   "persona": "Mid-level presales engineers. Solid on their own product area, slower outside it. They want to grow and to go home on time; they push back on unrealistic deadlines more openly than seniors."
+  },
+  {
+   "id": "junior_engineers",
+   "name": {
+    "en": "Junior engineers",
+    "ja": "ジュニアエンジニア"
+   },
+   "kind": "cohort",
+   "persona": "Junior presales engineers, 1-3 years. Eager, afraid of making sizing mistakes, slow without templates. They rarely refuse work and are tempted to copy an old configuration to save time."
+  },
+  {
+   "id": "sales_reps",
+   "name": {
+    "en": "Sales reps",
+    "ja": "営業"
+   },
+   "kind": "cohort",
+   "persona": "Sales reps with quarterly quotas. Every one believes their own deal is the urgent one. They escalate when answers are slow, and some send their own rough quote rather than wait. Small deals are not worth a long queue to them."
+  },
+  {
+   "id": "customers",
+   "name": {
+    "en": "Customers",
+    "ja": "お客さま"
+   },
+   "kind": "cohort",
+   "persona": "IT buyers at enterprises, public bodies, small firms and AI startups comparing two or three vendors. They expect an answer by the promised date; a late answer signals a vendor that will also be late with delivery. Startups move fastest."
+  }
+ ],
+ "metrics": [
+  {
+   "id": "revenue_won",
+   "label": {
+    "en": "Revenue won",
+    "ja": "受注金額"
+   },
+   "unit": "JPY",
+   "format": "money",
+   "good": "up",
+   "headline": true
+  },
+  {
+   "id": "win_rate",
+   "label": {
+    "en": "Win rate (last 40 deals)",
+    "ja": "受注率（直近 40 件）"
+   },
+   "unit": "%",
+   "format": "pct",
+   "good": "up",
+   "headline": true
+  },
+  {
+   "id": "lead_time",
+   "label": {
+    "en": "Days to answer (last 40 deals)",
+    "ja": "回答までの日数（直近 40 件）"
+   },
+   "unit": {
+    "en": "days",
+    "ja": "日"
+   },
+   "format": "float",
+   "good": "down",
+   "headline": true
+  },
+  {
+   "id": "utilisation",
+   "label": {
+    "en": "Utilisation today",
+    "ja": "今日の稼働率"
+   },
+   "unit": "%",
+   "format": "pct",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "fatigue",
+   "label": {
+    "en": "Average fatigue",
+    "ja": "平均の疲労"
+   },
+   "unit": "%",
+   "format": "pct",
+   "good": "down",
+   "headline": true
+  },
+  {
+   "id": "on_time",
+   "label": {
+    "en": "Answered on time (last 40)",
+    "ja": "期限内に回答（直近 40 件）"
+   },
+   "unit": "%",
+   "format": "pct",
+   "good": "up"
+  },
+  {
+   "id": "quality",
+   "label": {
+    "en": "Proposal quality (last 40)",
+    "ja": "提案の品質（直近 40 件）"
+   },
+   "unit": "%",
+   "format": "pct",
+   "good": "up"
+  },
+  {
+   "id": "open_deals",
+   "label": {
+    "en": "Open deals",
+    "ja": "進行中の案件"
+   },
+   "unit": "",
+   "format": "int",
+   "good": "down"
+  },
+  {
+   "id": "backlog_hours",
+   "label": {
+    "en": "Work waiting",
+    "ja": "残っている作業"
+   },
+   "unit": {
+    "en": "h",
+    "ja": "時間"
+   },
+   "format": "float",
+   "good": "down"
+  },
+  {
+   "id": "overtime_hours",
+   "label": {
+    "en": "Overtime in the last 5 days",
+    "ja": "直近 5 日の残業"
+   },
+   "unit": {
+    "en": "h",
+    "ja": "時間"
+   },
+   "format": "float",
+   "good": "down"
+  },
+  {
+   "id": "headcount",
+   "label": {
+    "en": "Engineers",
+    "ja": "エンジニアの人数"
+   },
+   "unit": {
+    "en": "people",
+    "ja": "人"
+   },
+   "format": "int",
+   "good": "none"
+  },
+  {
+   "id": "lost_to_delay",
+   "label": {
+    "en": "Deals lost because we were late",
+    "ja": "遅れが原因の失注"
+   },
+   "unit": "",
+   "format": "int",
+   "good": "down"
+  },
+  {
+   "id": "handoffs",
+   "label": {
+    "en": "Handoffs between teams",
+    "ja": "チーム間の引き継ぎ"
+   },
+   "unit": "",
+   "format": "int",
+   "good": "down"
+  },
+  {
+   "id": "win_rate_total",
+   "label": {
+    "en": "Win rate since the start",
+    "ja": "開始からの受注率"
+   },
+   "unit": "%",
+   "format": "pct",
+   "good": "up"
+  }
+ ],
+ "charts": [
+  {
+   "id": "revenue",
+   "title": {
+    "en": "Revenue won",
+    "ja": "受注金額"
+   },
+   "metrics": [
+    "revenue_won"
+   ]
+  },
+  {
+   "id": "speed",
+   "title": {
+    "en": "Days to answer",
+    "ja": "回答までの日数"
+   },
+   "metrics": [
+    "lead_time"
+   ]
+  },
+  {
+   "id": "rates",
+   "title": {
+    "en": "Win rate, on time, quality",
+    "ja": "受注率・期限内・品質"
+   },
+   "metrics": [
+    "win_rate",
+    "on_time",
+    "quality"
+   ]
+  },
+  {
+   "id": "load",
+   "title": {
+    "en": "Utilisation and fatigue",
+    "ja": "稼働率と疲労"
+   },
+   "metrics": [
+    "utilisation",
+    "fatigue"
+   ]
+  },
+  {
+   "id": "queue",
+   "title": {
+    "en": "Work waiting",
+    "ja": "残っている作業"
+   },
+   "metrics": [
+    "backlog_hours"
+   ]
+  },
+  {
+   "id": "losses",
+   "title": {
+    "en": "Lost to delay, and handoffs",
+    "ja": "遅れによる失注と、引き継ぎ"
+   },
+   "metrics": [
+    "lost_to_delay",
+    "handoffs"
+   ]
+  }
+ ],
+ "interventions": [
+  {
+   "id": "to_pool",
+   "label": {
+    "en": "Reorganise: one shared pool",
+    "ja": "組織変更：共有プール"
+   },
+   "description": {
+    "en": "Everyone takes work from one queue.",
+    "ja": "全員が 1 つの列から仕事を取る。"
+   },
+   "patch": {
+    "org_model": "pool"
+   }
+  },
+  {
+   "id": "to_squads",
+   "label": {
+    "en": "Reorganise: product squads",
+    "ja": "組織変更：製品別の班"
+   },
+   "description": {
+    "en": "Server, GPU / AI, and storage + network squads.",
+    "ja": "サーバー班、GPU・AI 班、ストレージ・ネットワーク班に分ける。"
+   },
+   "patch": {
+    "org_model": "product_squads"
+   }
+  },
+  {
+   "id": "to_pods",
+   "label": {
+    "en": "Reorganise: account pods",
+    "ja": "組織変更：顧客別の担当"
+   },
+   "description": {
+    "en": "Pods aligned with enterprise, public sector, and SMB + startups.",
+    "ja": "大企業、官公庁、中小・スタートアップの担当に分ける。"
+   },
+   "patch": {
+    "org_model": "account_pods"
+   }
+  },
+  {
+   "id": "to_triage",
+   "label": {
+    "en": "Reorganise: triage desk + specialists",
+    "ja": "組織変更：一次受付 ＋ 専門チーム"
+   },
+   "description": {
+    "en": "Juniors qualify and handle simple deals; specialists take the rest.",
+    "ja": "ジュニアが受付と簡単な案件を担当し、残りは専門チームが受ける。"
+   },
+   "patch": {
+    "org_model": "triage"
+   }
+  },
+  {
+   "id": "gpu_boom",
+   "label": {
+    "en": "AI boom: GPU deals double, demand +30%",
+    "ja": "AI ブーム：GPU 案件が 2 倍、需要 +30%"
+   },
+   "description": {
+    "en": "Half of all deals are now GPU servers and more deals arrive.",
+    "ja": "案件の半分が GPU サーバーになり、件数も増える。"
+   },
+   "patch": {
+    "gpu_demand_share": 0.5,
+    "demand_factor": 1.3
+   }
+  },
+  {
+   "id": "tool",
+   "label": {
+    "en": "Introduce a configuration tool",
+    "ja": "構成ツールを入れる"
+   },
+   "description": {
+    "en": "Sizing and quoting get about 35% faster from tomorrow.",
+    "ja": "明日から、サイジングと見積もりが約 35% 速くなる。"
+   },
+   "patch": {
+    "configurator": true
+   }
+  },
+  {
+   "id": "two_seniors",
+   "label": {
+    "en": "Two seniors join",
+    "ja": "シニアが 2 人加わる"
+   },
+   "description": {
+    "en": "Two experienced engineers start tomorrow.",
+    "ja": "経験のあるエンジニアが 2 人、明日から加わる。"
+   },
+   "patch": {
+    "extra_seniors": 2
+   }
+  },
+  {
+   "id": "senior_quits",
+   "label": {
+    "en": "The best senior resigns",
+    "ja": "一番のシニアが辞める"
+   },
+   "description": {
+    "en": "The most skilled senior leaves immediately.",
+    "ja": "一番スキルの高いシニアが、すぐに辞める。"
+   },
+   "patch": {
+    "lose_senior": true
+   }
+  }
+ ]
+}
