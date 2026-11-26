@@ -15,15 +15,16 @@ import random
 import time
 from typing import Any
 
-from ..domain.contract import chance_events, check_frame, clean_params, default_params, draw_schedule
+from ..domain.contract import chance_events, check_code, check_frame, clean_params, default_params, draw_schedule
 from ..domain.decisions import (check_request, default_action, habit_action, mock_decision,
                                 normalize_action, summarize_action)
 from ..domain.names import display_name, resident_names
 from ..domain.pricing import cost_usd
-from ..domain.text import T
+from ..domain.text import T, fenced_block
 from . import prompts
 from .ports import (LanguageModel, LLMError, LLMResult, ModelSandbox, SandboxError,
                     SandboxFactory, Store, chat_json)
+from .worlds import dry_run
 
 DEFAULT_CONFIG = {
     "ticks": None,                 # None = spec.tick.default_ticks
@@ -97,9 +98,13 @@ class RunWorker:
         """Start a sandbox and bring the model to this run's current tick."""
         if self.sb is not None:
             return
-        trusted = self.world["source"] == "builtin"
+        revisions = self.config.get("model_revisions") or []
+        code = revisions[-1]["code"] if revisions else self.world["code"]
+        if revisions and (problems := check_code(code)):
+            raise SandboxError(f"Invalid branch model: {problems[0]}")
+        trusted = self.world["source"] == "builtin" and not revisions
         self.sb = await self.mgr.sandboxes.open(trusted=trusted)
-        await self.sb.load(self.world["code"], {**self.params, "_data": self.spec.get("data")}, self.config["seed"])
+        await self.sb.load(code, {**self.params, "_data": self.spec.get("data")}, self.config["seed"])
         snap = self.db.snapshot(self.run_id, self.tick)
         if snap is None and self.tick > 0:
             raise SandboxError(f"no snapshot stored for tick {self.tick}")
@@ -144,8 +149,11 @@ class RunWorker:
             pre_events: list[dict] = []
             pre_events.extend(await self._chance(self.tick + 1))
             # A branch may be paused or restored before the first step on its new path.
-            if self.tick == self.config.get("fork_tick") and self.config.get("fork_intervention"):
-                pre_events.extend(await self._apply_intervention(self.config["fork_intervention"]))
+            if self.tick == self.config.get("fork_tick"):
+                if self.config.get("fork_intervention"):
+                    pre_events.extend(await self._apply_intervention(self.config["fork_intervention"]))
+                if self.config.get("fork_event"):
+                    pre_events.append({"kind": "intervention", "text": self.config["fork_event"]})
             people: list[dict] = []                # the observer steps in on single residents this tick
             while self.pending:
                 iv = self.pending.pop(0)
@@ -559,7 +567,8 @@ class RunManager:
         return run_id
 
     async def fork(self, run_id: int, tick: int | None, name: str | None = None,
-                   intervention: dict | None = None, config: dict | None = None) -> int:
+                   intervention: dict | None = None, config: dict | None = None,
+                   event_text: str = "", rebuild: bool = False) -> int:
         src = self.db.run(run_id)
         if not src:
             raise KeyError(run_id)
@@ -573,8 +582,20 @@ class RunManager:
             if k in DEFAULT_CONFIG and v is not None:
                 cfg[k] = v
         cfg = merged_config(world["spec"], cfg)
+        revisions = [r for r in src["config"].get("model_revisions", []) if r["tick"] < tick]
+        if event_text and tick >= cfg["ticks"]:
+            raise ValueError("Choose a fork point with at least one step remaining.")
+        if rebuild:
+            code = await self._rebuild_for_fork(src, world, revisions, snap, cfg, event_text)
+            if self.db.snapshot(run_id, tick) != snap:
+                raise ValueError("The source snapshot changed while rebuilding. Try again.")
+            revisions.append({"tick": tick, "code": code})
+        if revisions:
+            cfg["model_revisions"] = revisions
         if intervention and intervention.get("patch"):
             cfg.update(fork_tick=tick, fork_intervention=intervention)
+        if event_text:
+            cfg.update(fork_tick=tick, fork_event=event_text)
         if cfg.get("schedule"):                    # the branch meets the same events; those after the fork have not happened yet
             cfg["schedule"] = [{k: v for k, v in s.items() if k != "prev" or s["tick"] <= tick} for s in cfg["schedule"]]
         for memory in ("told", "life"):            # what single residents heard or lived through after the fork point is not theirs yet
@@ -583,12 +604,45 @@ class RunManager:
         n = len(self.db.runs_for_world(src["world_id"])) + 1
         new_id = self.db.create_run(src["world_id"], name or f"Run {n} (fork of {src['name']} @ {tick})",
                                     cfg, snap["params"], parent=run_id, fork_tick=tick)
-        self.db.copy_history(run_id, new_id, tick)
+        try:
+            self.db.copy_history(run_id, new_id, tick)
+        except Exception:
+            self.db.delete_run(new_id)
+            raise
         self.db.set_run(new_id, status="paused", tick=tick)
         w = self.worker(new_id)
         if intervention and not intervention.get("patch"):
             w.pending.append(intervention)
         return new_id
+
+    async def _rebuild_for_fork(self, src, world, revisions, snap, cfg, event_text: str) -> str:
+        if not self.llm.live:
+            raise LLMError("Rebuilding a branch model requires an AI provider.")
+        probe = await self.sandboxes.open(trusted=False)
+        await probe.close()
+        original = revisions[-1]["code"] if revisions else world["code"]
+        tick, spec = snap["tick"], world["spec"]
+        messages = prompts.fork_model_messages(spec, original, tick, event_text)
+        steps = min(8, cfg["ticks"] - tick)
+        for _ in range(2):
+            result = await self.llm.chat("designer", messages, max_tokens=32_000)
+            self.db.add_llm_call(src["id"], src["world_id"], "designer", result.model,
+                                 result.tokens_in, result.tokens_out,
+                                 cost_usd(self.prices, result.model, result.tokens_in, result.tokens_out),
+                                 result.ms, result.estimated)
+            code = fenced_block(result.text, "python")
+            problems = check_code(code) if code else ["Return the complete model in a fenced Python block."]
+            if code == original:
+                problems.append("The revision must implement the event.")
+            if not problems:
+                check = await dry_run(self.sandboxes, spec, code, params=snap["params"], snapshot=snap,
+                                      ticks=steps, seed=cfg["seed"], max_requests_per_tick=5000)
+                problems = check["problems"]
+            if not problems:
+                return code
+            messages += [{"role": "assistant", "content": result.text},
+                         {"role": "user", "content": "Repair these validation errors:\n" + "\n".join(problems[:6])[:3000]}]
+        raise LLMError("The rebuilt model could not continue from this snapshot: " + problems[0][:350])
 
     def intervene(self, run_id: int, intervention: dict) -> None:
         self.worker(run_id).pending.append(intervention)

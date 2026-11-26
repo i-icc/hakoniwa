@@ -473,6 +473,90 @@ const paramLabel = (spec, id, v) => {
   return `${L(p.label)} = ${shown}`;
 };
 
+function openForkDialog({ run, tick, title, help, spec, choices, preset, initialText = "", onFork }) {
+  const dlg = el("dialog", { class: "dlg wide-dlg" });
+  const name = el("input", { type: "text", placeholder: `${run.name} ⑂ ${tick}`, style: { width: "100%" } });
+  const choice = el("select", {}, choices.map((option, i) => el("option", { value: i, selected: preset?.id && preset.id === option.intervention?.id }, option.title)));
+  const text = el("textarea", { maxlength: 1000, placeholder: t("forkTextHelp"), style: { width: "100%", minHeight: "80px" } });
+  text.value = initialText;
+  const rebuild = el("input", { type: "checkbox" });
+  const result = el("div", { class: "small", role: "status" }), error = el("div", { class: "small", role: "alert" });
+  const cancel = el("button", { onclick: () => dlg.close() }, t("cancel"));
+  let proposal = null, working = false;
+  const rebuildLabel = el("span", {}, el("label", { class: "row" }, rebuild, t("forkRebuild")));
+  const check = el("button", { onclick: analyze }, t("forkAnalyze"));
+  const go = el("button", { class: "primary", onclick: submit }, t("fork"));
+  const custom = preset?.patch ? preset : null;
+  const picked = el("div", {}, el("label", {}, t("forkEvent"),
+    custom ? el("div", { class: "row" }, Object.entries(custom.patch).map(([k, v]) => el("span", { class: "tag" }, paramLabel(spec, k, v)))) : choice));
+
+  function render() {
+    const hasText = Boolean(text.value.trim());
+    text.disabled = working;
+    picked.hidden = hasText;
+    rebuildLabel.hidden = !hasText;
+    rebuild.disabled = working;
+    check.disabled = working || !hasText;
+    cancel.disabled = working;
+    go.disabled = working || (hasText && !rebuild.checked && !Object.keys(proposal?.patch || {}).length);
+  }
+  text.addEventListener("input", () => {
+    proposal = null; rebuild.checked = false; result.replaceChildren(); error.replaceChildren(); render();
+  });
+  rebuild.addEventListener("change", render);
+  dlg.addEventListener("cancel", (e) => { if (working) e.preventDefault(); });
+  dlg.addEventListener("close", () => dlg.remove());
+
+  async function analyze() {
+    working = true; render(); error.replaceChildren();
+    try {
+      proposal = await api.post(`/api/runs/${run.id}/interpret`, { tick, text: text.value.trim() });
+      const labels = Object.entries(proposal.patch).map(([k, v]) => paramLabel(spec, k, v));
+      rebuild.checked = !labels.length;
+      result.replaceChildren(el("b", {}, t(labels.length ? "proposed" : "forkNeedsRebuild")),
+        el("div", {}, L(proposal.explain)), labels.length ? el("div", {}, labels.join(" · ")) : null);
+    } catch (e) { error.replaceChildren(el("div", { class: "banner err" }, e.message)); }
+    finally { working = false; render(); }
+  }
+  async function submit() {
+    const eventText = text.value.trim();
+    const needsRebuild = Boolean(eventText && rebuild.checked);
+    const option = choices[Number(choice.value)];
+    const intervention = eventText ? (needsRebuild ? null : { patch: proposal.patch, label: proposal.label })
+      : custom || option?.intervention;
+    const label = eventText ? (L(proposal?.label) || eventText.slice(0, 60)) : option?.branchName;
+    working = true; render(); error.replaceChildren();
+    const originalResult = [...result.childNodes];
+    if (needsRebuild) {
+      result.textContent = t("forkRebuilding");
+      busy++;
+    }
+    let child;
+    try {
+      child = await api.post(`/api/runs/${run.id}/fork`, {
+        tick, name: name.value.trim() || (label ? `${label} ⑂ ${tick}` : name.placeholder),
+        intervention, event_text: eventText, rebuild: needsRebuild, start: true,
+      });
+    } catch (e) {
+      result.replaceChildren(...originalResult);
+      error.replaceChildren(el("div", { class: "banner err" }, e.message));
+    } finally {
+      if (needsRebuild) busy = Math.max(0, busy - 1);
+      working = false; render();
+    }
+    if (child) { dlg.close(); await onFork(child); }
+  }
+
+  dlg.append(el("div", { class: "stack" }, el("h2", {}, title), el("p", { class: "muted small" }, help),
+    el("label", {}, t("name"), name), picked,
+    info.llm_live ? el("div", { class: "stack" }, el("label", {}, t("forkText"), text),
+      el("div", { class: "row" }, check, rebuildLabel), result) : null,
+    error, el("div", { class: "row", style: { justifyContent: "flex-end" } }, cancel, go)));
+  render();
+  document.body.append(dlg);
+  dlg.showModal();
+}
+
 // ---------------------------------------------------------------- one person's crossroads
 // A life world is shown as its futures: each run is one way things could go for the same person. The page puts the
 // paths side by side, lets the observer talk with any of those future selves, and sums up across all of them.
@@ -575,35 +659,19 @@ async function lifePage(id, w) {
   }
   function branch(f) {
     const tick = Number(point.value);
-    const dlg = el("dialog", { class: "dlg" });
-    const events = spec.interventions || [];
-    const options = (switchPath?.choices || []).filter((o) => focus.options.some((p) => p.id === o.id));
-    const choice = el("select", {}, el("option", { value: "" }, t("lifeContinue")),
-      options.map((o) => el("option", { value: `path:${o.id}` }, L(o.label))),
-      events.map((ev) => el("option", { value: `event:${ev.id}` }, L(ev.label))));
-    const name = el("input", { type: "text", placeholder: `${f.name} ⑂ ${tick}`, style: { width: "100%" } });
-    const error = el("div", {});
-    const go = el("button", { class: "primary", onclick: async () => {
-      go.disabled = true; error.replaceChildren();
-      const path = options.find((o) => choice.value === `path:${o.id}`);
-      const event = events.find((ev) => choice.value === `event:${ev.id}`);
-      const intervention = path ? { patch: { [switchPath.id]: path.id }, label: path.label } : event ? { id: event.id } : null;
-      const title = L((path || event)?.label);
-      try {
-        const run = await api.post(`/api/runs/${f.id}/fork`, {
-          tick, name: name.value.trim() || (title ? `${title} ⑂ ${tick}` : name.placeholder), intervention, start: true,
-        });
-        dlg.close();
-        selected = run.id; at = tick;
-        await refresh();
-      } catch (e) { error.replaceChildren(el("div", { class: "banner err" }, e.message)); go.disabled = false; }
-    } }, t("fork"));
-    dlg.append(el("div", { class: "stack" }, el("h2", {}, `${t("lifeBranch")} · ${tick} ${L(spec.tick.unit)}`),
-      el("p", { class: "muted small" }, t("lifeBranchHelp")),
-      el("label", {}, t("name"), name), el("label", {}, t("forkEvent"), choice), error,
-      el("div", { class: "row" }, el("button", { onclick: () => dlg.close() }, t("cancel")), go)));
-    dlg.addEventListener("close", () => dlg.remove());
-    document.body.append(dlg); dlg.showModal();
+    const choices = [{ title: t("lifeContinue") }];
+    for (const o of switchPath?.choices || []) {
+      if (focus.options.some((p) => p.id === o.id)) {
+        choices.push({ title: L(o.label), branchName: L(o.label), intervention: { patch: { [switchPath.id]: o.id }, label: o.label } });
+      }
+    }
+    for (const event of spec.interventions || []) {
+      choices.push({ title: L(event.label), branchName: L(event.label), intervention: { id: event.id } });
+    }
+    openForkDialog({
+      run: f, tick, spec, choices, title: `${t("lifeBranch")} · ${tick} ${L(spec.tick.unit)}`, help: t("lifeBranchHelp"),
+      onFork: (child) => { selected = child.id; at = tick; return refresh(); },
+    });
   }
 
   const spark = (series, lo, hi) => {
@@ -1199,12 +1267,14 @@ async function runPage(id) {
     const interpret = async (btn) => {
       btn.disabled = true;
       try {
-        const res = await api.post(`/api/runs/${id}/interpret`, { text: ta.value });
+        const text = ta.value.trim();
+        const res = await api.post(`/api/runs/${id}/interpret`, { text });
         const keys = Object.keys(res.patch || {});
         proposal.replaceChildren(keys.length ? el("div", { class: "banner stack" }, el("b", {}, t("proposed")), el("div", {}, L(res.explain)),
           el("div", { class: "small" }, keys.map((k) => `${k} → ${res.patch[k]}`).join(" · ")),
           el("div", { class: "row" }, el("button", { onclick: () => applyIntervention({ patch: res.patch, label: res.label }, false, note) }, t("applyNow")), el("button", { onclick: () => applyIntervention({ patch: res.patch, label: res.label }, true, note) }, "⑂ " + t("forkApply"))))
-          : el("div", { class: "banner" }, t("nothingToChange"), " ", L(res.explain)));
+          : el("div", { class: "banner stack" }, el("div", {}, t("nothingToChange"), " ", L(res.explain)),
+            el("button", { onclick: () => forkDialog(null, text) }, "⑂ " + t("forkText"))));
       } catch (e) { proposal.replaceChildren(el("div", { class: "banner err" }, e.message)); }
       btn.disabled = false;
     };
@@ -1312,28 +1382,15 @@ async function runPage(id) {
     }));
   }
 
-  function forkDialog(preset) {
-    const dlg = el("dialog", { class: "dlg" });
-    const name = el("input", { type: "text", value: `${R.run.name} ⑂ ${clockOf(R.cursor)}`, style: { width: "100%" } });
-    const custom = preset && preset.patch ? preset : null;
-    const sel = el("select", { style: { width: "100%" } }, el("option", { value: "" }, t("noEvent")),
-      (spec.interventions || []).map((iv) => el("option", { value: iv.id, selected: !!preset && preset.id === iv.id }, L(iv.label))));
-    const err = el("div", { class: "small", style: { color: "var(--bad-text)" } });
-    const go = async (btn) => {
-      btn.disabled = true;
-      try {
-        const nr = await api.post(`/api/runs/${id}/fork`, { tick: R.cursor, name: name.value, intervention: custom || (sel.value ? { id: sel.value } : null), start: true });
-        dlg.close(); location.hash = `#/run/${nr.id}`;
-      } catch (e) { err.textContent = e.message; btn.disabled = false; }
-    };
-    dlg.append(el("div", { class: "stack" }, el("h2", {}, `⑂ ${t("forkTitle")} · ${clockOf(R.cursor)}`), el("p", { class: "muted small" }, t("forkHelp")),
-      el("div", {}, el("label", {}, t("name")), name),
-      el("div", {}, el("label", {}, t("forkEvent")), custom ? el("div", { class: "row" }, Object.entries(custom.patch).map(([k, v]) => el("span", { class: "tag" }, paramLabel(spec, k, v)))) : sel),
-      err, el("div", { class: "row", style: { justifyContent: "flex-end" } }, el("button", { onclick: () => dlg.close() }, t("cancel")), el("button", { class: "primary", onclick: (e) => go(e.target) }, "⑂ " + t("fork")))));
-    dlg.addEventListener("close", () => dlg.remove());
-    document.body.append(dlg);
-    dlg.showModal();
-    name.select();
+  function forkDialog(preset, initialText) {
+    const tick = R.cursor;
+    const choices = [{ title: t("noEvent") }, ...(spec.interventions || []).map((event) => ({
+      title: L(event.label), intervention: { id: event.id },
+    }))];
+    openForkDialog({
+      run: R.run, tick, spec, choices, preset, initialText, title: `⑂ ${t("forkTitle")} · ${clockOf(tick)}`,
+      help: t("forkHelp"), onFork: (child) => { location.hash = `#/run/${child.id}`; },
+    });
   }
   async function writeReport(btn) {
     btn.disabled = true; btn.textContent = t("writing");

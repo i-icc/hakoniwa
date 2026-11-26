@@ -426,12 +426,18 @@ class Observer:
         return {"reply": res.text.strip(), "agent": agent["id"]}
 
     # -- free-text intervention --------------------------------------------
-    async def interpret(self, run_id: int, text: str) -> dict:
+    async def interpret(self, run_id: int, text: str, tick: int | None = None) -> dict:
         run = self.store.run(run_id)
         world = self.store.world(run["world_id"])
+        params = run["params"]
+        if tick is not None:
+            snap = self.store.snapshot(run_id, tick)
+            if snap is None:
+                raise ValueError(f"run {run_id} has no snapshot at tick {tick}")
+            params = snap["params"]
         if not self.llm.live:
             raise LLMError("Free-text interventions need an AI provider (set OPENAI_API_KEY).")
-        raw, results = await chat_json(self.llm, "agent", prompts.interpret_messages(world["spec"], run["params"], text),
+        raw, results = await chat_json(self.llm, "agent", prompts.interpret_messages(world["spec"], params, text),
                                        max_tokens=1500, model=run["config"].get("agent_model"))
         self._bill(run_id, run["world_id"], "interpret", results)
         patch = clean_params(world["spec"], raw.get("patch") if isinstance(raw.get("patch"), dict) else {}, runtime_only=True)
