@@ -97,6 +97,8 @@ cp .env.example .env        # put your key in OPENAI_API_KEY
 docker compose up --build   # http://localhost:8787
 ```
 
+For a shared demo on Google Cloud, see the [Cloud Run deployment guide with IAP](./docs/CLOUD_RUN.md).
+
 ### Option 2: From source
 
 #### Prerequisites
