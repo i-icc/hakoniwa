@@ -28,9 +28,11 @@ def seed_worlds(store: Store, builtin: list[dict]) -> None:
 
 async def dry_run(sandboxes: SandboxFactory, spec: dict, code: str, *, params: dict | None = None,
                   ticks: int = 40, seed: int = 1, fuzz: bool = False, trusted: bool = False,
-                  max_requests_per_tick: int = 200, on_requests=None) -> dict:
-    """Run a model with no AI at all (defaults, or random legal answers when
-    `fuzz`), checking every tick. Returns problems plus simple run statistics."""
+                  max_requests_per_tick: int = 200, on_requests=None, snapshot: dict | None = None) -> dict:
+    """Run a model with no AI, either from initialization or from a saved snapshot.
+
+    Check the requested number of steps using default or random legal answers.
+    """
     problems: list[str] = []
     stats = {"ticks": 0, "requests": 0, "requests_per_tick": [], "ms_per_tick": 0.0, "max_state_chars": 0}
     agent_ids = {a["id"] for a in spec.get("agents", [])}
@@ -43,9 +45,14 @@ async def dry_run(sandboxes: SandboxFactory, spec: dict, code: str, *, params: d
     try:
         sb = await sandboxes.open(trusted=trusted, op_timeout=15.0)
         await sb.load(code, {**p, "_data": spec.get("data")}, seed)
-        frame = await sb.init()
-        problems += [f"tick 0: {e}" for e in check_frame(spec, frame)]
-        for t in range(1, ticks + 1):
+        start = 0
+        if snapshot is None:
+            frame = await sb.init()
+            problems += [f"tick 0: {e}" for e in check_frame(spec, frame)]
+        else:
+            start = snapshot["tick"]
+            await sb.restore(snapshot["state"], snapshot["rng"], start, p)
+        for t in range(start + 1, start + ticks + 1):
             res = await sb.tick()
             reqs = res.get("requests") or []
             if len(reqs) > max_requests_per_tick:
@@ -69,7 +76,7 @@ async def dry_run(sandboxes: SandboxFactory, spec: dict, code: str, *, params: d
                 on_requests(t, reqs, frame)
             frame = await sb.apply(actions)
             problems += [f"tick {t}: {e}" for e in check_frame(spec, frame)]
-            stats["ticks"] = t
+            stats["ticks"] += 1
             stats["requests"] += len(actions)
             stats["requests_per_tick"].append(len(actions))
             stats["max_state_chars"] = max(stats["max_state_chars"], len(str(frame["snapshot"]["state"])))

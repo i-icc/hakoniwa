@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2
+
+- Describe a custom event at a saved point in a society or life run. Apply it using existing parameters, or rebuild the branch model and validate it against the saved state before continuing with the same history.
+
 ## 0.3.1 (2026-11-26)
 
 - In life worlds, play one path, pick a point on its timeline, and branch from the same history. Choose a different direction in worlds that support it, or introduce an event.

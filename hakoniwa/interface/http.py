@@ -346,8 +346,11 @@ def create_app(app_: App | None = None) -> FastAPI:
 
     # -- runs ---------------------------------------------------------------
     def _run_public(r: dict) -> dict:
-        return {k: r.get(k) for k in ("id", "world_id", "parent_run_id", "fork_tick", "name", "config", "params",
-                                      "status", "tick", "error", "created_at")}
+        result = {k: r.get(k) for k in ("id", "world_id", "parent_run_id", "fork_tick", "name", "params",
+                                        "status", "tick", "error", "created_at")}
+        result["config"] = {k: v for k, v in r["config"].items() if k != "model_revisions"}
+        result["rebuilt"] = any(v["tick"] == r["fork_tick"] for v in r["config"].get("model_revisions", []))
+        return result
 
     @api.get("/api/runs")
     async def all_runs():
@@ -533,19 +536,30 @@ def create_app(app_: App | None = None) -> FastAPI:
     @api.post("/api/runs/{run_id}/interpret")
     async def interpret(run_id: int, body: dict):
         run_or_404(run_id)
-        return await A().observer.interpret(run_id, str(body.get("text") or "")[:1000])
+        text = str(body.get("text") or "").strip()[:1000]
+        if not text:
+            raise HTTPException(400, "Describe the event first.")
+        tick = body.get("tick")
+        return await A().observer.interpret(run_id, text, int(tick) if tick is not None else None)
 
     @api.post("/api/runs/{run_id}/fork")
     async def fork(run_id: int, body: dict):
         r = run_or_404(run_id)
         spec = world_or_404(r["world_id"])["spec"]
+        event_text = str(body.get("event_text") or "").strip()[:1000]
+        rebuild = body.get("rebuild") is True
+        if rebuild and (not event_text or body.get("intervention") or body.get("person")):
+            raise HTTPException(400, "Rebuilding requires an event description and replaces the preset intervention.")
         iv = _intervention(spec, body["intervention"]) if body.get("intervention") else None
+        if event_text and not (rebuild or iv):
+            raise HTTPException(400, "Choose parameter changes or rebuild the model for this event.")
         person = body.get("person")
         if isinstance(person, dict) and person.get("key"):          # step in on one resident at the fork
             if not (str(person.get("tell") or "").strip() or person.get("choice")):
                 raise HTTPException(400, "say something to them or choose what they do")
             iv = {"person": {"key": str(person["key"]), "tell": str(person.get("tell") or "")[:500], "choice": person.get("choice")}}
-        new_id = await A().runs.fork(run_id, body.get("tick"), name=body.get("name"), intervention=iv, config=body.get("config"))
+        new_id = await A().runs.fork(run_id, body.get("tick"), name=body.get("name"), intervention=iv,
+                                     config=body.get("config"), event_text=event_text, rebuild=rebuild)
         if body.get("start"):
             A().runs.worker(new_id).control("start")
         return _run_public(A().store.run(new_id))

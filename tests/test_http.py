@@ -185,3 +185,93 @@ async def test_life_path_can_switch_after_a_shared_history(client, app):
     shared = futures[original_id]["outcomes"]["satisfaction"][:4]
     assert [tick for tick, _ in shared] == [0, 1, 2, 3]
     assert futures[child_id]["outcomes"]["satisfaction"][:4] == shared
+
+
+async def test_free_text_fork_can_rebuild_only_the_future(client, app, monkeypatch):
+    from hakoniwa.application.engine import run_headless
+    from hakoniwa.application.ports import LLMResult
+
+    world = app.store.world_by_slug("tp_2020")
+    model = world["code"]
+    revised = model + """
+
+original_metrics = metrics
+def metrics(state, params, t):
+    result = original_metrics(state, params, t)
+    if t >= 3:
+        result["sales_index"] += 10
+    return result
+"""
+
+    class ForkLLM:
+        live = True
+        code = revised
+
+        async def chat(self, role, messages, **kwargs):
+            assert role == "designer"
+            assert "Fork tick: 2" in messages[1]["content"]
+            return LLMResult(f"```python\n{self.code}\n```", "fake-designer", 20, 10, 1)
+
+    llm = ForkLLM()
+    monkeypatch.setattr(app.runs, "llm", llm)
+    monkeypatch.setattr(app.settings, "allow_unsafe_sandbox", True)
+    root = await app.runs.create_run(world["id"], config={"ticks": 5, "ai": "mock"})
+    await run_headless(app.runs, root)
+    payload = {"tick": 2, "event_text": "A new sales subsidy starts next day.", "rebuild": True}
+    response = await client.post(f"/api/runs/{root}/fork", json=payload)
+    assert response.status_code == 200, response.text
+    child = response.json()
+    assert child["parent_run_id"] == root and child["fork_tick"] == 2 and child["rebuilt"]
+    assert "model_revisions" not in child["config"]
+    assert app.store.snapshot(child["id"], 2) == app.store.snapshot(root, 2)
+    assert app.store.world(world["id"])["code"] == model
+
+    app.runs.workers.pop(child["id"])
+    await run_headless(app.runs, child["id"])
+    assert app.store.ticks(child["id"])[:3] == app.store.ticks(root)[:3]
+    changed = app.store.frame(child["id"], 3)["metrics"]["sales_index"]
+    assert changed == app.store.frame(root, 3)["metrics"]["sales_index"] + 10
+    assert any(e["tick"] == 3 and e["payload"]["text"] == payload["event_text"]
+               for e in app.store.events(child["id"]) if e["kind"] == "intervention")
+
+    later = await app.runs.fork(child["id"], 3)
+    earlier = await app.runs.fork(child["id"], 2)
+    await run_headless(app.runs, later)
+    await run_headless(app.runs, earlier)
+    assert app.store.ticks(later) == app.store.ticks(child["id"])
+    assert app.store.ticks(earlier) == app.store.ticks(root)
+
+    llm.code = model + "\nthis_is_not_a_function()"
+    before = len(app.store.runs_for_world(world["id"]))
+    error = await client.post(f"/api/runs/{root}/fork", json=payload)
+    assert error.status_code == 502
+    assert len(app.store.runs_for_world(world["id"])) == before
+
+
+async def test_free_text_patch_is_interpreted_at_the_fork_tick(client, app, monkeypatch):
+    from hakoniwa.application.engine import run_headless
+    from hakoniwa.application.ports import LLMResult
+
+    world = app.store.world_by_slug("eight_years_at_the_kitchen_table")
+    root = await app.runs.create_run(world["id"], config={"ticks": 5})
+    app.runs.intervene(root, {"patch": {"next_path": "seek_internal_transfer"}})
+    await run_headless(app.runs, root)
+
+    class InterpretLLM:
+        live = True
+
+        async def chat(self, role, messages, **kwargs):
+            assert role == "agent"
+            assert "now unchanged:" in messages[1]["content"]
+            return LLMResult('{"patch":{"next_path":"join_startup"}}', "fake-agent", 20, 10, 1)
+
+    monkeypatch.setattr(app.observer, "llm", InterpretLLM())
+    response = await client.post(f"/api/runs/{root}/interpret", json={"tick": 0, "text": "Take the startup offer."})
+    assert response.status_code == 200, response.text
+    assert response.json()["patch"] == {"next_path": "join_startup"}
+    child = (await client.post(f"/api/runs/{root}/fork", json={
+        "tick": 0, "event_text": "Take the startup offer.", "intervention": response.json(),
+    })).json()
+    assert not child["rebuilt"]
+    await run_headless(app.runs, child["id"])
+    assert app.store.snapshot(child["id"], 1)["params"]["next_path"] == "join_startup"
