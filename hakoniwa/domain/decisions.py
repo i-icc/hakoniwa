@@ -44,6 +44,20 @@ def default_action(req: dict) -> dict:
     return normalize_action(req, raw)
 
 
+def habit_action(req: dict) -> dict:
+    """Carrying on exactly as before. Not the same as the default: a default is what the model's formula would do,
+    and a formula may react. Uses the request's `habit` when the model gives one; otherwise the first option
+    (models list "carry on as before" first) with every number left where it is now."""
+    h = req.get("habit")
+    if isinstance(h, dict):
+        return normalize_action(req, h)
+    if req.get("mode", "split") == "split":
+        return default_action(req)
+    ids = [o["id"] for o in req.get("options") or []]
+    return normalize_action(req, {"choice": ids[0] if ids else None,
+                                  "numbers": {n["id"]: n["default"] for n in req.get("numbers") or [] if "default" in n}})
+
+
 def normalize_action(req: dict, raw: dict) -> dict:
     """Turn whatever the AI answered into a valid action for the model."""
     ids = [o["id"] for o in req.get("options") or []]

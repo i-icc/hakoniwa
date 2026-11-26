@@ -7,8 +7,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
-from pathlib import Path
-from typing import Any, Protocol
+from typing import runtime_checkable, Any, Protocol
 
 from ..domain.text import extract_json
 
@@ -16,9 +15,10 @@ from ..domain.text import extract_json
 # -- errors raised by adapters, handled by use cases --------------------------
 
 class SandboxError(RuntimeError):
-    def __init__(self, message: str, trace: str = ""):
+    def __init__(self, message: str, trace: str = "", infra: bool = False):
         super().__init__(message)
         self.trace = trace
+        self.infra = infra          # True = the sandbox itself is unavailable (not a fault in the model code)
 
 
 class LLMError(RuntimeError):
@@ -49,6 +49,11 @@ class LanguageModel(Protocol):
 
     async def list_models(self) -> list[str]: ...
 
+    async def decide(self, text: str, questions: list[dict]) -> tuple[list[dict], LLMResult] | None:
+        """Typed answers (a choice with probabilities, a score on ordered levels) with no generated text.
+        None when the provider has no such API."""
+        ...
+
     async def close(self) -> None: ...
 
 
@@ -69,6 +74,14 @@ async def chat_json(llm: LanguageModel, role: str, messages: list[dict], *, max_
     res2 = await llm.chat(role, retry, max_tokens=max_tokens, want_json=True, model=model)
     results.append(res2)
     return extract_json(res2.text), results
+
+
+@runtime_checkable
+class KeepsCopies(Protocol):
+    """An ability some stores have: a whole copy of themselves in a folder, for machines that do not keep their
+    files. A store on a database service would not need it, and simply would not offer it."""
+    def changes(self) -> int: ...
+    def backup_to(self, backup_dir) -> int: ...
 
 
 # -- model sandbox ------------------------------------------------------------
@@ -99,10 +112,14 @@ class SandboxFactory(Protocol):
 class Store(Protocol):
     """Worlds, runs, per-tick history, snapshots, the temporal fact graph, usage."""
 
-    def backup_to(self, path: Path) -> None: ...
-    def restore_from(self, path: Path, builtin: list[dict]) -> None: ...
     # worlds
     def upsert_world(self, slug: str, source: str, spec: dict, code: str, notes: str = "") -> int: ...
+    def update_world(self, world_id: int, slug: str, source: str, spec: dict, code: str, notes: str = "") -> None: ...
+    # Moving data between installations. The exchange file is a SQLite file with the tables of the bundled store;
+    # it is a file format, not a statement about where this store keeps its own data.
+    def data_overview(self) -> dict: ...
+    def export_to(self, path, run_ids: list[int] | None = None, world_ids: list[int] | None = None) -> dict: ...
+    def import_from(self, path, check_world=None) -> dict: ...
     def world(self, world_id: int) -> dict | None: ...
     def world_by_slug(self, slug: str) -> dict | None: ...
     def worlds(self) -> list[dict]: ...
@@ -130,6 +147,7 @@ class Store(Protocol):
     def decisions(self, run_id: int, tick: int | None = None, key: str | None = None,
                   upto_tick: int | None = None, limit: int = 200) -> list[dict]: ...
     def latest_decisions(self, run_id: int, upto_tick: int) -> list[dict]: ...
+    def earlier_happenings(self, run_id: int, before_id: int) -> list[dict]: ...
     def residents(self, run_id: int) -> list[dict]: ...
     # temporal facts
     def assert_fact(self, run_id: int, subject: str, predicate: str, obj: Any, tick: int, origin: str = "engine") -> None: ...

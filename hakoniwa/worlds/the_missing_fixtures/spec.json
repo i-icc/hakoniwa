@@ -1,0 +1,588 @@
+{
+ "slug": "the_missing_fixtures",
+ "title": {
+  "en": "When the fixtures disappeared",
+  "ja": "試合が消えた春"
+ },
+ "summary": {
+  "en": "Follow 500 winter sports bettors through the closures and restarts. A missing match can mean money kept, not necessarily money spent on another game. Compare monthly participation separately from the number of bets and spins.",
+  "ja": "冬にスポーツへ賭けた500人を、競技の中断から再開まで追う。試合がなければ、別のゲームに移らず、お金を残すこともできる。月間の参加人数と、賭け・スピンの回数を分けて比較する。"
+ },
+ "tick": {
+  "unit": {
+   "en": "week",
+   "ja": "週"
+  },
+  "default_ticks": 26,
+  "max_ticks": 26
+ },
+ "questions": [
+  {
+   "en": "Who makes no bets at all in April, and which of those people return to real events in July? Inspect the two flags on each person's board.",
+   "ja": "4月に全く賭けなかった人のうち、7月に実競技へ戻るのは誰か。個人ボードの二つの印で調べる。"
+  },
+  {
+   "en": "Do slot spins rise faster than the number of slot players? How many first-time players from before August play again in August?",
+   "ja": "スロットのスピン数は人数より速く増えるか。8月より前の新規参加者のうち、8月にも遊ぶ人は何人か。"
+  },
+  {
+   "en": "Does removing casino offers change take-up even with exactly the same fixture calendar?",
+   "ja": "競技日程が同じでも、カジノへの勧誘をなくすと新規参加は変わるか。"
+  }
+ ],
+ "assumptions": [
+  {
+   "en": "Nothing is fitted to the seven March–August outcome series. Sports active accounts and bets are the closest comparison, not a panel of unique winter bettors. The other operator series include non-sports customers: test timing and direction only.",
+   "ja": "3～8月の実績7系列には合わせ込まない。実競技の口座・件数が最も近い比較対象だが、冬の利用者を追ったパネルではない。他商品の実績はスポーツ以外の顧客も含むため、方向と時期だけを検証する。"
+  },
+  {
+   "en": "Bets are dated within the week. Curves show the month of Monday: simulated month-to-date totals versus the supplied full-month observation. Compare only the last Monday point of each month; earlier points are incomplete, not forecasts. March indexes to itself. March 1 and August 31 lie outside the run. A missing March denominator displays 0, not an estimated index.",
+   "ja": "各行動を実際の曜日に計上する。曲線は月曜の属する月について、月初来の累計と実績の月計を表示する。比較は各月最後の月曜の点で行う。それ以前の点は予測ではない。3月は自己比。3月1日・8月31日は対象外。3月の分母がゼロなら指数を推定せず0とする。"
+  },
+  {
+   "en": "Account demographics and annual sports turnover are proxies. The assumed turnover bands target a median £7.50 and mean £170.75, not an active-month spend. Football/racing overlap is assigned, not inferred from exclusive survey categories. Winter non-use is not lifetime non-use. Product histories overlap independently conditional on sex.",
+   "ja": "口座の人口構成・年換算の賭け金を代理値とする。仮定した金額帯は中央値7.50ポンド・平均170.75ポンドを目安とし、利用月の金額ではない。サッカーと競馬の重複は仮定。冬の未利用と生涯未経験は区別し、商品の利用歴は性別内で独立に抽選する。"
+  },
+  {
+   "en": "Calendar dates are inputs; fixture opportunity weights, spending limits, session lengths, returned-stake fractions, work-budget effects and behavioural thresholds are assumptions, not estimated causal effects. Turnover includes re-staked returns. A weekly leisure wallet is separate from essential income; unused cash leaves the wallet at week end. No borrowing. The furlough grant is not treated as a known pay cut.",
+   "ja": "日程は入力。賭ける機会の重み、予算、時間、払戻率、仕事による予算変化、行動の閾値は仮定であり、因果推定ではない。賭け金は払戻金の再使用も含む。週の娯楽費は生活費と別で、余りは週末に取り置き、借金はしない。休業助成を既知の減給率とは見なさない。"
+  },
+  {
+   "en": "Board and map retain cash wanted versus actually staked, cumulative first-ever slot starts, and pre-August starters seen again in August. Retention means at least one August spin, not uninterrupted weekly play. Optional shock probabilities, durations and sizes are illustrative assumptions.",
+   "ja": "ボードと地図に希望額と実額、スロット初参加の累計、8月前の初参加者の8月再利用を記録する。継続は毎週連続ではなく8月に1回以上の意味。任意ショックの確率・期間・規模は例示的な仮定。"
+  }
+ ],
+ "parameters": [
+  {
+   "id": "blind",
+   "label": {
+    "en": "Mask historical identifiers",
+    "ja": "歴史的な固有名を伏せる"
+   },
+   "type": "bool",
+   "default": false,
+   "group": {
+    "en": "Check",
+    "ja": "検証"
+   },
+   "source": "assumed tool setting",
+   "runtime": false
+  },
+  {
+   "id": "offers",
+   "label": {
+    "en": "Allow sports-to-casino messages",
+    "ja": "スポーツ客へのカジノ勧誘を許可"
+   },
+   "type": "bool",
+   "default": true,
+   "group": {
+    "en": "Offers",
+    "ja": "勧誘"
+   },
+   "source": "observer scenario",
+   "runtime": true
+  },
+  {
+   "id": "reach",
+   "label": {
+    "en": "Weekly chance of noticing a casino offer",
+    "ja": "週内にカジノ勧誘に気付く確率"
+   },
+   "type": "number",
+   "default": 0.08,
+   "min": 0,
+   "max": 1,
+   "step": 0.01,
+   "group": {
+    "en": "Offers",
+    "ja": "勧誘"
+   },
+   "source": "assumed; GC Consumer experiences and attitudes to free bets and bonuses (2021) measures all incentive messages, not cross-sell reach",
+   "runtime": true
+  },
+  {
+   "id": "advance",
+   "label": {
+    "en": "Advance the three restarts (days)",
+    "ja": "三つの競技再開の前倒し（日）"
+   },
+   "type": "int",
+   "default": 0,
+   "min": 0,
+   "max": 30,
+   "step": 1,
+   "group": {
+    "en": "Fixtures",
+    "ja": "日程"
+   },
+   "source": "observer calendar; assumed counterfactual leaves late-July finish fixed",
+   "runtime": true
+  },
+  {
+   "id": "furlough",
+   "label": {
+    "en": "Furlough exposure multiplier",
+    "ja": "休業対象割合の倍率"
+   },
+   "type": "number",
+   "default": 1,
+   "min": 0,
+   "max": 2,
+   "step": 0.1,
+   "group": {
+    "en": "Work",
+    "ja": "仕事"
+   },
+   "source": "PMC9757982: 7.8% men / 11.5% women of all regular bettors; observer double-exposure alternative",
+   "runtime": true
+  },
+  {
+   "id": "liquidity",
+   "label": {
+    "en": "Leisure-wallet multiplier",
+    "ja": "娯楽費の倍率"
+   },
+   "type": "number",
+   "default": 1,
+   "min": 0.2,
+   "max": 2,
+   "step": 0.1,
+   "group": {
+    "en": "Money",
+    "ja": "資金"
+   },
+   "source": "assumed",
+   "runtime": true
+  },
+  {
+   "id": "live_supply",
+   "label": {
+    "en": "Available share of scheduled live markets",
+    "ja": "予定された実競技で賭けられる割合"
+   },
+   "type": "number",
+   "default": 1,
+   "min": 0,
+   "max": 1,
+   "step": 0.05,
+   "group": {
+    "en": "Fixtures",
+    "ja": "日程"
+   },
+   "source": "assumed; July congestion grounded in Premier League restart schedule (26 June matches, 66 July, 0 August)",
+   "runtime": true
+  },
+  {
+   "id": "minutes",
+   "label": {
+    "en": "Available session time multiplier",
+    "ja": "遊べる時間の倍率"
+   },
+   "type": "number",
+   "default": 1,
+   "min": 0.25,
+   "max": 2,
+   "step": 0.05,
+   "group": {
+    "en": "Time",
+    "ja": "時間"
+   },
+   "source": "assumed",
+   "runtime": true
+  },
+  {
+   "id": "former",
+   "label": {
+    "en": "Former slot users among winter non-users",
+    "ja": "冬のスロット未利用者のうち過去に経験がある割合"
+   },
+   "type": "number",
+   "default": 0.15,
+   "min": 0,
+   "max": 1,
+   "step": 0.01,
+   "group": {
+    "en": "History",
+    "ja": "利用歴"
+   },
+   "source": "assumed; lifetime share not found",
+   "runtime": false
+  },
+  {
+   "id": "max_asks",
+   "label": {
+    "en": "Reviews per person at most",
+    "ja": "一人への質問上限"
+   },
+   "type": "int",
+   "default": 8,
+   "min": 1,
+   "max": 26,
+   "step": 1,
+   "group": {
+    "en": "Review",
+    "ja": "見直し"
+   },
+   "source": "assumed tool setting",
+   "runtime": true
+  },
+  {
+   "id": "review",
+   "label": {
+    "en": "Weeks between unsettled reviews",
+    "ja": "落ち着かない時の再検討間隔（週）"
+   },
+   "type": "int",
+   "default": 5,
+   "min": 2,
+   "max": 12,
+   "step": 1,
+   "group": {
+    "en": "Review",
+    "ja": "見直し"
+   },
+   "source": "assumed",
+   "runtime": true
+  }
+ ],
+ "agents": [
+  {
+   "id": "bettor",
+   "name": {
+    "en": "Account holder",
+    "ja": "口座保有者"
+   },
+   "kind": "individual",
+   "persona": "One adult with an online account who made at least one winter sports bet; gambling is optional, not a weekly obligation."
+  }
+ ],
+ "metrics": [
+  {
+   "id": "sport",
+   "label": {
+    "en": "Real events: active",
+    "ja": "実競技：人数"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "real_sport",
+   "label": {
+    "en": "Observed: real events active",
+    "ja": "実績：実競技人数"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none"
+  },
+  {
+   "id": "slots",
+   "label": {
+    "en": "Slots: active",
+    "ja": "スロット：人数"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "real_slots",
+   "label": {
+    "en": "Observed: slots active",
+    "ja": "実績：スロット人数"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none"
+  },
+  {
+   "id": "casino",
+   "label": {
+    "en": "Other casino: active",
+    "ja": "他のカジノ：人数"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none"
+  },
+  {
+   "id": "real_casino",
+   "label": {
+    "en": "Observed: other gaming active",
+    "ja": "実績：その他ゲーム人数"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none"
+  },
+  {
+   "id": "virtual",
+   "label": {
+    "en": "Virtual: active",
+    "ja": "仮想競技：人数"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none"
+  },
+  {
+   "id": "real_virtual",
+   "label": {
+    "en": "Observed: virtual active",
+    "ja": "実績：仮想競技人数"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none"
+  },
+  {
+   "id": "poker",
+   "label": {
+    "en": "Poker: active",
+    "ja": "ポーカー：人数"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none"
+  },
+  {
+   "id": "real_poker",
+   "label": {
+    "en": "Observed: poker active",
+    "ja": "実績：ポーカー人数"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none"
+  },
+  {
+   "id": "bets",
+   "label": {
+    "en": "Real-event bets",
+    "ja": "実競技の賭け回数"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "real_bets",
+   "label": {
+    "en": "Observed: real-event bets",
+    "ja": "実績：実競技の賭け回数"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none"
+  },
+  {
+   "id": "spins",
+   "label": {
+    "en": "Slot spins",
+    "ja": "スピン回数"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "real_spins",
+   "label": {
+    "en": "Observed: slot spins",
+    "ja": "実績：スピン回数"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none"
+  }
+ ],
+ "charts": [
+  {
+   "id": "live",
+   "title": {
+    "en": "Real events: people and bets (March = 100)",
+    "ja": "実競技：人数と件数（3月＝100）"
+   },
+   "metrics": [
+    "sport",
+    "real_sport",
+    "bets",
+    "real_bets"
+   ]
+  },
+  {
+   "id": "reels",
+   "title": {
+    "en": "Slots: people versus spins",
+    "ja": "スロット：人数とスピン数"
+   },
+   "metrics": [
+    "slots",
+    "real_slots",
+    "spins",
+    "real_spins"
+   ]
+  },
+  {
+   "id": "tables",
+   "title": {
+    "en": "Other casino and poker: active",
+    "ja": "他のカジノとポーカー：人数"
+   },
+   "metrics": [
+    "casino",
+    "real_casino",
+    "poker",
+    "real_poker"
+   ]
+  },
+  {
+   "id": "simulated",
+   "title": {
+    "en": "Virtual events: active",
+    "ja": "仮想競技：人数"
+   },
+   "metrics": [
+    "virtual",
+    "real_virtual"
+   ]
+  }
+ ],
+ "interventions": [
+  {
+   "id": "ban",
+   "label": {
+    "en": "Ban cross-selling",
+    "ja": "他商品への勧誘禁止"
+   },
+   "description": {
+    "en": "Remove future casino messages, not prior experience.",
+    "ja": "今後の勧誘を止める。過去の経験は消えない。"
+   },
+   "patch": {
+    "offers": false
+   }
+  },
+  {
+   "id": "earlier",
+   "label": {
+    "en": "Restart a month earlier",
+    "ja": "再開を1か月前倒し"
+   },
+   "description": {
+    "en": "Move the foreign league, domestic racing and domestic league returns forward 30 days.",
+    "ja": "海外リーグ、国内競馬、国内リーグの再開を30日前倒しする。"
+   },
+   "patch": {
+    "advance": 30
+   }
+  },
+  {
+   "id": "double",
+   "label": {
+    "en": "Double furlough exposure",
+    "ja": "休業対象割合を2倍に"
+   },
+   "description": {
+    "en": "Extend furlough into the otherwise continuously employed group.",
+    "ja": "通常なら就労を続ける層の一部も休業対象にする。"
+   },
+   "patch": {
+    "furlough": 2
+   }
+  }
+ ],
+ "events": [
+  {
+   "id": "campaign",
+   "label": {
+    "en": "More promotional mail",
+    "ja": "勧誘メールの増加"
+   },
+   "description": {
+    "en": "More people notice a message if offers are permitted.",
+    "ja": "勧誘が許可されていれば目にする人が増える。"
+   },
+   "chance": 0.22,
+   "window": [
+    5,
+    12
+   ],
+   "patch": {
+    "reach": 0.25
+   },
+   "lasts": 2
+  },
+  {
+   "id": "feed",
+   "label": {
+    "en": "Odds feed disruption",
+    "ja": "オッズ配信の不調"
+   },
+   "description": {
+    "en": "Some scheduled live markets cannot take bets.",
+    "ja": "実競技の一部で賭けを受け付けられない。"
+   },
+   "chance": 0.18,
+   "window": [
+    12,
+    22
+   ],
+   "patch": {
+    "live_supply": 0.5
+   },
+   "lasts": 1
+  },
+  {
+   "id": "bills",
+   "label": {
+    "en": "A costly fortnight",
+    "ja": "出費のかさむ2週間"
+   },
+   "description": {
+    "en": "Bills leave less discretionary cash.",
+    "ja": "支払いで娯楽費が減る。"
+   },
+   "chance": 0.2,
+   "window": [
+    6,
+    22
+   ],
+   "patch": {
+    "liquidity": 0.6
+   },
+   "lasts": 2
+  },
+  {
+   "id": "time",
+   "label": {
+    "en": "Shorter sessions",
+    "ja": "利用時間の短縮"
+   },
+   "description": {
+    "en": "Intermittent platform maintenance cuts usable time.",
+    "ja": "断続的な保守で遊べる時間が減る。"
+   },
+   "chance": 0.16,
+   "window": [
+    8,
+    24
+   ],
+   "patch": {
+    "minutes": 0.5
+   },
+   "lasts": 1
+  }
+ ],
+ "scenario": {
+  "en": "Great Britain, Monday 2 March to Sunday 30 August 2020 (26 weeks, one tick per week; week 0 starts on 2 March).\n\nFollow 500 people who each had an online betting account and placed at least one sports bet in the winter of 2019-20. Take the mix of people from published statistics wherever they exist: football-only punters, people who mainly bet on horse racing, people who bet on anything that is on, how many of them already played online slots, casino games or poker before March, how much they stake in a month, their age, their work and how exposed their income was to furlough or job loss.\n\nWhat happened, outside these people's control (use these dates as inputs): the Cheltenham Festival ran 10-13 March; English football was suspended on 13 March; British horse racing stopped after 17 March; the national lockdown began on 23 March. Through April and most of May there was almost no top-level sport: what a bookmaker could still offer was Belarusian football, table tennis, virtual sports and esports. German football returned on 16 May, British racing on 1 June, the Premier League on 17 June. July was packed with football; the season ended in late July and August was quieter.\n\nEach week a person decides what to do with their betting: carry on exactly as before with whatever sport is on; stop and keep the money; bet on the unfamiliar sports that remain; move to virtual sports; play slots or casino games; play poker; and how much to stake. Operators send offers that point sports customers to casino products.\n\nRecord, as monthly indices where March = 100: the share of the cast active in real-event betting, in virtual betting, in slots, in other casino games and in poker (one person can be active in several), and the number of real-event bets and of slot spins. Also record money staked, how many people who had never played slots before started, and how many of those are still playing in August.\n\nWhat-ifs worth trying: operators are not allowed to send cross-sell offers; sport returns a month earlier; furlough hits twice as many people.\n\nHypothesis to test: when sport stopped, most sports bettors simply stopped betting and came back when sport returned. Only a small minority moved to slots, poker or virtual sports, but that minority played more intensely, and some of them stayed after sport came back.\n\nReference data: every column is an observed outcome and none is an input. The figures are monthly, from the Gambling Commission's operator data, and each weekly row repeats the figure of its month (March = 100). Real-event betting is the like-for-like comparison. The slots, other gaming, virtual and poker figures cover all online customers, not only sports bettors, so compare their direction and timing, not their level.",
+  "ja": "Great Britain, Monday 2 March to Sunday 30 August 2020 (26 weeks, one tick per week; week 0 starts on 2 March).\n\nFollow 500 people who each had an online betting account and placed at least one sports bet in the winter of 2019-20. Take the mix of people from published statistics wherever they exist: football-only punters, people who mainly bet on horse racing, people who bet on anything that is on, how many of them already played online slots, casino games or poker before March, how much they stake in a month, their age, their work and how exposed their income was to furlough or job loss.\n\nWhat happened, outside these people's control (use these dates as inputs): the Cheltenham Festival ran 10-13 March; English football was suspended on 13 March; British horse racing stopped after 17 March; the national lockdown began on 23 March. Through April and most of May there was almost no top-level sport: what a bookmaker could still offer was Belarusian football, table tennis, virtual sports and esports. German football returned on 16 May, British racing on 1 June, the Premier League on 17 June. July was packed with football; the season ended in late July and August was quieter.\n\nEach week a person decides what to do with their betting: carry on exactly as before with whatever sport is on; stop and keep the money; bet on the unfamiliar sports that remain; move to virtual sports; play slots or casino games; play poker; and how much to stake. Operators send offers that point sports customers to casino products.\n\nRecord, as monthly indices where March = 100: the share of the cast active in real-event betting, in virtual betting, in slots, in other casino games and in poker (one person can be active in several), and the number of real-event bets and of slot spins. Also record money staked, how many people who had never played slots before started, and how many of those are still playing in August.\n\nWhat-ifs worth trying: operators are not allowed to send cross-sell offers; sport returns a month earlier; furlough hits twice as many people.\n\nHypothesis to test: when sport stopped, most sports bettors simply stopped betting and came back when sport returned. Only a small minority moved to slots, poker or virtual sports, but that minority played more intensely, and some of them stayed after sport came back.\n\nReference data: every column is an observed outcome and none is an input. The figures are monthly, from the Gambling Commission's operator data, and each weekly row repeats the figure of its month (March = 100). Real-event betting is the like-for-like comparison. The slots, other gaming, virtual and poker figures cover all online customers, not only sports bettors, so compare their direction and timing, not their level."
+ }
+}

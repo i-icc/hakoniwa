@@ -126,6 +126,97 @@ def default_params(spec: dict) -> dict:
     return {p["id"]: p["default"] for p in spec.get("parameters", [])}
 
 
+LIFE_KEY = "you"                                   # the request key of the person a life world is about
+LIFE_METRICS = ("satisfaction", "regret", "regard")
+
+
+def clean_life(given: Any) -> dict | None:
+    """What the intake interview hands to the designer: the person, the paths they could take, the question."""
+    if not isinstance(given, dict):
+        return None
+    who = given.get("protagonist") if isinstance(given.get("protagonist"), dict) else {}
+    profile = str(who.get("profile") or "").strip()
+    options = [{"id": str(o["id"]), "label": o.get("label") if isinstance(o.get("label"), dict) else {"en": str(o.get("label") or o["id"]), "ja": str(o.get("label") or o["id"])}}
+               for o in given.get("options") or [] if isinstance(o, dict) and str(o.get("id") or "").replace("_", "").isalnum()]
+    if len(profile) < 40 or not 2 <= len(options) <= 5:
+        return None
+    name = who.get("name") if isinstance(who.get("name"), dict) else {"en": "You", "ja": "あなた"}
+    q = given.get("question")
+    return {"protagonist": {"name": {"en": str(name.get("en") or "You"), "ja": str(name.get("ja") or name.get("en") or "あなた")}, "profile": profile[:4000]},
+            "options": options, "question": q if isinstance(q, dict) else {"en": str(q or ""), "ja": str(q or "")}, "horizon": str(given.get("horizon") or "")[:60]}
+
+
+def life_problems(spec: dict, life: dict) -> list[str]:
+    """Static checks of a world about one person."""
+    out = []
+    want = [o["id"] for o in life["options"]]
+    path = next((p for p in spec.get("parameters", []) if p.get("id") == "path"), None)
+    if not path or path.get("type") != "choice":
+        out.append('a life world needs a parameter "path" of type "choice"')
+    elif sorted(c.get("id") for c in path.get("choices", [])) != sorted(want):
+        out.append(f'the choices of the parameter "path" must be exactly {want}')
+    have = {m.get("id") for m in spec.get("metrics", [])}
+    for m in LIFE_METRICS:
+        if m not in have:
+            out.append(f'a life world needs the metric "{m}"')
+    if len(chance_events(spec)) < 3:
+        out.append('a life world needs a deck of chance events ("events", at least 3 usable ones)')
+    return out
+
+
+def life_focus(spec: dict, life: dict) -> dict:
+    """The spec's "focus", put right: who the world is about, the paths, the outcomes to show."""
+    have = [m.get("id") for m in spec.get("metrics", [])]
+    given = (spec.get("focus") or {}).get("outcomes") if isinstance(spec.get("focus"), dict) else None
+    outcomes = [m for m in LIFE_METRICS if m in have] + [m for m in (given or []) if m in have and m not in LIFE_METRICS]
+    return {"key": LIFE_KEY, "path_param": "path", "outcomes": outcomes[:5], "options": life["options"],
+            "question": life["question"], "name": life["protagonist"]["name"], "horizon": life.get("horizon", "")}
+
+
+def chance_events(spec: dict) -> list[dict]:
+    """The world's deck of things that may simply happen, with anything unusable dropped."""
+    out = []
+    for e in spec.get("events") or []:
+        if not isinstance(e, dict) or not isinstance(e.get("id"), str):
+            continue
+        patch = clean_params(spec, e.get("patch") if isinstance(e.get("patch"), dict) else {}, runtime_only=True)
+        try:
+            chance = min(1.0, max(0.0, float(e.get("chance", 0))))
+        except (TypeError, ValueError):
+            continue
+        personal = None                             # an event in some people's own lives, not in the world at large
+        pin = e.get("personal") if isinstance(e.get("personal"), dict) else None
+        if pin and pin.get("text"):
+            try:
+                share = min(1.0, max(0.0, float(pin.get("share", 0))))
+            except (TypeError, ValueError):
+                share = 0.0
+            if share > 0:
+                personal = {"share": share, "text": pin["text"]}
+        if (not patch and not personal) or chance <= 0:
+            continue
+        w = e.get("window") if isinstance(e.get("window"), list) and len(e.get("window")) == 2 else None
+        lasts = e.get("lasts")
+        out.append({"id": e["id"], "label": e.get("label"), "description": e.get("description"), "chance": chance, "patch": patch, "personal": personal,
+                    "window": [int(w[0]), int(w[1])] if w and all(isinstance(x, (int, float)) for x in w) else None,
+                    "lasts": int(lasts) if isinstance(lasts, (int, float)) and lasts > 0 else None})
+    return out
+
+
+def draw_schedule(events: list[dict], seed: int, ticks: int) -> list[dict]:
+    """Which chance events happen in a run, and when: decided by the seed alone, before the run starts."""
+    import random
+    out = []
+    for e in events:
+        rng = random.Random(f"{seed}:event:{e['id']}")          # one event's fate does not depend on the others
+        if rng.random() >= e["chance"]:
+            continue
+        lo, hi = e["window"] or [1, ticks]
+        lo, hi = max(1, min(lo, ticks)), max(1, min(hi, ticks))
+        out.append({"id": e["id"], "tick": rng.randint(min(lo, hi), max(lo, hi)), "lasts": e["lasts"]})
+    return sorted(out, key=lambda x: x["tick"])
+
+
 def clean_params(spec: dict, given: dict | None, runtime_only: bool = False) -> dict:
     """Coerce and clamp user-supplied parameter values against the spec."""
     out: dict = {}

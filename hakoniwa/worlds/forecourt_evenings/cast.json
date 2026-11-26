@@ -1,0 +1,250 @@
+{
+ "collection": "drivers",
+ "size": 480,
+ "names": {
+  "order": "first_last",
+  "first": [
+   "Alison",
+   "Bethan",
+   "Callum",
+   "Daniel",
+   "Eleanor",
+   "Farah",
+   "Gareth",
+   "Harriet",
+   "Imran",
+   "Jane",
+   "Kiran",
+   "Leanne",
+   "Mohammed",
+   "Nina",
+   "Oliver",
+   "Peter",
+   "Ruth",
+   "Sophie",
+   "Thomas",
+   "William",
+   "Aisha",
+   "Rhys",
+   "Fiona",
+   "Jaspreet"
+  ],
+  "last": [
+   "Allen",
+   "Begum",
+   "Campbell",
+   "Davies",
+   "Evans",
+   "Fraser",
+   "Green",
+   "Hughes",
+   "Iqbal",
+   "Jones",
+   "Kaur",
+   "Lewis",
+   "MacLeod",
+   "Nelson",
+   "Owen",
+   "Patel",
+   "Reed",
+   "Singh",
+   "Taylor",
+   "Walker",
+   "Williams",
+   "Wilson",
+   "Shah",
+   "Morgan"
+  ]
+ },
+ "attributes": [
+  {
+   "id": "district",
+   "type": "pick",
+   "values": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ]
+  },
+  {
+   "id": "job",
+   "type": "choice",
+   "options": [
+    {
+     "value": "home-care rounds",
+     "share": 0.14,
+     "with": {
+      "essential": 0.95
+     }
+    },
+    {
+     "value": "on-site shift work",
+     "share": 0.28,
+     "with": {
+      "essential": 0.88
+     }
+    },
+    {
+     "value": "hybrid office work",
+     "share": 0.25,
+     "with": {
+      "essential": 0.4
+     }
+    },
+    {
+     "value": "remote accounts work",
+     "share": 0.12,
+     "with": {
+      "essential": 0.25
+     }
+    },
+    {
+     "value": "family care and school runs",
+     "share": 0.12,
+     "with": {
+      "essential": 0.8
+     }
+    },
+    {
+     "value": "retired volunteer",
+     "share": 0.09,
+     "with": {
+      "essential": 0.5
+     }
+    }
+   ]
+  },
+  {
+   "id": "fuel",
+   "type": "choice",
+   "options": [
+    {
+     "value": "petrol",
+     "share": 0.666667
+    },
+    {
+     "value": "diesel",
+     "share": 0.333333
+    }
+   ]
+  },
+  {
+   "id": "size",
+   "type": "pick",
+   "values": [
+    0.76,
+    0.88,
+    1,
+    1,
+    1.1,
+    1.2
+   ]
+  },
+  {
+   "id": "mileage",
+   "type": "normal",
+   "mean": 1,
+   "sd": 0.48,
+   "min": 0.18,
+   "max": 2.5
+  },
+  {
+   "id": "interval_z",
+   "type": "normal",
+   "mean": 0,
+   "sd": 1,
+   "min": -2.4,
+   "max": 2.4
+  },
+  {
+   "id": "reserve",
+   "type": "uniform",
+   "min": 0.09,
+   "max": 0.29
+  },
+  {
+   "id": "phase",
+   "type": "uniform",
+   "min": 0,
+   "max": 1
+  },
+  {
+   "id": "minutes",
+   "type": "pick",
+   "values": [
+    3,
+    4,
+    5,
+    6,
+    8,
+    10
+   ]
+  },
+  {
+   "id": "tv",
+   "type": "choice",
+   "options": [
+    {
+     "value": "yes",
+     "share": 0.79
+    },
+    {
+     "value": "no",
+     "share": 0.21
+    }
+   ]
+  },
+  {
+   "id": "social",
+   "type": "choice",
+   "options": [
+    {
+     "value": "yes",
+     "share": 0.49
+    },
+    {
+     "value": "no",
+     "share": 0.51
+    }
+   ]
+  },
+  {
+   "id": "paper",
+   "type": "choice",
+   "options": [
+    {
+     "value": "yes",
+     "share": 0.32
+    },
+    {
+     "value": "no",
+     "share": 0.68
+    }
+   ]
+  },
+  {
+   "id": "worry",
+   "type": "normal",
+   "mean": 0.5,
+   "sd": 0.23,
+   "min": 0.02,
+   "max": 0.98
+  },
+  {
+   "id": "trust",
+   "type": "uniform",
+   "min": 0.1,
+   "max": 0.95
+  },
+  {
+   "id": "follow",
+   "type": "uniform",
+   "min": 0.05,
+   "max": 0.95
+  }
+ ],
+ "sketch": "Write two or three concrete English sentences. Districts 0–5 respectively are a northern estate, a market town, valley villages, a southern estate, a rail suburb and the outer ring. Describe a journey with a real obligation or a realistic alternative, and something about time or cash that matters to this driver. Let the character and information habits fit the attributes. Do not identify the country, year, crisis or future events; do not predict a refuelling decision."
+}

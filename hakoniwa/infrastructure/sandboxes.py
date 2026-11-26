@@ -201,7 +201,7 @@ async def ensure_image(image: str) -> None:
             stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
         _, err = await b.communicate()
         if b.returncode != 0:
-            raise SandboxError("could not build the sandbox image: " + err.decode(errors="replace")[-400:])
+            raise SandboxError("could not build the sandbox image: " + err.decode(errors="replace")[-400:], infra=True)
     _image_ready.add(image)
 
 

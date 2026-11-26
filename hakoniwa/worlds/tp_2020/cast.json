@@ -1,0 +1,36 @@
+{
+ "collection": "households",
+ "size": 240,
+ "names": {
+  "order": "last_first",
+  "first": [["Keiko", "恵子"], ["Hiroshi", "浩"], ["Yumi", "由美"], ["Takashi", "隆"], ["Akiko", "明子"], ["Kenji", "健二"], ["Naoko", "直子"], ["Daisuke", "大輔"], ["Mika", "美香"], ["Shota", "翔太"], ["Sachiko", "幸子"], ["Makoto", "誠"], ["Ayumi", "あゆみ"], ["Ryo", "亮"], ["Tomoko", "智子"], ["Yuta", "雄太"], ["Kazuko", "和子"], ["Haruto", "陽斗"], ["Misaki", "美咲"], ["Osamu", "修"]],
+  "last": [["Sato", "佐藤"], ["Suzuki", "鈴木"], ["Takahashi", "高橋"], ["Tanaka", "田中"], ["Ito", "伊藤"], ["Watanabe", "渡辺"], ["Yamamoto", "山本"], ["Nakamura", "中村"], ["Kobayashi", "小林"], ["Kato", "加藤"], ["Yoshida", "吉田"], ["Yamada", "山田"], ["Sasaki", "佐々木"], ["Matsumoto", "松本"], ["Inoue", "井上"], ["Kimura", "木村"], ["Hayashi", "林"], ["Shimizu", "清水"], ["Mori", "森"], ["Ishikawa", "石川"]]
+ },
+ "attributes": [
+  {"id": "kind", "type": "choice", "options": [
+   {"value": "lives alone, in their 20s-30s", "share": 0.16, "with": {"members": 1, "age": "20s-30s"}},
+   {"value": "lives alone, 40s-50s", "share": 0.08, "with": {"members": 1, "age": "40s-50s"}},
+   {"value": "lives alone, 70 or older", "share": 0.12, "with": {"members": 1, "age": "70+"}},
+   {"value": "couple without children", "share": 0.20, "with": {"members": 2, "age": "30s-60s"}},
+   {"value": "retired couple", "share": 0.12, "with": {"members": 2, "age": "65+"}},
+   {"value": "couple with one small child", "share": 0.10, "with": {"members": 3, "age": "30s"}},
+   {"value": "family with two school-age children", "share": 0.14, "with": {"members": 4, "age": "40s"}},
+   {"value": "three generations under one roof", "share": 0.08, "with": {"members": 5, "age": "50s"}}]},
+  {"id": "work", "type": "pick", "values": ["office worker with a long commute", "works shifts at a hospital", "part-time job at a supermarket", "freelance, works from home", "runs a small shop", "stays home with the children", "retired", "university student", "factory worker on rotating shifts", "care worker"]},
+  {"id": "area", "type": "choice", "options": [
+   {"value": "city centre, small flat, little storage", "share": 0.35},
+   {"value": "suburb, shops within a short drive", "share": 0.45},
+   {"value": "small town, one supermarket and one drugstore", "share": 0.20}]},
+  {"id": "info", "type": "choice", "options": [
+   {"value": "sns", "share": 0.30, "with": {"info_text": "checks Twitter many times a day"}},
+   {"value": "tv", "share": 0.34, "with": {"info_text": "gets news mostly from morning and evening TV"}},
+   {"value": "chat", "share": 0.22, "with": {"info_text": "hears things from family and friends on LINE"}},
+   {"value": "low", "share": 0.14, "with": {"info_text": "pays little attention to news"}}]},
+  {"id": "anxiety", "type": "normal", "mean": 0.5, "sd": 0.2, "min": 0.05, "max": 0.95},
+  {"id": "conformity", "type": "normal", "mean": 0.5, "sd": 0.2, "min": 0.05, "max": 0.95},
+  {"id": "trust", "type": "normal", "mean": 0.55, "sd": 0.2, "min": 0.05, "max": 0.95},
+  {"id": "shop_gap", "type": "pick", "values": [1, 2, 2, 3, 3, 4, 5, 7]},
+  {"id": "start_stock", "type": "uniform", "min": 2, "max": 16, "integer": true}
+ ],
+ "sketch": "Two or three sentences in plain English: who they are, one or two concrete details of their daily life or past, and how they tend to react when shops run short of something or when rumours spread. Make people different from each other: some calm, some stubborn, some generous, some selfish, some distrustful of the media, some who remember past shortages. Stay consistent with the attributes (0-1 scales: anxiety = worries easily, conformity = follows others, trust = believes official statements). Do not mention toilet paper, any year, or any specific disease."
+}

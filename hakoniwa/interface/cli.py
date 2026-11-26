@@ -6,6 +6,7 @@ import asyncio
 import json
 import sys
 
+from .. import __version__
 from ..application.engine import run_headless
 from ..application.estimator import estimate_run
 from ..application.worlds import validate_world
@@ -71,7 +72,10 @@ async def _run(args) -> int:
 async def _check(args) -> int:
     app = build_app()
     bad = 0
-    for w in app.store.worlds():
+    for summary in app.store.worlds():
+        w = app.store.world(summary["id"])
+        if w is None or w["source"] in ("building", "failed"):
+            continue
         problems = await validate_world(app.sandboxes, w["spec"], w["code"], trusted=w["source"] == "builtin")
         print(f"{w['slug']:16s} {'ok' if not problems else 'PROBLEMS'}")
         for p in problems[:5]:
@@ -81,6 +85,29 @@ async def _check(args) -> int:
     return 1 if bad else 0
 
 
+async def _export(args) -> int:
+    """Write a world from the database as sample files (spec.json, model.py, data.json, cast.json)."""
+    from pathlib import Path
+    app = build_app()
+    w = app.store.world_by_slug(args.world)
+    if not w:
+        print(f"unknown world '{args.world}'", file=sys.stderr)
+        return 2
+    out = Path(args.dir)
+    out.mkdir(parents=True, exist_ok=True)
+    spec = dict(w["spec"])
+    data, cast = spec.pop("data", None), spec.pop("cast", None)
+    (out / "spec.json").write_text(json.dumps(spec, ensure_ascii=False, indent=1) + "\n")
+    (out / "model.py").write_text(w["code"])
+    if data:
+        (out / "data.json").write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n")
+    if cast:
+        (out / "cast.json").write_text(json.dumps(cast, ensure_ascii=False, indent=1) + "\n")
+    print(f"wrote {out}/ (spec.json, model.py" + (", data.json" if data else "") + (", cast.json" if cast else "") + ")")
+    await app.close()
+    return 0
+
+
 def _serve(args) -> int:
     import uvicorn
 
@@ -88,7 +115,7 @@ def _serve(args) -> int:
     from .http import create_app
     s = load_settings()
     host, port = args.host or s.host, args.port or s.port
-    print(f"Hakoniwa viewer: http://{host}:{port}   (AI: {s.llm_mode}, sandbox: {s.sandbox})")
+    print(f"Hakoniwa {__version__}: http://{host}:{port}   (AI: {s.llm_mode}, sandbox: {s.sandbox})")
     uvicorn.run(create_app(), host=host, port=port, log_level="warning")
     return 0
 
@@ -101,6 +128,9 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--port", type=int)
     sub.add_parser("worlds", help="list worlds")
     sub.add_parser("check", help="validate every world in the sandbox")
+    ex = sub.add_parser("export", help="write a world from the database as sample files")
+    ex.add_argument("world")
+    ex.add_argument("dir")
     for name, help_ in (("estimate", "estimate the AI cost of a run"), ("run", "run a world in the terminal")):
         c = sub.add_parser(name, help=help_)
         c.add_argument("world")
@@ -117,7 +147,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.cmd is None:
             args.host = args.port = None
         return _serve(args)
-    return asyncio.run({"worlds": _worlds, "estimate": _estimate, "run": _run, "check": _check}[args.cmd](args))
+    return asyncio.run({"worlds": _worlds, "estimate": _estimate, "run": _run, "check": _check, "export": _export}[args.cmd](args))
 
 
 if __name__ == "__main__":

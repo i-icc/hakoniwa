@@ -1,0 +1,167 @@
+{
+ "circle": [
+  {
+   "id": 0,
+   "name": {
+    "en": "Rin Murata",
+    "ja": "村田 りん"
+   },
+   "warmth": 0.67,
+   "caution": 0.583,
+   "rhythm": 1,
+   "inclination": "likes trying something together",
+   "story": "At the edge of a puddle, Rin holds out a hand before stepping in. Rin wants to make the first splash together."
+  },
+  {
+   "id": 1,
+   "name": {
+    "en": "Akira Endo",
+    "ja": "遠藤 あきら"
+   },
+   "warmth": 0.5,
+   "caution": 0.922,
+   "rhythm": 1,
+   "inclination": "values a quiet evening",
+   "story": "When the room gets noisy in the evening, Akira takes a cushion back to the same quiet corner. Akira wants to stay there until the noise dies down."
+  },
+  {
+   "id": 2,
+   "name": {
+    "en": "Shion Nishida",
+    "ja": "西田 しおん"
+   },
+   "warmth": 0.57,
+   "caution": 0.116,
+   "rhythm": 1,
+   "inclination": "values a quiet evening",
+   "story": "When the evening light comes through a different window, Shion goes straight to the bright patch and sits down. Shion wants a quiet stretch to watch it move."
+  },
+  {
+   "id": 3,
+   "name": {
+    "en": "Rin Goto",
+    "ja": "後藤 りん"
+   },
+   "warmth": 0.75,
+   "caution": 0.422,
+   "rhythm": 1,
+   "inclination": "values a quiet evening",
+   "story": "When Rin starts humming in the evening, there's always a little pause for someone else to join in. Rin wants the tune to stay soft enough for both voices to be heard."
+  },
+  {
+   "id": 4,
+   "name": {
+    "en": "Rin Sakai",
+    "ja": "酒井 りん"
+   },
+   "warmth": 0.7,
+   "caution": 0.481,
+   "rhythm": 1,
+   "inclination": "prefers familiar routines",
+   "story": "On a familiar path, Rin stops at the same bend and points out whatever has changed. Rin wants a companion to pause there too, even on days when everything looks the same."
+  },
+  {
+   "id": 5,
+   "name": {
+    "en": "Itsuki Kondo",
+    "ja": "近藤 いつき"
+   },
+   "warmth": 0.6,
+   "caution": 0.936,
+   "rhythm": 1,
+   "inclination": "likes trying something together",
+   "story": "At the start of a new game, Itsuki stays beside someone familiar and watches a whole round. Itsuki wants that person to take the first turn alongside them."
+  },
+  {
+   "id": 6,
+   "name": {
+    "en": "Chihiro Ando",
+    "ja": "安藤 ちひろ"
+   },
+   "warmth": 0.56,
+   "caution": 0.307,
+   "rhythm": 1,
+   "inclination": "likes trying something together",
+   "story": "Chihiro taps a new beat on the table and leaves a gap. Chihiro wants someone to fill it with a sound worth copying."
+  },
+  {
+   "id": 7,
+   "name": {
+    "en": "Jun Maeda",
+    "ja": "前田 じゅん"
+   },
+   "warmth": 0.73,
+   "caution": 0.616,
+   "rhythm": 1,
+   "inclination": "cares more about showing up than talking",
+   "story": "When someone falls behind on a walk, Jun waits at the next bend without calling out. Jun wants to see the familiar face come around the corner before moving on."
+  },
+  {
+   "id": 8,
+   "name": {
+    "en": "Nao Abe",
+    "ja": "阿部 なお"
+   },
+   "warmth": 0.43,
+   "caution": 0.934,
+   "rhythm": 1,
+   "inclination": "notices broken promises",
+   "story": "If someone promises another turn, Nao keeps a finger on the spot where the game stopped. Nao wants that turn before the game is put away."
+  },
+  {
+   "id": 9,
+   "name": {
+    "en": "Yu Ando",
+    "ja": "安藤 ゆう"
+   },
+   "warmth": 0.9,
+   "caution": 0.641,
+   "rhythm": 1,
+   "inclination": "cares more about showing up than talking",
+   "story": "When someone sits apart, Yu settles nearby and nudges a cushion within reach. Yu wants them to have company without having to ask for it."
+  },
+  {
+   "id": 10,
+   "name": {
+    "en": "Itsuki Ota",
+    "ja": "太田 いつき"
+   },
+   "warmth": 0.9,
+   "caution": 0.883,
+   "rhythm": 1,
+   "inclination": "prefers familiar routines",
+   "story": "Itsuki pats each familiar seat in order and beams when its usual occupant settles in. Itsuki wants everyone in their spot before the first song starts."
+  },
+  {
+   "id": 11,
+   "name": {
+    "en": "Nao Ando",
+    "ja": "安藤 なお"
+   },
+   "warmth": 0.61,
+   "caution": 0.709,
+   "rhythm": 1,
+   "inclination": "gives others time to work things out",
+   "story": "When a piece won't fit, Nao rests both hands in their lap while the other person turns it around. Nao wants to give them one more try before offering a hand."
+  },
+  {
+   "id": 12,
+   "name": {
+    "en": "Kei Aoki",
+    "ja": "青木 けい"
+   },
+   "warmth": 0.54,
+   "caution": 0.899,
+   "rhythm": 1,
+   "inclination": "cares more about showing up than talking",
+   "story": "Kei goes straight to the usual meeting spot and greets each arrival with a nod. Kei wants the spot to stay the same so nobody has to go looking."
+  }
+ ],
+ "protagonist": {
+  "name": {
+   "en": "You",
+   "ja": "あなた"
+  },
+  "profile": "This 32-year-old backend engineer is in the fifth year at a 300-person SaaS company and earns ¥7.2 million a year. The job is stable, but lately it has been mostly maintenance, with little sense of growth. Learning a new technology is what makes a weekday feel like a good one. A friend who founded a 12-person startup has offered a lead engineer role at ¥6.2 million a year plus stock options, with no particular deadline for an answer. Another possibility is to stay at the SaaS company and seek an internal transfer rather than continue in the current role.\n\nAt home, there is a wife, a two-year-old child, and a monthly mortgage payment of ¥130,000. The engineer expects the household to save about as much as it does now even on the lower salary. The wife's main concern is the stability of income and employment. The engineer weighs a similar concern—whether a move that goes badly would burden the family—against the fear of reaching 40 and regretting not having taken a chance. When faced with a choice between stability and a challenge before, what lingered afterward was the opportunity missed by not moving. This time the question is whether joining the startup would make life happier, or whether there is room to grow without leaving the current employer."
+ }
+}

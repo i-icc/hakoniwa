@@ -72,3 +72,18 @@ def test_residents_who_share_a_description_get_names_of_their_own():
     assert display_name(names["pupil:1"], 40) == {"en": "Yamada's group", "ja": "山田さんたち"}
     assert display_name(names["pupil:1"], None) == names["pupil:1"] and display_name(None, 40) is None
     assert len({(resident_names(spec, [{"key": str(i), "agent": "pupil", "given": None} for i in range(300)])[str(i)]["en"]) for i in range(300)}) == 300
+
+
+def test_a_life_world_is_checked_for_what_it_needs():
+    from hakoniwa.domain.contract import clean_life, life_focus, life_problems
+    assert clean_life({"protagonist": {"profile": "too short"}, "options": [{"id": "a"}, {"id": "b"}]}) is None
+    life = clean_life({"protagonist": {"profile": "A backend engineer of 32 with a family, a mortgage and an offer from a friend's startup."},
+                       "options": [{"id": "stay", "label": {"en": "Stay", "ja": "残る"}}, {"id": "go", "label": "Go"}], "question": "Stay or go?"})
+    assert life["protagonist"]["name"] == {"en": "You", "ja": "あなた"} and life["options"][1]["label"] == {"en": "Go", "ja": "Go"}
+    spec = {"parameters": [{"id": "path", "type": "choice", "default": "stay", "choices": [{"id": "stay"}, {"id": "go"}]}, {"id": "x", "type": "bool", "default": False}],
+            "metrics": [{"id": "satisfaction"}, {"id": "regret"}, {"id": "regard"}, {"id": "money"}],
+            "events": [{"id": f"e{i}", "chance": 0.3, "patch": {"x": True}} for i in range(3)], "focus": {"outcomes": ["money", "nope"]}}
+    assert life_problems(spec, life) == []
+    assert life_focus(spec, life)["outcomes"] == ["satisfaction", "regret", "regard", "money"] and life_focus(spec, life)["key"] == "you"
+    broken = dict(spec, parameters=[], metrics=[{"id": "satisfaction"}], events=[])
+    assert len(life_problems(broken, life)) == 4            # no path, two metrics missing, no chance events

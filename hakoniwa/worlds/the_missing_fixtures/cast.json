@@ -1,0 +1,286 @@
+{
+ "collection": "bettors",
+ "size": 500,
+ "names": {
+  "order": "first_last",
+  "first": [
+   "Alex",
+   "Sam",
+   "Charlie",
+   "Ashley",
+   "Robin",
+   "Morgan",
+   "Jamie",
+   "Rory",
+   "Drew",
+   "Jordan",
+   "Taylor",
+   "Frankie",
+   "Chris",
+   "Jo",
+   "Ali",
+   "Lee",
+   "Pat",
+   "Leslie",
+   "Cameron",
+   "Rowan",
+   "Kit",
+   "Sidney",
+   "Billie",
+   "Lou"
+  ],
+  "last": [
+   "Davies",
+   "Evans",
+   "Campbell",
+   "Stewart",
+   "Wilson",
+   "Patel",
+   "Khan",
+   "Shah",
+   "Thomas",
+   "Jones",
+   "Taylor",
+   "Wright",
+   "Clarke",
+   "Hughes",
+   "Watson",
+   "MacLeod",
+   "Fraser",
+   "Williams",
+   "Ahmed",
+   "Brown",
+   "Singh",
+   "Reid",
+   "Ellis",
+   "Lloyd"
+  ]
+ },
+ "attributes": [
+  {
+   "id": "sex",
+   "type": "choice",
+   "source": "NatCen Patterns of Play, Account Data Stage Report, 2018–19: 78.4% male among betting-active accounts with gender recorded; binary survey crosswalk assumed. PMC9757982 Table of winter activities supplies sex-specific prior play in init.",
+   "options": [
+    {
+     "value": "man",
+     "share": 0.784
+    },
+    {
+     "value": "woman",
+     "share": 0.216
+    }
+   ]
+  },
+  {
+   "id": "age",
+   "type": "choice",
+   "source": "NatCen Patterns of Play: 53.9% under 35; within/beyond this band assumed. Spin sizes £1.05/£1.30: DCMS Consultation on a maximum stake limit for online slots, 2018–19 account data.",
+   "options": [
+    {
+     "value": "18–24",
+     "share": 0.17
+    },
+    {
+     "value": "25–34",
+     "share": 0.369
+    },
+    {
+     "value": "35–54",
+     "share": 0.315
+    },
+    {
+     "value": "55+",
+     "share": 0.146
+    }
+   ]
+  },
+  {
+   "id": "kind",
+   "type": "choice",
+   "source": "NatCen Patterns of Play football 77.1%, horse racing 68.0%, broad 6.4%. Assumed allocation matching these overlapping margins; broad group uses both. Racing-only proxy not the 30.8% mainly racing figure conditional on >200 betting days. Weights assumed.",
+   "options": [
+    {
+     "value": "football only",
+     "share": 0.32,
+     "with": {
+      "football_weight": 1,
+      "racing_weight": 0
+     }
+    },
+    {
+     "value": "mainly horse racing, no football",
+     "share": 0.229,
+     "with": {
+      "football_weight": 0,
+      "racing_weight": 0.98
+     }
+    },
+    {
+     "value": "follows football and racing",
+     "share": 0.387,
+     "with": {
+      "football_weight": 0.72,
+      "racing_weight": 0.28
+     }
+    },
+    {
+     "value": "broad interest, including niche events",
+     "share": 0.064,
+     "with": {
+      "football_weight": 0.25,
+      "racing_weight": 0.2
+     }
+    }
+   ]
+  },
+  {
+   "id": "turnover_band",
+   "type": "choice",
+   "source": "NatCen Patterns of Play annual betting turnover / 12: median £7.50, mean £170.75. Assumed discrete distribution with heavy upper tail and small independent jitter; not fitted to pandemic outcomes.",
+   "options": [
+    {
+     "value": "small occasional stakes",
+     "share": 0.4,
+     "with": {
+      "band": 3
+     }
+    },
+    {
+     "value": "modest stakes",
+     "share": 0.2,
+     "with": {
+      "band": 7.5
+     }
+    },
+    {
+     "value": "regular small bets",
+     "share": 0.25,
+     "with": {
+      "band": 45
+     }
+    },
+    {
+     "value": "substantial turnover",
+     "share": 0.12,
+     "with": {
+      "band": 400
+     }
+    },
+    {
+     "value": "very high turnover",
+     "share": 0.03,
+     "with": {
+      "band": 3626.67
+     }
+    }
+   ]
+  },
+  {
+   "id": "variation",
+   "type": "uniform",
+   "min": 0.8,
+   "max": 1.2,
+   "source": "assumed turnover variation"
+  },
+  {
+   "id": "work_rank",
+   "type": "uniform",
+   "min": 0,
+   "max": 1,
+   "source": "PMC9757982: unweighted job loss 3.96%; furlough 7.8/11.5%, continued employment 63.1/60.1% men/women. Assumed disjoint risk ordering; remaining survey statuses pooled. Rank is fixed for counterfactuals."
+  },
+  {
+   "id": "news",
+   "type": "choice",
+   "source": "assumed attention to fixture news; Ofcom 2019 TV 75%, internet 66%, social 49% overlap and are not exclusive or weekly fixture reach",
+   "options": [
+    {
+     "value": "rarely seeks fixture news; looks at account listings",
+     "share": 0.55,
+     "with": {
+      "news_reach": 0.08
+     }
+    },
+    {
+     "value": "follows televised sport",
+     "share": 0.25,
+     "with": {
+      "news_reach": 0.8
+     }
+    },
+    {
+     "value": "checks scores and friends' messages",
+     "share": 0.2,
+     "with": {
+      "news_reach": 0.65
+     }
+    }
+   ]
+  },
+  {
+   "id": "gap",
+   "type": "pick",
+   "values": [
+    2,
+    3,
+    4,
+    5,
+    7,
+    7,
+    9,
+    12,
+    14
+   ],
+   "source": "assumed days between occasions to inspect account, including checks with no play"
+  },
+  {
+   "id": "phase",
+   "type": "uniform",
+   "min": 0,
+   "max": 83,
+   "integer": true,
+   "source": "assumed individual calendar offset"
+  },
+  {
+   "id": "session_minutes",
+   "type": "pick",
+   "values": [
+    8,
+    12,
+    20,
+    30,
+    45,
+    60
+   ],
+   "source": "assumed time available per account check"
+  },
+  {
+   "id": "curiosity",
+   "type": "uniform",
+   "min": 0,
+   "max": 1,
+   "source": "assumed appetite for unfamiliar products"
+  },
+  {
+   "id": "caution",
+   "type": "uniform",
+   "min": 0,
+   "max": 1,
+   "source": "assumed concern about leisure costs"
+  },
+  {
+   "id": "alternative",
+   "type": "pick",
+   "values": [
+    "unfamiliar",
+    "virtual",
+    "slots",
+    "poker",
+    "casino"
+   ],
+   "source": "assumed fallback preference, not survey conversion rates"
+  }
+ ],
+ "sketch": "Two or three sentences about one adult online sports-account holder who bet at least once last winter. Describe their familiar sporting ritual, an ordinary demand on their time or budget, and whether unfamiliar games appeal; match their age, stake band, interest and curiosity. Do not infer a job from turnover, assign an occupation inconsistent with unspecified employment, invent product history, or mention future events, closures, offers, countries or years."
+}

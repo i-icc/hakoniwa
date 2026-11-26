@@ -31,7 +31,7 @@ def load_dotenv(path: Path | None = None) -> None:
 
 @dataclass
 class RoleConfig:
-    """One LLM role (designer / agent / report). All use the OpenAI chat API shape."""
+    """One LLM role (designer / draft / agent / report). All use the OpenAI chat API shape."""
     role: str
     model: str
     base_url: str
@@ -56,8 +56,11 @@ class Settings:
     allow_unsafe_sandbox: bool
     research: str            # "none" | "responses"
     research_model: str | None = None
+    decision_model: str = "gpt-6-luna"
     prices: dict = field(default_factory=dict)
     content_langs: tuple[str, ...] = ("en", "ja")
+    backup_dir: Path | None = None      # a folder that outlives this machine (a mounted bucket): the database is copied there whole
+    backup_minutes: float = 5.0
 
     def role(self, name: str) -> RoleConfig:
         return self.roles[name]
@@ -87,10 +90,10 @@ def load_settings() -> Settings:
     base = (_env("OPENAI_BASE_URL", "https://api.openai.com/v1") or "").rstrip("/")
     key = _env("OPENAI_API_KEY")
     default_model = _env("HAKONIWA_MODEL")
-    default_models = {"designer": "gpt-6.2-sol", "agent": "gpt-6-luna", "report": "gpt-6.2-sol"}
-    default_effort = {"designer": "medium", "agent": "low", "report": "low"}
+    default_models = {"designer": "gpt-6.2-astra", "draft": "gpt-6.2-sol", "agent": "gpt-6-luna", "report": "gpt-6.2-sol"}
+    default_effort = {"designer": "medium", "draft": "low", "agent": "low", "report": "low"}
     roles: dict[str, RoleConfig] = {}
-    for role in ("designer", "agent", "report"):
+    for role in ("designer", "draft", "agent", "report"):
         up = role.upper()
         roles[role] = RoleConfig(
             role=role,
@@ -119,6 +122,9 @@ def load_settings() -> Settings:
         allow_unsafe_sandbox=(_env("HAKONIWA_ALLOW_UNSAFE_SANDBOX", "0") == "1"),
         research=_env("HAKONIWA_RESEARCH", "none") or "none",
         research_model=_env("HAKONIWA_MODEL_RESEARCH"),
+        decision_model=_env("HAKONIWA_MODEL_DECISION", "gpt-6-luna") or "gpt-6-luna",
         prices=load_prices(),
         content_langs=tuple((_env("HAKONIWA_LANGS", "en,ja") or "en,ja").split(",")),
+        backup_dir=Path(_env("HAKONIWA_BACKUP_DIR")) if _env("HAKONIWA_BACKUP_DIR") else None,
+        backup_minutes=float(_env("HAKONIWA_BACKUP_MINUTES", "5") or 5),
     )

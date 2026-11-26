@@ -13,5 +13,12 @@ def load_builtin_worlds() -> list[dict]:
     for d in sorted(WORLDS_DIR.iterdir()):
         spec_p, code_p = d / "spec.json", d / "model.py"
         if spec_p.exists() and code_p.exists():
-            out.append({"slug": d.name, "spec": json.loads(spec_p.read_text()), "code": code_p.read_text()})
+            spec = json.loads(spec_p.read_text())
+            data_p = d / "data.json"                 # optional: a cast of individuals or other tables for the model
+            if data_p.exists():
+                spec["data"] = json.loads(data_p.read_text())
+            cast_p = d / "cast.json"                 # optional: the recipe the cast was drawn from
+            if cast_p.exists():
+                spec["cast"] = json.loads(cast_p.read_text())
+            out.append({"slug": d.name, "spec": spec, "code": code_p.read_text()})
     return out

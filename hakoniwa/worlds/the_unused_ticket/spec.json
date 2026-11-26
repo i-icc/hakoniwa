@@ -1,0 +1,524 @@
+{
+ "slug": "the_unused_ticket",
+ "title": {
+  "en": "The unused ticket: US air travel, February–April 2020",
+  "ja": "使われなかった航空券：2020年2〜4月の米国航空旅行"
+ },
+ "summary": {
+  "en": "Follow 490 people from a possible booking to a security checkpoint. A traveller can change their mind; a conference, employer or airline can also take the decision out of their hands. Compare departures with the held-out checkpoint series.",
+  "ja": "予約を考える段階から保安検査場まで490人を追う。本人の判断とは別に、会議の中止、出張禁止、欠航も起こる。出発者数を、モデルに入力していない検査場通過者の実績と比較する。"
+ },
+ "tick": {
+  "unit": {
+   "en": "day",
+   "ja": "日"
+  },
+  "default_ticks": 70,
+  "max_ticks": 70
+ },
+ "questions": [
+  {
+   "en": "When does the simulated index first stay below its ordinary level? Does it descend as quickly and as far as the checkpoint index?",
+   "ja": "モデルの指数が平常を下回り続けるのはいつからか。低下の速さと深さは実績に合うか。"
+  },
+  {
+   "en": "Would keeping flights on the timetable fill their seats, or would travellers still stay home?",
+   "ja": "便を維持すれば席は埋まるのか、それでも旅行者は家にとどまるのか。"
+  },
+  {
+   "en": "How much of the change survives without employer bans or federal advice, or with an earlier emergency declaration?",
+   "ja": "出張禁止や連邦政府の勧告がない場合、あるいは非常事態宣言が早い場合、変化はどれだけ残るか。"
+  }
+ ],
+ "assumptions": [
+  {
+   "en": "No coefficients were fitted to checkpoint counts or indices. The onset, slope and floor are tests, not targets. The only reference-table access is in the observer metric. The simulated denominator is the same cast's original ordinary departures for that day, a proxy for the prior-year weekday, not a reconstruction of 2019.",
+   "ja": "検査場の人数・指数に合わせた係数はない。低下の開始、速さ、底は検証対象。参照表は観測用指標だけが読む。分母は同じ人々の当初の日別出発予定で、前年同曜日の代理であり2019年の再現ではない。"
+  },
+  {
+   "en": "Condition on flyers, not all adults. Each person represents one outbound checkpoint visit; no return legs, connections or international network. Seven ordinary trips per day make the daily index coarse: compare repeated seeds before interpreting a one-day trough. Student and family calendar matching swaps dates without changing ordinary totals.",
+   "ja": "成人全員でなく飛行機利用者が対象。1人につき往路の検査1回とし、復路、乗継、国際線網は省略。平常は1日7件なので指数は粗い。単日の底は複数の乱数種で比べる。学生・家族の日程は日別合計を変えずに交換する。"
+  },
+  {
+   "en": "Surveys constrain composition, not causal responses. Break calendars proxy travel dates; a single campus notice proxies staggered closures. Refundability by purpose, personal loss thresholds, news delays and all behavioural coefficients are assumptions. The emergency and guidance have no independently measured causal weights.",
+   "ja": "調査で制約するのは構成であり、因果効果ではない。休暇暦で旅行日を、ある大学の退去通知で各地の閉鎖を近似。目的別払戻可否、損失許容度、情報の遅れ、行動係数は仮定。宣言・勧告の独立した因果効果は不明。"
+  },
+  {
+   "en": "Model the seat attached to an itinerary, not a nationally interchangeable seat. Flights are grouped into three daily services; a withdrawal removes even a willing passenger. Newly dated passengers can use spare seats only. No rerouting; an airline cancellation ends the journey with a full unused-fare refund. Voluntary postponement carries the ticket forward, not cash.",
+   "ja": "全国で自由に交換できる座席ではなく旅程に付く席を扱う。1日3便とし、欠航なら希望者も乗れない。日程変更者は空席のみ利用できる。迂回便はなく、航空会社都合なら未使用運賃を全額返金。自己都合の延期では現金でなく航空券を繰り越す。"
+  },
+  {
+   "en": "Agency issuance fell 45.2%, 80.1% and 93.8% in the weeks ending March 15, March 22 and April 12. These are external context, not cancellation probabilities or checkpoint inputs. The finite departure cohort excludes bookings for dates originally beyond April 26, so its late booking counts are censored.",
+   "ja": "代理店発券は3月15日、22日、4月12日終了週に45.2%、80.1%、93.8%減。これは背景情報であり、取消確率でも検査人数への入力でもない。当初4月26日より後に出発予定の人を含まず、終盤の予約数は過少になる。"
+  }
+ ],
+ "parameters": [
+  {
+   "id": "blind",
+   "label": {
+    "en": "Anonymous traveller briefing",
+    "ja": "国名等を伏せる"
+   },
+   "type": "bool",
+   "default": false,
+   "group": {
+    "en": "Experiment",
+    "ja": "実験"
+   },
+   "source": "assumed",
+   "runtime": true
+  },
+  {
+   "id": "guidance",
+   "label": {
+    "en": "Issue 15-day discretionary travel advice",
+    "ja": "15日間の不要旅行自粛を勧告"
+   },
+   "type": "bool",
+   "default": true,
+   "group": {
+    "en": "Policy",
+    "ja": "政策"
+   },
+   "source": "Observer chronology, March 16",
+   "runtime": true
+  },
+  {
+   "id": "bans",
+   "label": {
+    "en": "Enforce employer travel policies",
+    "ja": "出張制限を実施"
+   },
+   "type": "bool",
+   "default": true,
+   "group": {
+    "en": "Policy",
+    "ja": "政策"
+   },
+   "source": "https://gbta.org/new-gbta-research-shows-coronavirus-continues-to-impact-the-business-travel-industry/ (13% early); https://gbta.org/coronavirus-is-decimating-entire-global-travel-industry-travel-comes-to-a-halt-across-the-globe/ (84% all or most, 53% essential exceptions; interpolation and application across samples assumed)",
+   "runtime": true
+  },
+  {
+   "id": "emergency",
+   "label": {
+    "en": "Emergency declaration (Feb 17 = 0)",
+    "ja": "非常事態宣言（2月17日＝0）"
+   },
+   "type": "int",
+   "default": 25,
+   "min": 0,
+   "max": 69,
+   "step": 1,
+   "unit": "d",
+   "group": {
+    "en": "Policy",
+    "ja": "政策"
+   },
+   "source": "Observer chronology, March 13",
+   "runtime": true
+  },
+  {
+   "id": "cuts",
+   "label": {
+    "en": "Allow airline withdrawals",
+    "ja": "減便・欠航あり"
+   },
+   "type": "bool",
+   "default": true,
+   "group": {
+    "en": "Airlines",
+    "ja": "航空会社"
+   },
+   "source": "https://www.bts.gov/newsroom/air-travel-consumer-report-april-2020-numbers (331238/668259 April schedules; 16.9% March and 41.3% April close-in cancellations; daily ramp and constant seats per service assumed)",
+   "runtime": true
+  },
+  {
+   "id": "lead",
+   "label": {
+    "en": "Mean ordinary booking lead",
+    "ja": "通常の平均予約先行日数"
+   },
+   "type": "int",
+   "default": 35,
+   "min": 1,
+   "max": 70,
+   "step": 1,
+   "unit": "d",
+   "group": {
+    "en": "Tickets",
+    "ja": "航空券"
+   },
+   "source": "https://www2.arccorp.com/about-us/newsroom/2020-news-releases/arc-expedia-2021-travel-trends-report/ (2019 mean; uniform spread assumed)",
+   "runtime": false
+  },
+  {
+   "id": "fare",
+   "label": {
+    "en": "Ordinary agency fare",
+    "ja": "平常の代理店運賃"
+   },
+   "type": "int",
+   "default": 499,
+   "min": 100,
+   "max": 1200,
+   "step": 1,
+   "unit": "USD",
+   "group": {
+    "en": "Tickets",
+    "ja": "航空券"
+   },
+   "source": "https://www2.arccorp.com/about-us/newsroom/2020-news-releases/us-travel-agency-seven-day-air-ticket-volume/ (499 USD week ending March 1; round-trip purchase represents outbound journey)",
+   "runtime": false
+  },
+  {
+   "id": "lowfare",
+   "label": {
+    "en": "Late-March agency fare",
+    "ja": "3月下旬の代理店運賃"
+   },
+   "type": "int",
+   "default": 336,
+   "min": 100,
+   "max": 1200,
+   "step": 1,
+   "unit": "USD",
+   "group": {
+    "en": "Tickets",
+    "ja": "航空券"
+   },
+   "source": "https://www2.arccorp.com/about-us/newsroom/2020-news-releases/us-travel-agency-seven-day-air-ticket-volume/ (336 USD week ending March 22; interpolation and plateau assumed)",
+   "runtime": true
+  },
+  {
+   "id": "refund",
+   "label": {
+    "en": "Voluntarily refundable personal tickets",
+    "ja": "自己都合で払戻可能な個人航空券"
+   },
+   "type": "number",
+   "default": 0.18,
+   "min": 0,
+   "max": 1,
+   "step": 0.01,
+   "unit": "share",
+   "group": {
+    "en": "Tickets",
+    "ja": "航空券"
+   },
+   "source": "assumed; business premium assumed. Airline cancellation refund 100%: https://www.transportation.gov/briefing-room/us-department-transportation-issues-enforcement-notice-clarifying-air-carrier-refund ; eligible new March purchases pay zero change fee (proxy): https://news.aa.com/news/news-details/2020/American-Airlines-Extending-Change-Fee-Waivers-for-Customers-Purchasing-Travel-Through-March-31-OPS-DIS-03/default.aspx",
+   "runtime": false
+  },
+  {
+   "id": "buffer_share",
+   "label": {
+    "en": "Share with a $400 cash cushion",
+    "ja": "400ドルの現金余力がある割合"
+   },
+   "type": "number",
+   "default": 0.63,
+   "min": 0,
+   "max": 1,
+   "step": 0.01,
+   "group": {
+    "en": "Travellers",
+    "ja": "旅行者"
+   },
+   "source": "https://www.federalreserve.gov/publications/2020-economic-well-being-of-us-households-in-2019-dealing-with-unexpected-expenses.htm (63%; extra spending reserve proxy assumed)",
+   "runtime": false
+  },
+  {
+   "id": "break_share",
+   "label": {
+    "en": "Break calendar clustering",
+    "ja": "春休み日程の集中率"
+   },
+   "type": "number",
+   "default": 0.6425,
+   "min": 0,
+   "max": 1,
+   "step": 0.01,
+   "group": {
+    "en": "Travellers",
+    "ja": "旅行者"
+   },
+   "source": "https://www.danielmangrum.com/docs/MangrumNiekamp_C19SB.pdf (852/1326 end March 15 or 22); six-day departure window from https://www.jmir.org/2020/6/e20185 ; assignment to travellers assumed",
+   "runtime": false
+  },
+  {
+   "id": "close_news",
+   "label": {
+    "en": "Close news followers",
+    "ja": "ニュースに注目する割合"
+   },
+   "type": "number",
+   "default": 0.89,
+   "min": 0,
+   "max": 1,
+   "step": 0.01,
+   "group": {
+    "en": "Travellers",
+    "ja": "旅行者"
+   },
+   "source": "https://www.pewresearch.org/journalism/2020/04/22/older-americans-continue-to-follow-covid-19-news-more-closely-than-younger-adults/ ; age-specific concern anchors 23% and 33%: https://www.pewresearch.org/politics/2020/03/18/u-s-public-sees-multiple-threats-from-the-coronavirus-and-concerns-are-growing/ ; delays and age interpolation assumed",
+   "runtime": false
+  },
+  {
+   "id": "spare",
+   "label": {
+    "en": "Spare seats per ordinary service",
+    "ja": "平常時の各便の予備席"
+   },
+   "type": "int",
+   "default": 1,
+   "min": 0,
+   "max": 6,
+   "step": 1,
+   "unit": "seats",
+   "group": {
+    "en": "Airlines",
+    "ja": "航空会社"
+   },
+   "source": "assumed; all otherwise unsourced cast distributions, costs, timings, thresholds, service grouping and reaction coefficients are assumptions. Flyer-only sampling frame: 45% of adults flew in past year https://www.airlines.org/dataset/air-travelers-in-america-annual-survey/ ; ~70% personal trip share https://www.airlines.org/wp-content/uploads/2023/03/A4A-Air-Travel-Survey-2023-Key-Findings.pdf ; within-personal split assumed. Issuance context: https://www2.arccorp.com/about-us/newsroom/2020-news-releases/us-travel-agency-seven-day-air-ticket-volume-and--other-variances-ending-april-26-2020/ and ARC seven-day ticket volume reports.",
+   "runtime": false
+  },
+  {
+   "id": "max_asks",
+   "label": {
+    "en": "Questions per person, maximum",
+    "ja": "1人あたりの質問上限"
+   },
+   "type": "int",
+   "default": 8,
+   "min": 0,
+   "max": 20,
+   "step": 1,
+   "group": {
+    "en": "Experiment",
+    "ja": "実験"
+   },
+   "source": "assumed",
+   "runtime": true
+  }
+ ],
+ "agents": [
+  {
+   "id": "traveller",
+   "name": {
+    "en": "Traveller",
+    "ja": "旅行者"
+   },
+   "kind": "individual",
+   "persona": "Decide only for your own itinerary, using the information that has reached you."
+  }
+ ],
+ "metrics": [
+  {
+   "id": "sim_index",
+   "label": {
+    "en": "Simulated checkpoint index",
+    "ja": "検査場指数・モデル"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "real_travellers_index",
+   "label": {
+    "en": "Observed checkpoint index",
+    "ja": "検査場指数・実績"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "wanted",
+   "label": {
+    "en": "Wanted to board before airline decisions",
+    "ja": "航空会社の判断前の搭乗希望"
+   },
+   "unit": "people",
+   "format": "int",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "flew",
+   "label": {
+    "en": "Passed security",
+    "ja": "検査場通過"
+   },
+   "unit": "people",
+   "format": "int",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "seats",
+   "label": {
+    "en": "Operating seats",
+    "ja": "運航便の座席"
+   },
+   "unit": "seats",
+   "format": "int",
+   "good": "none",
+   "headline": false
+  },
+  {
+   "id": "bookings",
+   "label": {
+    "en": "New purchases",
+    "ja": "新規購入"
+   },
+   "unit": "people",
+   "format": "int",
+   "good": "none",
+   "headline": false
+  },
+  {
+   "id": "forced",
+   "label": {
+    "en": "Lost trip to employer, event or airline",
+    "ja": "勤務先・催事・航空会社都合の中止"
+   },
+   "unit": "people",
+   "format": "int",
+   "good": "none",
+   "headline": false
+  },
+  {
+   "id": "dropped",
+   "label": {
+    "en": "Voluntarily dropped trip",
+    "ja": "自己都合で取りやめ"
+   },
+   "unit": "people",
+   "format": "int",
+   "good": "none",
+   "headline": false
+  },
+  {
+   "id": "moved",
+   "label": {
+    "en": "Voluntarily delayed trip",
+    "ja": "自己都合で延期"
+   },
+   "unit": "people",
+   "format": "int",
+   "good": "none",
+   "headline": false
+  }
+ ],
+ "charts": [
+  {
+   "id": "test",
+   "title": {
+    "en": "Checkpoint traffic (ordinary = 100)",
+    "ja": "検査場の利用（平常＝100）"
+   },
+   "metrics": [
+    "sim_index",
+    "real_travellers_index"
+   ]
+  },
+  {
+   "id": "gate",
+   "title": {
+    "en": "At departure: willing versus served",
+    "ja": "出発日：希望者と実際の利用者"
+   },
+   "metrics": [
+    "wanted",
+    "flew"
+   ]
+  },
+  {
+   "id": "ledger",
+   "title": {
+    "en": "Daily itinerary changes",
+    "ja": "日別の旅程変動"
+   },
+   "metrics": [
+    "bookings",
+    "forced",
+    "dropped",
+    "moved"
+   ]
+  },
+  {
+   "id": "supply",
+   "title": {
+    "en": "Seats on services actually operating",
+    "ja": "実際に運航する便の座席数"
+   },
+   "metrics": [
+    "seats"
+   ]
+  }
+ ],
+ "interventions": [
+  {
+   "id": "no_guidance",
+   "label": {
+    "en": "No March 16 advice",
+    "ja": "3月16日の勧告なし"
+   },
+   "description": {
+    "en": "Omit this message; leave local orders in place.",
+    "ja": "この勧告だけを省き、各地の命令は残す。"
+   },
+   "patch": {
+    "guidance": false
+   }
+  },
+  {
+   "id": "no_bans",
+   "label": {
+    "en": "Employers keep travel open",
+    "ja": "勤務先の出張禁止なし"
+   },
+   "description": {
+    "en": "Remove employer vetoes, not conference cancellations.",
+    "ja": "出張禁止だけを除き、会議の中止は残す。"
+   },
+   "patch": {
+    "bans": false
+   }
+  },
+  {
+   "id": "full_schedule",
+   "label": {
+    "en": "Airlines keep flying",
+    "ja": "平常ダイヤで運航"
+   },
+   "description": {
+    "en": "Remove advance cuts and close-in cancellations; keep fare changes.",
+    "ja": "事前減便と直前欠航をなくし、運賃の変化は残す。"
+   },
+   "patch": {
+    "cuts": false
+   }
+  },
+  {
+   "id": "early",
+   "label": {
+    "en": "Declare emergency two weeks earlier",
+    "ja": "非常事態宣言を2週間早める"
+   },
+   "description": {
+    "en": "Run from the start with the declaration on February 28.",
+    "ja": "2月28日に宣言する設定で初日から実行する。"
+   },
+   "patch": {
+    "emergency": 11
+   }
+  }
+ ],
+ "scenario": {
+  "en": "United States, 17 February to 26 April 2020 (70 days, one tick per day; day 0 is Monday 17 February).\n\nA new coronavirus was spreading. Public events, with dates: 29 February, the first death in the country was reported. From the first week of March large companies started banning business travel and big conferences were cancelled (a major festival was cancelled on 6 March). 11 March: the WHO declared a pandemic, the President announced a ban on travel from Europe, and a major sports league suspended its season. 13 March: a national emergency was declared. 16 March: federal guidance asked everyone to avoid discretionary travel for 15 days. 19 March: the State Department told citizens not to travel abroad, and the largest state ordered residents to stay at home; most other states followed over the next two weeks. Universities sent students home in mid-March. From late March airlines cut most of their flights and fares collapsed.\n\nSimulate several hundred people who had air trips planned, or would normally have booked them, in this period: business travellers, families with spring-break holidays, students, people visiting relatives, people travelling for something they cannot easily drop (a funeral, medical care, essential work). Each trip has a date, a purpose, a cost, and may or may not be refundable. Each person has their own job and employer rules, health worries (their own age and health, vulnerable relatives), money, how they get news, and character. As news reaches them they decide what to do with each coming trip: fly as planned, postpone, or cancel. New trips are also booked less. Some trips are cancelled for them (employer bans, events called off, flights withdrawn).\n\nReal data is supplied, one row per day. Column travellers_index is an OBSERVED OUTCOME: the number of people passing through airport security that day as a percentage of the same weekday one year earlier (100 = same as a year before). Show it next to the simulated index, on the same scale, but never let the rules or the residents see it. The other columns (the raw counts) are for information only.\n\nI want to see whether the simulated travellers reproduce what happened: when air travel started to fall, how fast it fell, and how low it went. Then I want to test what would have changed the path: no federal guidance on 16 March, employers not banning business travel, airlines keeping their schedules, or the national emergency declared two weeks earlier.",
+  "ja": "United States, 17 February to 26 April 2020 (70 days, one tick per day; day 0 is Monday 17 February).\n\nA new coronavirus was spreading. Public events, with dates: 29 February, the first death in the country was reported. From the first week of March large companies started banning business travel and big conferences were cancelled (a major festival was cancelled on 6 March). 11 March: the WHO declared a pandemic, the President announced a ban on travel from Europe, and a major sports league suspended its season. 13 March: a national emergency was declared. 16 March: federal guidance asked everyone to avoid discretionary travel for 15 days. 19 March: the State Department told citizens not to travel abroad, and the largest state ordered residents to stay at home; most other states followed over the next two weeks. Universities sent students home in mid-March. From late March airlines cut most of their flights and fares collapsed.\n\nSimulate several hundred people who had air trips planned, or would normally have booked them, in this period: business travellers, families with spring-break holidays, students, people visiting relatives, people travelling for something they cannot easily drop (a funeral, medical care, essential work). Each trip has a date, a purpose, a cost, and may or may not be refundable. Each person has their own job and employer rules, health worries (their own age and health, vulnerable relatives), money, how they get news, and character. As news reaches them they decide what to do with each coming trip: fly as planned, postpone, or cancel. New trips are also booked less. Some trips are cancelled for them (employer bans, events called off, flights withdrawn).\n\nReal data is supplied, one row per day. Column travellers_index is an OBSERVED OUTCOME: the number of people passing through airport security that day as a percentage of the same weekday one year earlier (100 = same as a year before). Show it next to the simulated index, on the same scale, but never let the rules or the residents see it. The other columns (the raw counts) are for information only.\n\nI want to see whether the simulated travellers reproduce what happened: when air travel started to fall, how fast it fell, and how low it went. Then I want to test what would have changed the path: no federal guidance on 16 March, employers not banning business travel, airlines keeping their schedules, or the national emergency declared two weeks earlier."
+ }
+}

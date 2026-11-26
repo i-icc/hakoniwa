@@ -6,11 +6,8 @@ import json
 import sqlite3
 import threading
 import time
-from contextlib import closing
 from pathlib import Path
 from typing import Any, Iterable
-
-from ..domain.contract import check_code, check_spec
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS worlds (
@@ -67,103 +64,17 @@ def _j(v: Any) -> str:
     return json.dumps(v, ensure_ascii=False, separators=(",", ":"))
 
 
-class InvalidBackup(ValueError):
-    """A file that cannot be restored as a Hakoniwa database."""
-
-
-_JSON_FIELDS = {
-    "runs": {"config": "object", "params": "object"},
-    "ticks": {"metrics": "object", "view": "object"},
-    "snapshots": {"state": "object", "rng": "array", "params": "object"},
-    "events": {"payload": "object"},
-    "decisions": {"request": "object", "response": "object"},
-    "reports": {"body": "object"},
-    "facts": {"object": None},
-    "settings": {"value": None},
-}
-
-
 class SqliteStore:
     def __init__(self, path: Path | str):
         if str(path) != ":memory:":
             Path(path).parent.mkdir(parents=True, exist_ok=True)
-        self.conn = sqlite3.connect(str(path), check_same_thread=False, isolation_level=None, uri=True)
+        self.conn = sqlite3.connect(str(path), check_same_thread=False, isolation_level=None)
         self.conn.row_factory = sqlite3.Row
         self.lock = threading.RLock()
         with self.lock:
             self.conn.execute("PRAGMA journal_mode=WAL")
             self.conn.execute("PRAGMA synchronous=NORMAL")
-            self.conn.execute("PRAGMA trusted_schema=OFF")
             self.conn.executescript(SCHEMA)
-
-    # -- database transfer --------------------------------------------------
-    def backup_to(self, path: Path) -> None:
-        """Write a standalone snapshot, including committed content in the WAL."""
-        with self.lock, closing(sqlite3.connect(path)) as output:
-            self.conn.backup(output)
-            output.execute("PRAGMA journal_mode=DELETE")
-
-    def restore_from(self, path: Path, builtin: list[dict]) -> None:
-        """Validate the source and atomically replace rows in the local schema."""
-        with self.lock:
-            db = self.conn
-            try:
-                db.execute("ATTACH DATABASE ? AS incoming", (path.resolve().as_uri() + "?mode=ro&immutable=1",))
-                try:
-                    tables, untrusted = self._check_backup(builtin)
-                    with self.tx():
-                        for table in tables:
-                            db.execute(f'DELETE FROM main."{table}"')
-                            db.execute(f'INSERT INTO main."{table}" SELECT * FROM incoming."{table}"')
-                        db.executemany("UPDATE main.worlds SET source='generated' WHERE id=?", untrusted)
-                        self.pause_running_runs()
-                finally:
-                    db.execute("DETACH DATABASE incoming")
-            except sqlite3.Error as e:
-                raise InvalidBackup(f"Could not restore the SQLite backup: {e}") from e
-
-    def _check_backup(self, builtin: list[dict]) -> tuple[list[str], list[tuple[int]]]:
-        def schema(name: str):
-            return self.conn.execute(f"SELECT type, name, tbl_name, sql FROM {name}.sqlite_schema"
-                                     " WHERE name NOT GLOB 'sqlite_*' ORDER BY name").fetchall()
-
-        expected = schema("main")
-        if schema("incoming") != expected:
-            raise InvalidBackup("The file does not have the expected Hakoniwa database schema.")
-        if [row[0] for row in self.conn.execute("PRAGMA incoming.integrity_check")] != ["ok"]:
-            raise InvalidBackup("The SQLite integrity check failed.")
-
-        for table, fields in _JSON_FIELDS.items():
-            for column, kind in fields.items():
-                check = f'CASE WHEN json_valid("{column}") THEN json_type("{column}") = ? ELSE 0 END' if kind else f'json_valid("{column}")'
-                if self.conn.execute(f'SELECT 1 FROM incoming."{table}" WHERE NOT ({check}) LIMIT 1',
-                                     (kind,) if kind else ()).fetchone():
-                    raise InvalidBackup(f"The backup contains invalid data in {table}.{column}.")
-
-        if self.conn.execute(
-            "SELECT 1 FROM incoming.runs r LEFT JOIN incoming.worlds w ON w.id = r.world_id"
-            " WHERE w.id IS NULL OR r.name IS NULL OR r.tick IS NULL OR r.tick < 0"
-            " OR r.status IS NULL OR r.status NOT IN ('created', 'running', 'paused', 'finished', 'failed')"
-            " OR json_type(r.config, '$.ticks') IS NOT 'integer'"
-            " OR r.parent_run_id >= r.id LIMIT 1"
-        ).fetchone():
-            raise InvalidBackup("The backup contains an invalid run.")
-
-        shipped = {w["slug"]: w for w in builtin}
-        untrusted = []
-        for row in self.conn.execute("SELECT id, slug, source, spec, code FROM incoming.worlds"):
-            wid, slug, source, raw_spec, code = row
-            try:
-                spec = json.loads(raw_spec)
-                if not isinstance(slug, str) or not isinstance(code, str) or check_spec(spec) or check_code(code):
-                    raise ValueError
-            except (TypeError, ValueError, AttributeError) as e:
-                raise InvalidBackup(f"The backup contains an invalid world (ID {wid}).") from e
-            local = shipped.get(slug)
-            if source != "generated" and not (source == "builtin" and local and
-                                               local["spec"] == spec and local["code"] == code):
-                untrusted.append((wid,))
-        return [row["name"] for row in expected if row["type"] == "table"], untrusted
 
     # -- low level ----------------------------------------------------------
     def x(self, sql: str, args: Iterable = ()) -> sqlite3.Cursor:
@@ -191,6 +102,10 @@ class SqliteStore:
         cur = self.x("INSERT INTO worlds(slug, source, spec, code, notes, created_at) VALUES(?,?,?,?,?,?)",
                      (slug, source, _j(spec), code, notes, time.time()))
         return cur.lastrowid
+
+    def update_world(self, world_id: int, slug: str, source: str, spec: dict, code: str, notes: str = "") -> None:
+        """Rewrite a world in place: a world being built keeps its id when it is finished (or fails)."""
+        self.x("UPDATE worlds SET slug=?, source=?, spec=?, code=?, notes=? WHERE id=?", (slug, source, _j(spec), code, notes, world_id))
 
     def world(self, world_id: int) -> dict | None:
         row = self.one("SELECT * FROM worlds WHERE id=?", (world_id,))
@@ -308,6 +223,14 @@ class SqliteStore:
         for r in rows:
             r["payload"] = json.loads(r["payload"])
         return list(reversed(rows))
+
+    def earlier_happenings(self, run_id: int, before_id: int) -> list[dict]:
+        """Everything except residents' lines before a given event: the world's news, interventions, chance events.
+        A long run has thousands of lines of speech; these few must not fall off the end of a page of them."""
+        rows = self.q("SELECT * FROM events WHERE run_id=? AND id<? AND kind!='say' ORDER BY id", (run_id, before_id))
+        for r in rows:
+            r["payload"] = json.loads(r["payload"])
+        return rows
 
     def add_decision(self, run_id: int, tick: int, key: str, agent: str, request: dict, response: dict,
                      source: str, model: str | None, tokens_in: int, tokens_out: int, cost: float | None) -> None:
@@ -481,6 +404,195 @@ class SqliteStore:
                 c.execute("ROLLBACK")
                 raise
 
+    # -- moving data between databases ------------------------------------------
+    RUN_TABLES = ("ticks", "snapshots", "events", "decisions", "facts", "llm_calls", "chats", "reports")
+
+    def data_overview(self) -> dict:
+        """Every world with its runs and roughly how much room each run takes: what the observer chooses from when exporting."""
+        size = {r["run_id"]: r["n"] for r in self.q(
+            "SELECT run_id, SUM(n) AS n FROM (SELECT run_id, LENGTH(state) + LENGTH(rng) + LENGTH(params) AS n FROM snapshots"
+            " UNION ALL SELECT run_id, LENGTH(request) + LENGTH(response) FROM decisions"
+            " UNION ALL SELECT run_id, LENGTH(payload) FROM events UNION ALL SELECT run_id, LENGTH(metrics) + LENGTH(view) FROM ticks) GROUP BY run_id")}
+        worlds = []
+        for w in self.q("SELECT id, slug, source, json_extract(spec, '$.title') AS title, LENGTH(spec) + LENGTH(code) AS n FROM worlds ORDER BY source, id"):
+            if w["source"] in ("building", "failed"):
+                continue
+            runs = self.q("SELECT id, name, status, tick, parent_run_id FROM runs WHERE world_id=? ORDER BY id", (w["id"],))
+            for r in runs:
+                r["bytes"] = size.get(r["id"], 0)
+            t = w["title"]
+            worlds.append({"id": w["id"], "slug": w["slug"], "source": w["source"], "bytes": w["n"],
+                           "title": json.loads(t) if isinstance(t, str) and t.startswith("{") else t, "runs": runs})
+        return {"worlds": worlds}
+
+    def export_to(self, path: Path | str, run_ids: list[int] | None = None, world_ids: list[int] | None = None) -> dict:
+        """Write the chosen runs (default: all), the worlds they belong to and any other chosen worlds into a new
+        SQLite file with the same tables. Parents of a chosen fork come along, so the branch still has its origin."""
+        with self.lock:
+            runs = {r["id"]: r for r in self.q("SELECT id, world_id, parent_run_id FROM runs")}
+            chosen = set(runs) if run_ids is None else {int(i) for i in run_ids if int(i) in runs}
+            for rid in list(chosen):                      # walk up to the roots
+                p = runs[rid]["parent_run_id"]
+                while p in runs and p not in chosen:
+                    chosen.add(p)
+                    p = runs[p]["parent_run_id"]
+            all_worlds = {w["id"]: w["source"] for w in self.q("SELECT id, source FROM worlds")}
+            worlds = {runs[r]["world_id"] for r in chosen}
+            worlds |= {w for w, src in all_worlds.items() if src == "generated"} if world_ids is None else {int(w) for w in world_ids}
+            worlds = {w for w in worlds if all_worlds.get(w) in ("builtin", "generated")}
+            out = sqlite3.connect(str(path))
+            out.executescript(SCHEMA + "CREATE TABLE IF NOT EXISTS export_info (key TEXT PRIMARY KEY, value TEXT);")
+            out.execute("INSERT OR REPLACE INTO export_info VALUES ('format', '1'), ('exported_at', ?)", (str(time.time()),))
+            out.commit()
+            out.close()
+            marks = lambda ids: ",".join("?" * len(ids))
+            self.conn.execute("ATTACH DATABASE ? AS out", (str(path),))
+            try:
+                self.conn.execute("BEGIN")
+                w, r = sorted(worlds), sorted(chosen)
+                self.conn.execute(f"INSERT INTO out.worlds SELECT * FROM main.worlds WHERE id IN ({marks(w)})", w)
+                self.conn.execute(f"INSERT INTO out.runs SELECT * FROM main.runs WHERE id IN ({marks(r)})", r)
+                for t in self.RUN_TABLES:
+                    self.conn.execute(f"INSERT INTO out.{t} SELECT * FROM main.{t} WHERE run_id IN ({marks(r)})", r)
+                self.conn.execute(f"INSERT INTO out.llm_calls SELECT * FROM main.llm_calls WHERE run_id IS NULL AND world_id IN ({marks(w)})", w)
+                self.conn.execute("COMMIT")
+            except Exception:
+                self.conn.execute("ROLLBACK")
+                raise
+            finally:
+                self.conn.execute("DETACH DATABASE out")
+        return {"worlds": len(worlds), "runs": len(chosen)}
+
+    def import_from(self, path: Path | str, check_world=None) -> dict:
+        """Add the worlds and runs of an exported file to this database. Nothing here is replaced: runs get new ids,
+        a world is matched by its slug (a sample world, or the very same world) or else added under a free name.
+        `check_world(spec, code)` returns problems for a world that must not be taken in. The file is only read."""
+        src = sqlite3.connect(f"file:{Path(path).as_posix()}?mode=ro", uri=True)
+        src.row_factory = sqlite3.Row
+        try:
+            try:
+                src.execute("PRAGMA trusted_schema=OFF")
+                have = {r[0] for r in src.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+            except sqlite3.DatabaseError as e:
+                raise ValueError(f"this file is not a database ({e})")
+            if not {"worlds", "runs"} <= have:
+                raise ValueError("this file is not a Hakoniwa export")
+            cols = lambda conn, t: [r[1] for r in conn.execute(f"PRAGMA table_info({t})")]
+            done = {"worlds_added": 0, "worlds_matched": 0, "runs": 0, "skipped": []}
+            with self.lock:
+                self.conn.execute("BEGIN")
+                try:
+                    wmap: dict[int, int] = {}
+                    fresh: set[int] = set()
+                    for w in src.execute("SELECT * FROM worlds ORDER BY id"):
+                        if w["source"] not in ("builtin", "generated"):
+                            continue
+                        try:
+                            spec = json.loads(w["spec"])
+                            assert isinstance(spec, dict) and isinstance(w["code"], str)
+                        except Exception:
+                            done["skipped"].append(f"{w['slug']}: unreadable")
+                            continue
+                        local = self.conn.execute("SELECT id, source, spec, code FROM worlds WHERE slug=?", (w["slug"],)).fetchone()
+                        if local and (local["source"] == "builtin" or (local["spec"] == w["spec"] and local["code"] == w["code"])):
+                            wmap[w["id"]] = local["id"]
+                            done["worlds_matched"] += 1
+                            continue
+                        problems = check_world(spec, w["code"]) if check_world else []
+                        if problems:
+                            done["skipped"].append(f"{w['slug']}: {problems[0][:120]}")
+                            continue
+                        slug, n = w["slug"], 2
+                        while self.conn.execute("SELECT 1 FROM worlds WHERE slug=?", (slug,)).fetchone():
+                            slug, n = f"{w['slug']}_{n}", n + 1
+                        spec["slug"] = slug
+                        cur = self.conn.execute("INSERT INTO worlds(slug, source, spec, code, notes, created_at) VALUES(?,?,?,?,?,?)",
+                                                (slug, "generated", _j(spec), w["code"], w["notes"] or "", w["created_at"] or time.time()))
+                        wmap[w["id"]] = cur.lastrowid               # always as "generated": its code runs only in the isolated sandbox
+                        fresh.add(w["id"])
+                        done["worlds_added"] += 1
+                    rmap: dict[int, int] = {}
+                    rc = [c for c in cols(self.conn, "runs") if c in cols(src, "runs") and c != "id"]
+                    for r in src.execute("SELECT * FROM runs ORDER BY id"):
+                        if r["world_id"] not in wmap:
+                            continue
+                        row = {c: r[c] for c in rc} | {"world_id": wmap[r["world_id"]], "parent_run_id": rmap.get(r["parent_run_id"]),
+                                                       "status": "paused" if r["status"] == "running" else r["status"]}
+                        cur = self.conn.execute(f"INSERT INTO runs({','.join(rc)}) VALUES({','.join('?' * len(rc))})", [row[c] for c in rc])
+                        rmap[r["id"]] = cur.lastrowid
+                        done["runs"] += 1
+                    for t in self.RUN_TABLES:
+                        if t not in have:
+                            continue
+                        tc = [c for c in cols(self.conn, t) if c in cols(src, t) and c != "id"]
+                        sql = f"INSERT INTO {t}({','.join(tc)}) VALUES({','.join('?' * len(tc))})"
+                        order = "id" if "id" in cols(src, t) else "rowid"
+                        for old, new in rmap.items():
+                            rows = src.execute(f"SELECT {','.join(tc)} FROM {t} WHERE run_id=? ORDER BY {order}", (old,))
+                            fix = lambda row: [new if c == "run_id" else (wmap.get(row[c]) if c == "world_id" else row[c]) for c in tc]
+                            while True:
+                                chunk = rows.fetchmany(500)
+                                if not chunk:
+                                    break
+                                self.conn.executemany(sql, [fix(row) for row in chunk])
+                    if "llm_calls" in have:                    # what building a newly added world cost
+                        tc = [c for c in cols(self.conn, "llm_calls") if c in cols(src, "llm_calls") and c != "id"]
+                        for row in src.execute(f"SELECT {','.join(tc)} FROM llm_calls WHERE run_id IS NULL"):
+                            if row["world_id"] in fresh:
+                                self.conn.execute(f"INSERT INTO llm_calls({','.join(tc)}) VALUES({','.join('?' * len(tc))})",
+                                                  [wmap[row[c]] if c == "world_id" else row[c] for c in tc])
+                    self.conn.execute("COMMIT")
+                except sqlite3.DatabaseError as e:
+                    self.conn.execute("ROLLBACK")
+                    raise ValueError(f"the file is damaged or of another shape ({e})")
+                except Exception:
+                    self.conn.execute("ROLLBACK")
+                    raise
+            return done
+        finally:
+            src.close()
+
+    # -- a whole copy, for machines that do not keep their files -----------------
+    BACKUP_NAME = "hakoniwa-backup.sqlite3.gz"
+
+    @staticmethod
+    def restore_if_missing(db_path: Path | str, backup_dir: Path | str) -> bool:
+        """Before the database is opened: if there is none yet and the backup folder holds a copy, start from the copy."""
+        import gzip, shutil
+        db, copy = Path(db_path), Path(backup_dir) / SqliteStore.BACKUP_NAME
+        if str(db_path) == ":memory:" or db.exists() or not copy.exists():
+            return False
+        db.parent.mkdir(parents=True, exist_ok=True)
+        part = db.with_name(db.name + ".restoring")
+        with gzip.open(copy, "rb") as g, open(part, "wb") as f:
+            shutil.copyfileobj(g, f)
+        part.replace(db)
+        return True
+
+    def changes(self) -> int:
+        with self.lock:
+            return self.conn.total_changes
+
+    def backup_to(self, backup_dir: Path | str) -> int:
+        """Write one complete, compressed copy of the database into a folder and return its size.
+        The copy is made here first and then put in place whole: a mounted bucket has no file locking and writes whole
+        objects, so the live database must never sit there, but a finished file can."""
+        import gzip, shutil, tempfile
+        folder = Path(backup_dir)
+        folder.mkdir(parents=True, exist_ok=True)
+        work = Path(tempfile.mkdtemp(prefix="hakoniwa-backup-"))
+        try:
+            with self.lock:
+                self.conn.execute("VACUUM INTO ?", (str(work / "copy.sqlite3"),))
+            with open(work / "copy.sqlite3", "rb") as f, gzip.open(work / "copy.gz", "wb", compresslevel=5) as g:
+                shutil.copyfileobj(f, g)
+            part = folder / (self.BACKUP_NAME + ".part")
+            shutil.copyfile(work / "copy.gz", part)
+            part.replace(folder / self.BACKUP_NAME)
+            return (folder / self.BACKUP_NAME).stat().st_size
+        finally:
+            shutil.rmtree(work, True)
+
     def delete_run(self, run_id: int) -> None:
         for t in ("ticks", "snapshots", "events", "decisions", "facts", "llm_calls", "chats", "reports"):
             self.x(f"DELETE FROM {t} WHERE run_id=?", (run_id,))
@@ -493,19 +605,11 @@ class _Tx:
 
     def __enter__(self):
         self.db.lock.acquire()
-        try:
-            self.db.conn.execute("BEGIN")
-        except Exception:
-            self.db.lock.release()
-            raise
+        self.db.conn.execute("BEGIN")
         return self.db
 
     def __exit__(self, et, ev, tb):
         try:
             self.db.conn.execute("ROLLBACK" if et else "COMMIT")
-        except sqlite3.Error:
-            if self.db.conn.in_transaction:
-                self.db.conn.rollback()
-            raise
         finally:
             self.db.lock.release()

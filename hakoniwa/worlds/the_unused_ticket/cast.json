@@ -1,0 +1,178 @@
+{
+ "collection": "travellers",
+ "size": 490,
+ "names": {
+  "order": "first_last",
+  "first": [
+   "Alicia",
+   "James",
+   "Diane",
+   "Marcus",
+   "Ana",
+   "David",
+   "Leah",
+   "Omar",
+   "Mei",
+   "Rachel",
+   "Grace",
+   "Victor",
+   "Priya",
+   "Noah",
+   "Elena",
+   "Miles",
+   "Rosa",
+   "Caleb",
+   "Janet",
+   "Evan",
+   "Alex",
+   "Riley",
+   "Jordan",
+   "Sylvia",
+   "Andre",
+   "Irene"
+  ],
+  "last": [
+   "Johnson",
+   "Garcia",
+   "Chen",
+   "Patel",
+   "Williams",
+   "Martinez",
+   "Nguyen",
+   "Smith",
+   "Lee",
+   "Wilson",
+   "Rivera",
+   "Kim",
+   "Thomas",
+   "Bennett",
+   "Brown",
+   "Singh",
+   "Foster",
+   "Davis",
+   "Allen",
+   "Turner",
+   "Flores",
+   "Harris",
+   "Brooks",
+   "Miller",
+   "Campbell",
+   "Lewis"
+  ]
+ },
+ "attributes": [
+  {
+   "id": "purpose",
+   "type": "choice",
+   "options": [
+    {
+     "value": "business",
+     "share": 0.3,
+     "with": {
+      "work": "client-facing field specialist"
+     }
+    },
+    {
+     "value": "spring break",
+     "share": 0.2,
+     "with": {
+      "work": "school employee planning a family holiday"
+     }
+    },
+    {
+     "value": "student",
+     "share": 0.12,
+     "with": {
+      "work": "college student with a campus job"
+     }
+    },
+    {
+     "value": "visit relatives",
+     "share": 0.25,
+     "with": {
+      "work": "part-time bookkeeper"
+     }
+    },
+    {
+     "value": "funeral",
+     "share": 0.04,
+     "with": {
+      "work": "retail supervisor"
+     }
+    },
+    {
+     "value": "medical care",
+     "share": 0.04,
+     "with": {
+      "work": "self-employed copy editor"
+     }
+    },
+    {
+     "value": "essential work",
+     "share": 0.05,
+     "with": {
+      "work": "travelling clinical technician on a personally arranged placement"
+     }
+    }
+   ]
+  },
+  {
+   "id": "age",
+   "type": "uniform",
+   "min": 19,
+   "max": 77,
+   "integer": true
+  },
+  {
+   "id": "health",
+   "type": "pick",
+   "values": [
+    "usually healthy",
+    "usually healthy",
+    "manages a chronic condition",
+    "recently recovered from an illness"
+   ]
+  },
+  {
+   "id": "vulnerable",
+   "type": "pick",
+   "values": [
+    0,
+    0,
+    1
+   ]
+  },
+  {
+   "id": "channel",
+   "type": "pick",
+   "values": [
+    "radio on the commute",
+    "a family group chat",
+    "evening television",
+    "news alerts on a phone",
+    "colleagues at work"
+   ]
+  },
+  {
+   "id": "trust",
+   "type": "uniform",
+   "min": 0.1,
+   "max": 1
+  },
+  {
+   "id": "worry",
+   "type": "normal",
+   "mean": 0.48,
+   "sd": 0.22,
+   "min": 0.02,
+   "max": 0.98
+  },
+  {
+   "id": "resolve",
+   "type": "uniform",
+   "min": 0.05,
+   "max": 0.95
+  }
+ ],
+ "sketch": "Two or three sentences in English about the person's work, whom the trip matters to, and a concrete obligation or inconvenience that makes changing the date easier or harder. Respect purpose, health, family circumstances, worry, resolve and trust. The student is a young adult. Do not state an age, date, destination, country, price, employer policy, outbreak, future event, or what decision the traveller will make."
+}

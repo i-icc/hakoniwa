@@ -118,9 +118,10 @@ class World:
         self.state = msg["state"]
         self.t = int(msg["t"])
         if msg.get("params") is not None:
-            seed = self.params.get("_seed", 0)
+            kept = {k: v for k, v in self.params.items() if k.startswith("_")}     # seed and world data stay
             self.params = dict(msg["params"])
-            self.params.setdefault("_seed", seed)
+            for k, v in kept.items():
+                self.params.setdefault(k, v)
         r = msg["rng"]
         self.rng.setstate((r[0], tuple(r[1]), r[2]))
         return {"t": self.t}

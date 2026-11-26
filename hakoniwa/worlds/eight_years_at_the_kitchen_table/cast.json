@@ -1,0 +1,214 @@
+{
+ "collection": "circle",
+ "size": 13,
+ "names": {
+  "order": "last_first",
+  "first": [
+   [
+    "Nao",
+    "なお"
+   ],
+   [
+    "Haru",
+    "はる"
+   ],
+   [
+    "Kei",
+    "けい"
+   ],
+   [
+    "Rin",
+    "りん"
+   ],
+   [
+    "Sora",
+    "そら"
+   ],
+   [
+    "Yuki",
+    "ゆき"
+   ],
+   [
+    "Aoi",
+    "あおい"
+   ],
+   [
+    "Rei",
+    "れい"
+   ],
+   [
+    "Hikaru",
+    "ひかる"
+   ],
+   [
+    "Jun",
+    "じゅん"
+   ],
+   [
+    "Makoto",
+    "まこと"
+   ],
+   [
+    "Mizuki",
+    "みずき"
+   ],
+   [
+    "Yu",
+    "ゆう"
+   ],
+   [
+    "Kaoru",
+    "かおる"
+   ],
+   [
+    "Chihiro",
+    "ちひろ"
+   ],
+   [
+    "Itsuki",
+    "いつき"
+   ],
+   [
+    "Akira",
+    "あきら"
+   ],
+   [
+    "Tsubasa",
+    "つばさ"
+   ],
+   [
+    "Izumi",
+    "いずみ"
+   ],
+   [
+    "Shion",
+    "しおん"
+   ]
+  ],
+  "last": [
+   [
+    "Abe",
+    "阿部"
+   ],
+   [
+    "Ueda",
+    "上田"
+   ],
+   [
+    "Okada",
+    "岡田"
+   ],
+   [
+    "Fujita",
+    "藤田"
+   ],
+   [
+    "Maeda",
+    "前田"
+   ],
+   [
+    "Ogawa",
+    "小川"
+   ],
+   [
+    "Goto",
+    "後藤"
+   ],
+   [
+    "Hasegawa",
+    "長谷川"
+   ],
+   [
+    "Ishii",
+    "石井"
+   ],
+   [
+    "Murata",
+    "村田"
+   ],
+   [
+    "Endo",
+    "遠藤"
+   ],
+   [
+    "Aoki",
+    "青木"
+   ],
+   [
+    "Fukuda",
+    "福田"
+   ],
+   [
+    "Ota",
+    "太田"
+   ],
+   [
+    "Nishida",
+    "西田"
+   ],
+   [
+    "Sakai",
+    "酒井"
+   ],
+   [
+    "Kondo",
+    "近藤"
+   ],
+   [
+    "Kaneko",
+    "金子"
+   ],
+   [
+    "Miura",
+    "三浦"
+   ],
+   [
+    "Ando",
+    "安藤"
+   ]
+  ]
+ },
+ "attributes": [
+  {
+   "id": "warmth",
+   "type": "normal",
+   "mean": 0.65,
+   "sd": 0.12,
+   "min": 0.3,
+   "max": 0.9,
+   "source": "assumed"
+  },
+  {
+   "id": "caution",
+   "type": "uniform",
+   "min": 0.1,
+   "max": 0.95,
+   "source": "assumed"
+  },
+  {
+   "id": "rhythm",
+   "type": "pick",
+   "values": [
+    1,
+    1,
+    1,
+    2
+   ],
+   "source": "assumed"
+  },
+  {
+   "id": "inclination",
+   "type": "pick",
+   "values": [
+    "prefers familiar routines",
+    "likes trying something together",
+    "notices broken promises",
+    "gives others time to work things out",
+    "values a quiet evening",
+    "cares more about showing up than talking"
+   ],
+   "source": "assumed"
+  }
+ ],
+ "sketch": "These are thirteen fixed seats, assigned by the model in collection order: wife, child aged two, current manager, prospective receiving manager, founder friend, three current teammates, two receiving teammates, three startup teammates. The role, tie and role-specific want are appended by the model, not drawn independently. Write two short sentences about a recognizable habit and a small personal want consistent with inclination, warmth and caution. Keep them valid at any age, including two: for example, whether someone stays close during a new activity or returns to a familiar one. Do not invent an age, profession, gender, family relationship, financial fact, or career event."
+}

@@ -1,0 +1,829 @@
+{
+ "slug": "eight_years_at_the_kitchen_table",
+ "title": {
+  "en": "Eight years at the kitchen table",
+  "ja": "食卓で振り返る8年間"
+ },
+ "summary": {
+  "en": "Follow one engineer from 32 to 40. Compare the same family and the same business conditions across three starting decisions. A transfer application is not a transfer, an option is not a payslip, and a good day at work need not be a good evening at home.",
+  "ja": "32歳から40歳まで、同じ家族・同じ事業環境で三つの出発点を比べる。異動希望と異動成立、ストックオプションと手取り、仕事が楽しかった日と家族で過ごせた夜を分けて記録する。"
+ },
+ "tick": {
+  "unit": {
+   "en": "quarter",
+   "ja": "四半期"
+  },
+  "default_ticks": 32,
+  "max_ticks": 32
+ },
+ "focus": {
+  "key": "you",
+  "path_param": "path",
+  "outcomes": [
+   "satisfaction",
+   "regret",
+   "regard",
+   "saved",
+   "family_hours"
+  ],
+  "options": [
+   {
+    "id": "stay_current_role",
+    "label": {
+     "en": "Stay in the current role",
+     "ja": "今の部署で働き続ける"
+    }
+   },
+   {
+    "id": "seek_internal_transfer",
+    "label": {
+     "en": "Stay at the company and seek an internal transfer",
+     "ja": "今の会社に残り、社内異動を目指す"
+    }
+   },
+   {
+    "id": "join_startup",
+    "label": {
+     "en": "Join the friend’s startup as lead engineer",
+     "ja": "友人のスタートアップにリードエンジニアとして移る"
+    }
+   }
+  ],
+  "question": {
+   "en": "Stay in the current role, seek an internal transfer, or join the friend’s startup as lead engineer?",
+   "ja": "今の部署に残るか、社内異動を目指すか、友人のスタートアップにリードエンジニアとして移るか？"
+  },
+  "name": {
+   "en": "You",
+   "ja": "あなた"
+  },
+  "horizon": "8 years, from age 32 to age 40"
+ },
+ "questions": [
+  {
+   "en": "At six months, is the household actually putting away the amount it expected? What did it give up to do so?",
+   "ja": "半年後、見込みどおりに貯蓄できたか。そのために何を手放したか。"
+  },
+  {
+   "en": "At one year and each anniversary, which work has made room for learning, and who has taken on the displaced work?",
+   "ja": "1年後と以後の各年、新しい技術を学ぶ余地はどこで生まれ、代わりの仕事は誰が引き受けたか。"
+  },
+  {
+   "en": "At 40, does the engineer look back more on missed chances or on evenings and security lost at home?",
+   "ja": "40歳でより心に残るのは、見送った機会か、家族との時間や安心を削ったことか。"
+  }
+ ],
+ "assumptions": [
+  {
+   "en": "The profile supplies the ages, employers, roles, starting pay and mortgage. Nothing is fitted. All other quantities, event probabilities, thresholds, time budgets and score weights are assumptions, not forecasts. Savings parity, the relative happiness of the paths and both kinds of regret are tests, not targets.",
+   "ja": "年齢、職場、役職、初任条件、ローン額は設定に従う。実績への当てはめはない。その他の数量、事象の確率、閾値、時間配分、評価の重みは仮定であり予測ではない。貯蓄が同程度か、どの道で幸せか、何を後悔するかは検証する結果である。"
+  },
+  {
+   "en": "Each quarter has 60 workdays. Learning days count days with at least an hour of hands-on work on unfamiliar technology. Maintenance includes incident response. Family hours are discretionary time together after work, sleep, chores and required care, not total time in the same house.",
+   "ja": "四半期を60勤務日とする。未知の技術を1時間以上実際に扱った日を学習日と数える。保守には障害対応を含む。家族時間は同じ家にいた総時間ではなく、勤務・睡眠・家事・必須の世話を除いた団らんの時間。"
+  },
+  {
+   "en": "Amounts are nominal yen. Baseline expenses exclude the mortgage and childcare. The savings benchmark is the opening household budget at current pay, held fixed, not a prediction that expenses fall on changing jobs. Negative net cash denotes debt; there is no interest, house valuation, raise, or option sale. One notional grant vests over 16 employed quarters; unvested units lapse on departure.",
+   "ja": "名目円で計算。基礎生活費はローンと育児費を含まない。見込み貯蓄は現職給与での開始時予算に固定し、転職で自動的に支出が減るとは置かない。純現金が負なら債務。利息、住宅評価、昇給、オプション売却は扱わない。仮の付与枠は在職16四半期で確定し、離職時に未確定分は失効する。"
+  },
+  {
+   "en": "The cast has fixed relationship seats in recipe order; personalities, names and conversational rhythms vary. A child expresses closeness through play, never through financial advice. Speech options are selectable personal lines, not interview transcripts. A receiving manager and a releasing manager must both allow a transfer at a staffing meeting.",
+   "ja": "配役は名簿順に固定し、名前、性格、対話の間隔を変える。子どもは遊びを通じて親しさを示し、家計には助言しない。発言は選択できる台詞で、実際の聞き取り記録ではない。異動には人員会議で送り出し側・受け入れ側の双方の同意が要る。"
+  },
+  {
+   "en": "Regret records two retrospective averages: time and financial pressure borne at home, and unmet appetite for technical challenge. Neither leaving nor staying earns points by itself. The observer fixes only the opening decision; later requests can be revised. Reviews at quarter ends affect subsequent work, never the completed quarter.",
+   "ja": "後悔は家庭が負った時間・金銭の負担と、技術的な挑戦への満たされなかった思いを別々に蓄積する。残留・転職そのものに点数を与えない。観察者が固定するのは初手だけで、その後の希望は変更できる。期末の回答は翌期以降の仕事に反映する。"
+  }
+ ],
+ "parameters": [
+  {
+   "id": "path",
+   "type": "choice",
+   "default": "stay_current_role",
+   "label": {
+    "en": "Opening decision",
+    "ja": "最初の進路"
+   },
+   "group": {
+    "en": "Opening",
+    "ja": "出発点"
+   },
+   "source": "observer",
+   "runtime": false,
+   "choices": [
+    {
+     "id": "stay_current_role",
+     "label": {
+      "en": "Stay in the current role",
+      "ja": "今の部署で働き続ける"
+     }
+    },
+    {
+     "id": "seek_internal_transfer",
+     "label": {
+      "en": "Stay at the company and seek an internal transfer",
+      "ja": "今の会社に残り、社内異動を目指す"
+     }
+    },
+    {
+     "id": "join_startup",
+     "label": {
+      "en": "Join the friend’s startup as lead engineer",
+      "ja": "友人のスタートアップにリードエンジニアとして移る"
+     }
+    }
+   ]
+  },
+  {
+   "id": "cash_start",
+   "type": "int",
+   "default": 2400000,
+   "min": 0,
+   "max": 12000000,
+   "step": 100000,
+   "unit": "JPY",
+   "label": {
+    "en": "Opening liquid savings",
+    "ja": "当初の現預金"
+   },
+   "group": {
+    "en": "Household",
+    "ja": "家計"
+   },
+   "source": "assumed",
+   "runtime": false
+  },
+  {
+   "id": "other_income",
+   "type": "int",
+   "default": 110000,
+   "min": 0,
+   "max": 450000,
+   "step": 10000,
+   "unit": "JPY/month",
+   "label": {
+    "en": "Other household take-home income",
+    "ja": "本人以外の月間手取り"
+   },
+   "group": {
+    "en": "Household",
+    "ja": "家計"
+   },
+   "source": "assumed",
+   "runtime": true
+  },
+  {
+   "id": "expenses",
+   "type": "int",
+   "default": 285000,
+   "min": 150000,
+   "max": 550000,
+   "step": 5000,
+   "unit": "JPY/month",
+   "label": {
+    "en": "Ordinary living costs",
+    "ja": "月の基礎生活費"
+   },
+   "group": {
+    "en": "Household",
+    "ja": "家計"
+   },
+   "source": "assumed",
+   "runtime": true
+  },
+  {
+   "id": "net_share",
+   "type": "number",
+   "default": 0.77,
+   "min": 0.65,
+   "max": 0.85,
+   "step": 0.01,
+   "label": {
+    "en": "Take-home share of gross salary",
+    "ja": "額面に対する手取りの割合"
+   },
+   "group": {
+    "en": "Household",
+    "ja": "家計"
+   },
+   "source": "assumed",
+   "runtime": false
+  },
+  {
+   "id": "care",
+   "type": "int",
+   "default": 0,
+   "min": -1,
+   "max": 2,
+   "step": 1,
+   "label": {
+    "en": "Extra care load (−1 = regular help)",
+    "ja": "世話の追加負担（−1は定期的な支援）"
+   },
+   "group": {
+    "en": "Home",
+    "ja": "家庭"
+   },
+   "source": "assumed",
+   "runtime": true
+  },
+  {
+   "id": "seat",
+   "type": "bool",
+   "default": true,
+   "label": {
+    "en": "Transfer seat budgeted",
+    "ja": "異動先に定員枠あり"
+   },
+   "group": {
+    "en": "Staffing",
+    "ja": "人員配置"
+   },
+   "source": "assumed",
+   "runtime": true
+  },
+  {
+   "id": "reorg",
+   "type": "bool",
+   "default": false,
+   "label": {
+    "en": "SaaS teams absorbing legacy services",
+    "ja": "現職で既存サービスを統合中"
+   },
+   "group": {
+    "en": "Staffing",
+    "ja": "人員配置"
+   },
+   "source": "assumed",
+   "runtime": true
+  },
+  {
+   "id": "funding",
+   "type": "bool",
+   "default": false,
+   "label": {
+    "en": "Funded startup has relief staff",
+    "ja": "調達資金で応援要員を確保"
+   },
+   "group": {
+    "en": "Startup",
+    "ja": "新会社"
+   },
+   "source": "assumed",
+   "runtime": true
+  },
+  {
+   "id": "lost_client",
+   "type": "bool",
+   "default": false,
+   "label": {
+    "en": "Anchor client lost; hiring suspended",
+    "ja": "主要顧客喪失・採用停止"
+   },
+   "group": {
+    "en": "Startup",
+    "ja": "新会社"
+   },
+   "source": "assumed",
+   "runtime": true
+  },
+  {
+   "id": "return_offer",
+   "type": "bool",
+   "default": false,
+   "label": {
+    "en": "Former team offers immediate return",
+    "ja": "元部署から復帰の打診"
+   },
+   "group": {
+    "en": "Staffing",
+    "ja": "人員配置"
+   },
+   "source": "assumed",
+   "runtime": true
+  },
+  {
+   "id": "max_asks",
+   "type": "int",
+   "default": 8,
+   "min": 1,
+   "max": 32,
+   "step": 1,
+   "label": {
+    "en": "Conversations per supporting person",
+    "ja": "周囲の各人への質問上限"
+   },
+   "group": {
+    "en": "Reviews",
+    "ja": "振り返り"
+   },
+   "source": "assumed",
+   "runtime": false
+  },
+  {
+   "id": "you_cap",
+   "type": "int",
+   "default": 32,
+   "min": 8,
+   "max": 32,
+   "step": 1,
+   "label": {
+    "en": "Engineer check-in ceiling",
+    "ja": "本人の振り返り回数上限"
+   },
+   "group": {
+    "en": "Reviews",
+    "ja": "振り返り"
+   },
+   "source": "assumed (allows every material turn)",
+   "runtime": false
+  }
+ ],
+ "agents": [
+  {
+   "id": "person",
+   "kind": "individual",
+   "name": {
+    "en": "Individual",
+    "ja": "登場人物"
+   },
+   "persona": "Speak from this person's own experience, not as a career adviser."
+  }
+ ],
+ "metrics": [
+  {
+   "id": "satisfaction",
+   "label": {
+    "en": "Life satisfaction",
+    "ja": "暮らしの満足度"
+   },
+   "unit": "0–100",
+   "format": "float",
+   "good": "up",
+   "headline": true
+  },
+  {
+   "id": "regret",
+   "label": {
+    "en": "Looking-back regret",
+    "ja": "振り返った後悔"
+   },
+   "unit": "0–100",
+   "format": "float",
+   "good": "down",
+   "headline": true
+  },
+  {
+   "id": "regard",
+   "label": {
+    "en": "Mean regard of the cast",
+    "ja": "周囲からの評価の平均"
+   },
+   "unit": "0–100",
+   "format": "float",
+   "good": "none",
+   "headline": false
+  },
+  {
+   "id": "wife",
+   "label": {
+    "en": "Wife's regard",
+    "ja": "妻からの見え方"
+   },
+   "unit": "0–100",
+   "format": "float",
+   "good": "none",
+   "headline": false
+  },
+  {
+   "id": "job",
+   "label": {
+    "en": "Work satisfaction",
+    "ja": "仕事の満足度"
+   },
+   "unit": "0–100",
+   "format": "float",
+   "good": "up",
+   "headline": false
+  },
+  {
+   "id": "fatigue",
+   "label": {
+    "en": "Fatigue carried forward",
+    "ja": "持ち越した疲れ"
+   },
+   "unit": "0–100",
+   "format": "float",
+   "good": "down",
+   "headline": false
+  },
+  {
+   "id": "burden",
+   "label": {
+    "en": "Regret about burden at home",
+    "ja": "家族に負担をかけた後悔"
+   },
+   "unit": "0–100",
+   "format": "float",
+   "good": "down",
+   "headline": false
+  },
+  {
+   "id": "missed",
+   "label": {
+    "en": "Regret about missed challenge",
+    "ja": "挑戦を見送った後悔"
+   },
+   "unit": "0–100",
+   "format": "float",
+   "good": "down",
+   "headline": false
+  },
+  {
+   "id": "learning",
+   "label": {
+    "en": "Days learning new technology",
+    "ja": "新技術を学べた日数"
+   },
+   "unit": "days/quarter",
+   "format": "int",
+   "good": "up",
+   "headline": true
+  },
+  {
+   "id": "maintenance",
+   "label": {
+    "en": "Maintenance work",
+    "ja": "保守に費やした時間"
+   },
+   "unit": "h/quarter",
+   "format": "float",
+   "good": "none",
+   "headline": false
+  },
+  {
+   "id": "family_hours",
+   "label": {
+    "en": "Unhurried hours with family",
+    "ja": "家族とゆっくり過ごした時間"
+   },
+   "unit": "h/quarter",
+   "format": "float",
+   "good": "up",
+   "headline": false
+  },
+  {
+   "id": "saved",
+   "label": {
+    "en": "Actual addition to household savings",
+    "ja": "当期の実際の貯蓄額"
+   },
+   "unit": "JPY/quarter",
+   "format": "money",
+   "good": "up",
+   "headline": true
+  },
+  {
+   "id": "expected",
+   "label": {
+    "en": "Opening savings expectation",
+    "ja": "開始時に見込んだ貯蓄額"
+   },
+   "unit": "JPY/quarter",
+   "format": "money",
+   "good": "none",
+   "headline": false
+  },
+  {
+   "id": "options",
+   "label": {
+    "en": "Vested units, not cash",
+    "ja": "権利確定数（現金ではない）"
+   },
+   "unit": "units",
+   "format": "int",
+   "good": "none",
+   "headline": false
+  }
+ ],
+ "charts": [
+  {
+   "id": "reflection",
+   "title": {
+    "en": "What lasted beyond the quarter",
+    "ja": "その期を越えて残ったもの"
+   },
+   "metrics": [
+    "satisfaction",
+    "regret",
+    "burden",
+    "missed"
+   ]
+  },
+  {
+   "id": "people",
+   "title": {
+    "en": "Work, health and relationships",
+    "ja": "仕事・体調・人間関係"
+   },
+   "metrics": [
+    "job",
+    "fatigue",
+    "regard",
+    "wife"
+   ]
+  },
+  {
+   "id": "time",
+   "title": {
+    "en": "Where the hours went",
+    "ja": "何に時間を使ったか"
+   },
+   "metrics": [
+    "maintenance",
+    "family_hours"
+   ]
+  },
+  {
+   "id": "budget",
+   "title": {
+    "en": "At the kitchen table: plan versus ledger",
+    "ja": "食卓で見比べる見込みと家計簿"
+   },
+   "metrics": [
+    "expected",
+    "saved"
+   ]
+  },
+  {
+   "id": "skills",
+   "title": {
+    "en": "Days with hands-on learning",
+    "ja": "実際に手を動かして学んだ日"
+   },
+   "metrics": [
+    "learning"
+   ]
+  }
+ ],
+ "interventions": [
+  {
+   "id": "help",
+   "label": {
+    "en": "Arrange regular pickup help",
+    "ja": "定期的な送迎の支援"
+   },
+   "description": {
+    "en": "Family help frees time and reduces care bills.",
+    "ja": "親族の送迎で育児時間と支出を減らす。"
+   },
+   "patch": {
+    "care": -1
+   }
+  },
+  {
+   "id": "reserve",
+   "label": {
+    "en": "Protect a transfer opening",
+    "ja": "異動枠を確保"
+   },
+   "description": {
+    "en": "Restore a budgeted seat; both managers still decide.",
+    "ja": "予算上の枠を戻す。両責任者の判断は別に必要。"
+   },
+   "patch": {
+    "seat": true
+   }
+  },
+  {
+   "id": "relief",
+   "label": {
+    "en": "Finance startup relief staff",
+    "ja": "新会社に応援要員"
+   },
+   "description": {
+    "en": "Fund coverage so the lead can share incidents.",
+    "ja": "障害対応を分担できる要員を配置する。"
+   },
+   "patch": {
+    "funding": true
+   }
+  }
+ ],
+ "events": [
+  {
+   "id": "integration",
+   "label": {
+    "en": "A service lands on the old team's pager",
+    "ja": "組織再編で保守対象が増える"
+   },
+   "description": {
+    "en": "Integration work crowds out experiments.",
+    "ja": "統合作業で技術検証の時間が減る。"
+   },
+   "chance": 0.45,
+   "window": [
+    3,
+    18
+   ],
+   "patch": {
+    "reorg": true
+   },
+   "lasts": 5
+  },
+  {
+   "id": "freeze",
+   "label": {
+    "en": "The receiving team loses its opening",
+    "ja": "異動先の空き枠が消える"
+   },
+   "description": {
+    "en": "Pending requests wait; existing transfers are not reversed.",
+    "ja": "申請は保留。成立済みの異動は取り消さない。"
+   },
+   "chance": 0.4,
+   "window": [
+    2,
+    16
+   ],
+   "patch": {
+    "seat": false
+   },
+   "lasts": 4
+  },
+  {
+   "id": "round",
+   "label": {
+    "en": "The friend closes a funding round",
+    "ja": "友人が資金調達を完了"
+   },
+   "description": {
+    "en": "The lead gets help with operations; options still cannot pay the mortgage.",
+    "ja": "運用の応援がつくが、オプションでローンは返せない。"
+   },
+   "chance": 0.45,
+   "window": [
+    3,
+    22
+   ],
+   "patch": {
+    "funding": true
+   }
+  },
+  {
+   "id": "contract",
+   "label": {
+    "en": "The largest customer leaves",
+    "ja": "最大の顧客が契約を終了"
+   },
+   "description": {
+    "en": "Hiring closes. After two quarters without funded coverage the lead post is cut.",
+    "ja": "採用を停止。資金による支援がないまま2期続くとリード職を削減する。"
+   },
+   "chance": 0.3,
+   "window": [
+    4,
+    24
+   ],
+   "patch": {
+    "lost_client": true
+   },
+   "lasts": 4
+  },
+  {
+   "id": "reunion",
+   "label": {
+    "en": "A former manager calls",
+    "ja": "以前の上司からの電話"
+   },
+   "description": {
+    "en": "An opening permits return without waiting for a staffing meeting.",
+    "ja": "人員会議を待たずに元の仕事に戻れる枠ができる。"
+   },
+   "chance": 0.4,
+   "window": [
+    6,
+    28
+   ],
+   "patch": {
+    "return_offer": true
+   },
+   "lasts": 3
+  },
+  {
+   "id": "illness",
+   "label": {
+    "en": "A child needs repeated appointments",
+    "ja": "子どもの通院が続く"
+   },
+   "description": {
+    "en": "Care takes more time and money for two quarters.",
+    "ja": "2期にわたり世話の時間と費用が増える。"
+   },
+   "chance": 0.35,
+   "window": [
+    2,
+    22
+   ],
+   "patch": {
+    "care": 2
+   },
+   "lasts": 2
+  },
+  {
+   "id": "grandparent",
+   "label": {
+    "en": "A relative moves closer",
+    "ja": "親族が近くに転居"
+   },
+   "description": {
+    "en": "Regular help with pickups becomes possible.",
+    "ja": "日常的に送迎を頼めるようになる。"
+   },
+   "chance": 0.3,
+   "window": [
+    25,
+    30
+   ],
+   "patch": {
+    "care": -1
+   }
+  }
+ ],
+ "checkup": {
+  "notes": [
+   "These figures never move in the rehearsal: Opening savings expectation, Vested units, not cash."
+  ],
+  "asked": 7,
+  "cast": 13,
+  "questions": 37,
+  "options": {
+   "keep": {
+    "label": {
+     "en": "Carry on exactly as before",
+     "ja": "今までどおりにする"
+    },
+    "moves": null
+   },
+   "internal": {
+    "label": {
+     "en": "Apply for the receiving team",
+     "ja": "異動先を希望する"
+    },
+    "moves": 5.705,
+    "metric": "maintenance"
+   },
+   "startup": {
+    "label": {
+     "en": "Take up the friend's offer",
+     "ja": "友人の誘いに応じる"
+    },
+    "moves": 160.0,
+    "metric": "options"
+   },
+   "protect": {
+    "label": {
+     "en": "Protect evenings; decline optional overtime",
+     "ja": "任意の残業を断り、夜を空ける"
+    },
+    "moves": 1.436,
+    "metric": "missed"
+   },
+   "study": {
+    "label": {
+     "en": "Ask for a protected technical trial",
+     "ja": "技術検証の時間を求める"
+    },
+    "moves": 1.567,
+    "metric": "missed"
+   },
+   "back": {
+    "label": {
+     "en": "Let's try this budget together.",
+     "ja": "この予算で一緒にやってみよう。"
+    },
+    "moves": 2.649,
+    "metric": "maintenance"
+   },
+   "limit": {
+    "label": {
+     "en": "I need a safer income plan before we take on more.",
+     "ja": "これ以上引き受ける前に、収入が途切れたときのことを決めたい。"
+    },
+    "moves": 2.649,
+    "metric": "maintenance"
+   },
+   "usual": {
+    "label": {
+     "en": "Resume ordinary hours and assignments",
+     "ja": "通常の勤務・担当に戻す"
+    },
+    "moves": null
+   }
+  }
+ },
+ "scenario": {
+  "en": "社員300人のSaaS企業で5年目を迎えた32歳のバックエンドエンジニアを、40歳まで追う。妻と現在2歳の子ども、12人のスタートアップを立ち上げた友人、現職の上司と異動先候補の責任者、各職場の同僚を登場させる。出発点は、年収720万円で今の部署に残る、現職で社内異動を目指す、年収620万円とストックオプションの提示を受けてリードエンジニアとして転職する、の三つとする。返事に特に期限がない状態から始め、半年後、1年後、その後は40歳まで年ごとに変化を見る。本人は最初の進路を選び、その後も学びや家族への負担を見ながら続けるか見直すかを決め、妻は収入と雇用の安定を軸にどの程度の不確実さを受け入れられるかを考える。現職の上司と異動先候補の責任者は担当業務や異動の可否を決め、創業者の友人はリードに任せる範囲を決め、同僚は本人の働きぶりをどう受け止めるかをそれぞれ示す。新しい技術を学べた日や保守に費やす時間、仕事の満足度、家族と過ごす時間、疲れ、妻や同僚からの見え方を記録する。月13万円の住宅ローンを含めた家計を追い、年収620万円でも今と同じくらい貯蓄できるという本人の見込みと実際の貯蓄額を比べ、ストックオプションは給与とは別に扱う。現職の組織再編や異動枠の変化、スタートアップの資金調達や事業の変動、育児にかかる時間や支出の変化が起きる場合と起きない場合を描く。転職でより幸せになれるのか、社内異動でも成長を取り戻せるのかを比べ、40歳で振り返ったときに家族に負担をかけたことと挑戦しなかったことがそれぞれどんな後悔として残るかを見る。",
+  "ja": "社員300人のSaaS企業で5年目を迎えた32歳のバックエンドエンジニアを、40歳まで追う。妻と現在2歳の子ども、12人のスタートアップを立ち上げた友人、現職の上司と異動先候補の責任者、各職場の同僚を登場させる。出発点は、年収720万円で今の部署に残る、現職で社内異動を目指す、年収620万円とストックオプションの提示を受けてリードエンジニアとして転職する、の三つとする。返事に特に期限がない状態から始め、半年後、1年後、その後は40歳まで年ごとに変化を見る。本人は最初の進路を選び、その後も学びや家族への負担を見ながら続けるか見直すかを決め、妻は収入と雇用の安定を軸にどの程度の不確実さを受け入れられるかを考える。現職の上司と異動先候補の責任者は担当業務や異動の可否を決め、創業者の友人はリードに任せる範囲を決め、同僚は本人の働きぶりをどう受け止めるかをそれぞれ示す。新しい技術を学べた日や保守に費やす時間、仕事の満足度、家族と過ごす時間、疲れ、妻や同僚からの見え方を記録する。月13万円の住宅ローンを含めた家計を追い、年収620万円でも今と同じくらい貯蓄できるという本人の見込みと実際の貯蓄額を比べ、ストックオプションは給与とは別に扱う。現職の組織再編や異動枠の変化、スタートアップの資金調達や事業の変動、育児にかかる時間や支出の変化が起きる場合と起きない場合を描く。転職でより幸せになれるのか、社内異動でも成長を取り戻せるのかを比べ、40歳で振り返ったときに家族に負担をかけたことと挑戦しなかったことがそれぞれどんな後悔として残るかを見る。"
+ }
+}

@@ -26,7 +26,8 @@ async def estimate_run(store: Store, sandboxes: SandboxFactory, llm: LanguageMod
     cfg = merged_config(spec, config)
     agents = {a["id"]: a for a in spec.get("agents", [])}
     cap = cfg["max_decisions_per_tick"]
-    acc = {"calls": 0, "tokens_in": 0, "capped": 0, "per_agent": {}}
+    acc = {"calls": 0, "tokens_in": 0, "gate_tokens": 0, "capped": 0, "per_agent": {}}
+    gate = cfg.get("gate") == "judge"
 
     def on_requests(t: int, reqs: list[dict], frame: dict | None) -> None:
         clock = T(((frame or {}).get("view") or {}).get("clock")) or f"t={t}"
@@ -38,6 +39,9 @@ async def estimate_run(store: Store, sandboxes: SandboxFactory, llm: LanguageMod
                 continue
             msgs = prompts.decision_messages(spec, agents[r["agent"]], r, clock=clock, memory=[], events=[], facts=[], langs=langs)
             acc["calls"] += 1
+            if gate:      # one short question to the decision model for every request; the full question only for some
+                brief = prompts.decision_brief(spec, agents[r["agent"]], r, clock=clock, memory=[], events=[], facts=[])
+                acc["gate_tokens"] += approx_tokens(prompts.DECIDE_INTRO + "\n\n".join(brief) + str(prompts.GATE_QUESTION)) + MEMORY_ALLOWANCE
             acc["tokens_in"] += sum(approx_tokens(m["content"]) for m in msgs) + MEMORY_ALLOWANCE
             acc["per_agent"][r["agent"]] = acc["per_agent"].get(r["agent"], 0) + 1
 
@@ -45,13 +49,16 @@ async def estimate_run(store: Store, sandboxes: SandboxFactory, llm: LanguageMod
                         trusted=world["source"] == "builtin", max_requests_per_tick=10_000, on_requests=on_requests)
     agent_model = cfg.get("agent_model") or llm.model_for("agent")
     report_model = llm.model_for("report")
+    gate_cost = cost_usd(prices, llm.model_for("decision"), acc["gate_tokens"], 0) if gate else 0.0
 
     def row(model: str) -> dict:
         obs = store.observed_tokens("agent", model)
         use_obs = bool(obs and obs["calls"] >= MIN_OBSERVED_CALLS)
-        out_per_call = obs["tokens_out"] if use_obs else ASSUMED_OUT_TOKENS
+        out_per_call = 0 if cfg.get("brain") == "decision" else (obs["tokens_out"] if use_obs else ASSUMED_OUT_TOKENS)
         tin, tout = acc["tokens_in"], int(acc["calls"] * out_per_call)
         c = cost_usd(prices, model, tin, tout)
+        if c is not None and gate:
+            c += gate_cost or 0.0       # upper side: people who do not stop to think are not asked the full question
         return {"model": model, "tokens_in": tin, "tokens_out": tout, "out_per_call": round(out_per_call),
                 "basis": "observed" if use_obs else "assumed", "observed_calls": obs["calls"] if obs else 0,
                 "cost": c, "low": None if c is None else c * 0.7, "high": None if c is None else c * 1.6,

@@ -163,6 +163,68 @@ export function worldMap(host, view, { label, bubbles = [], onNode }) {
 // ---- world lines: every run of a world as a line over time; forks branch off where they split ----
 const LANE = ["#6930c3", "#5390d9", "#48bfe3", "#5e60ce", "#4ea8de", "#56cfe1"];
 
+// The automaton as a state diagram, measured from the run: one circle per state (its size is how many residents are
+// in it now), one arrow per move that happened (its width is how many made it so far).
+export function stateDiagram(host, { states, colors, now, flows, label }) {
+  host.replaceChildren();
+  const W = 1000, H = 420, n = states.length, cx = W / 2, cy = H / 2, rx = W * 0.36, ry = H * 0.33;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" });
+  const at = states.map((_, i) => n === 1 ? [cx, cy] : [cx + rx * Math.cos(-Math.PI / 2 + 2 * Math.PI * i / n), cy + ry * Math.sin(-Math.PI / 2 + 2 * Math.PI * i / n)]);
+  const total = now.reduce((a, b) => a + b, 0) || 1, most = Math.max(1, ...flows.map((f) => f[2]));
+  const rad = (i) => 16 + 46 * Math.sqrt(now[i] / total);
+  for (const [i, j, c] of [...flows].sort((a, b) => a[2] - b[2])) {
+    const [x1, y1] = at[i], [x2, y2] = at[j], dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy) || 1;
+    const nx = -dy / len, ny = dx / len, bend = 34;                     // each direction bends its own way, so A->B and B->A do not overlap
+    const sx = x1 + dx / len * rad(i), sy = y1 + dy / len * rad(i), ex = x2 - dx / len * (rad(j) + 9), ey = y2 - dy / len * (rad(j) + 9);
+    const mx = (sx + ex) / 2 + nx * bend, my = (sy + ey) / 2 + ny * bend, w = 1.2 + 9 * c / most;
+    svg.append(el("path", { d: `M${sx},${sy} Q${mx},${my} ${ex},${ey}`, fill: "none", stroke: colors[i], "stroke-width": w, "stroke-linecap": "round", opacity: 0.55 }));
+    const ang = Math.atan2(ey - my, ex - mx), ah = 7 + w;
+    svg.append(el("path", { d: `M${ex + Math.cos(ang) * ah},${ey + Math.sin(ang) * ah} L${ex + Math.cos(ang + 2.5) * ah},${ey + Math.sin(ang + 2.5) * ah} L${ex + Math.cos(ang - 2.5) * ah},${ey + Math.sin(ang - 2.5) * ah} Z`, fill: colors[i], opacity: 0.8 }));
+    const tx = (sx + 2 * mx + ex) / 4, ty = (sy + 2 * my + ey) / 4;
+    svg.append(el("text", { x: tx, y: ty + 4, "text-anchor": "middle", "font-size": 13, fill: "var(--text-secondary)", stroke: "var(--surface-1)", "stroke-width": 4, "paint-order": "stroke" }, String(c)));
+  }
+  states.forEach((st, i) => {
+    const [x, y] = at[i], r = rad(i);
+    svg.append(el("circle", { cx: x, cy: y, r, fill: colors[i], stroke: "var(--surface-1)", "stroke-width": 2 }));
+    svg.append(el("text", { x, y: y + r + 17, "text-anchor": "middle", "font-size": 15, "font-weight": 600, fill: "var(--text-primary)" }, label(st)));
+    svg.append(el("text", { x, y: y + r + 33, "text-anchor": "middle", "font-size": 13, fill: "var(--text-secondary)" }, String(now[i])));
+  });
+  host.append(svg);
+}
+
+// The cast as a board: one square per resident, coloured by what they last decided. Squares are kept between
+// draws, so a change of mind shows as a change of colour when time moves.
+export function peopleGrid(host, { cells, onPick, tipOf }) {
+  const W = 1000, H = 580, n = cells.length;
+  const cols = Math.ceil(Math.sqrt(n * W / H)), rows = Math.ceil(n / cols);
+  const size = Math.min(W / cols, H / rows, 46), gap = Math.max(2, size * 0.14), side = size - gap;
+  const ox = (W - cols * size) / 2, oy = (H - rows * size) / 2;
+  let kept = host.__board;
+  if (!kept || kept.n !== n || !host.contains(kept.svg)) {
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img" });
+    const rects = [], dots = [];
+    for (let i = 0; i < n; i++) {
+      const x = ox + (i % cols) * size + gap / 2, y = oy + Math.floor(i / cols) * size + gap / 2;
+      const r = el("rect", { class: "cell", x, y, width: side, height: side, rx: Math.min(5, side * 0.2) });
+      const d = el("circle", { cx: x + side / 2, cy: y + side / 2, r: Math.max(1.5, side * 0.14), fill: "var(--surface-1)", "pointer-events": "none" });
+      r.addEventListener("mousemove", (e) => showTip(host.__board.tipOf(i), e.clientX, e.clientY));
+      r.addEventListener("mouseleave", hideTip);
+      r.addEventListener("click", () => host.__board.onPick(i));
+      svg.append(r, d); rects.push(r); dots.push(d);
+    }
+    host.replaceChildren(svg);
+    kept = host.__board = { n, svg, rects, dots };
+  }
+  kept.tipOf = tipOf; kept.onPick = onPick;
+  cells.forEach((c, i) => {
+    const r = kept.rects[i];
+    r.setAttribute("fill", c.color || "var(--surface-1)");
+    r.setAttribute("stroke", c.fresh ? "var(--text-secondary)" : (c.color ? "none" : "var(--axis)"));
+    r.setAttribute("stroke-width", c.fresh ? 1.6 : 1);
+    kept.dots[i].setAttribute("visibility", c.meant ? "visible" : "hidden");
+  });
+}
+
 export function worldLines(host, { runs, current, label, onOpen, unit }) {
   host.replaceChildren();
   if (!runs.length) return;

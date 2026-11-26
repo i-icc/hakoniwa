@@ -1,0 +1,639 @@
+{
+ "slug": "tp_2020",
+ "title": {
+  "en": "Toilet paper, February 2020 (a check against reality)",
+  "ja": "トイレットペーパー騒動 2020 年 2 月（現実との照合）"
+ },
+ "summary": {
+  "en": "A rumour says toilet paper will run out. 240 households, each with its own circumstances and character, decide what to do; six shops run dry. The result is compared with what really happened in Japan.",
+  "ja": "「トイレットペーパーがなくなる」といううわさが広がる。事情も性格も違う 240 世帯がそれぞれ動き、6 つの店の棚が空になる。結果を、日本で実際に起きたことと比べる。"
+ },
+ "scenario": {
+  "en": "Japan, late February 2020. A post on social media claims toilet paper will run out because of the new coronavirus. Simulate 240 households day by day for eight weeks: who hears the rumour and when, who rushes to the shops, how the shelves empty and refill. Compare the sales with the real figures, then test what would have changed the outcome.",
+  "ja": "2020 年 2 月末の日本。新型コロナのせいでトイレットペーパーがなくなる、という投稿が SNS で広がる。240 世帯を 1 日ずつ 8 週間シミュレートしてほしい。誰がいつうわさを聞き、誰が店に走り、棚がどう空になって戻るか。販売の数字を実際の数字と比べ、そのうえで何があれば結果が変わったかを試したい。"
+ },
+ "tick": {
+  "unit": {
+   "en": "day",
+   "ja": "日"
+  },
+  "default_ticks": 42,
+  "max_ticks": 120
+ },
+ "questions": [
+  {
+   "en": "Does the simulated rush match the real one? (28 Feb: about 6 times a normal day. Week of 24 Feb: about 2.4 times a normal week.)",
+   "ja": "シミュレーションの買いだめは、現実と合うか。（2 月 28 日は普段の約 6 倍、2 月 24 日の週は普段の約 2.4 倍）"
+  },
+  {
+   "en": "Would an earlier official statement, or purchase limits from day one, have kept the shelves full?",
+   "ja": "公式の発表がもっと早ければ、または最初から購入制限があれば、棚は空にならなかったか。"
+  },
+  {
+   "en": "Who ends up without paper, and who ends up with months of it?",
+   "ja": "誰が買えずに困り、誰が何か月分も抱え込むか。"
+  }
+ ],
+ "assumptions": [
+  {
+   "en": "Real figures used for the check: unit sales on 28 Feb were about 6 times the January daily average (TrueData, drugstore POS, reported by ITmedia); the week of 24 Feb was about 2.4 times the same week a year before (drugstore POS, reported by Toyo Keizai).",
+   "ja": "照合に使う実際の数字：2 月 28 日の販売個数は 1 月の 1 日平均の約 6 倍（TrueData・ドラッグストアの POS、ITmedia の記事）。2 月 24 日の週は前年同期の約 2.4 倍（ドラッグストアの POS、東洋経済の記事）。"
+  },
+  {
+   "en": "Dates of the rumour and of the makers' statement follow news reports. Shop stock, delivery limits, the date purchase limits began and the date extra shipments arrived are assumptions.",
+   "ja": "うわさと業界団体の声明の日付は報道のとおり。店の在庫、配送の上限、購入制限が始まった日、増産分が届いた日は仮定。"
+  },
+  {
+   "en": "The amount shops and wholesalers could supply in the peak week is set from the real weekly total, so that figure is partly fitted. The size and timing of the one-day peak are not fitted.",
+   "ja": "ピークの週に店と卸が出せた量は、実際の週の合計から決めている。なので週の数字は一部合わせ込みになる。1 日のピークの大きさと日付は合わせ込んでいない。"
+  },
+  {
+   "en": "Household make-up, information habits and character are drawn from assumed distributions, not from a survey. Each household's life story was written once by AI and is fixed.",
+   "ja": "世帯の構成、情報源、性格は、仮定の分布から決めている（調査データではない）。各世帯の生い立ちは AI が 1 回だけ書き、固定してある。"
+  },
+  {
+   "en": "The AI model may know about this event from its training. A blind version of the wording (no country, year or disease name) is provided to see how much that matters.",
+   "ja": "AI のモデルは、学習でこの出来事を知っている可能性がある。影響を見るために、国・年・病名を伏せた言い回しも用意している。"
+  }
+ ],
+ "parameters": [
+  {
+   "id": "blind",
+   "label": {
+    "en": "Hide the country, year and disease name from residents",
+    "ja": "住人に国・年・病名を伏せる"
+   },
+   "type": "bool",
+   "default": false,
+   "group": {
+    "en": "Check",
+    "ja": "照合"
+   },
+   "source": "tool setting",
+   "runtime": false
+  },
+  {
+   "id": "rumour_day",
+   "label": {
+    "en": "Day the rumour spreads on social media (10 = 27 Feb)",
+    "ja": "うわさが SNS で広がる日（10 = 2 月 27 日）"
+   },
+   "type": "int",
+   "default": 10,
+   "min": 1,
+   "max": 60,
+   "step": 1,
+   "group": {
+    "en": "Information",
+    "ja": "情報"
+   },
+   "source": "news reports (ITmedia, Netlab)",
+   "runtime": false
+  },
+  {
+   "id": "tv_day",
+   "label": {
+    "en": "Day TV coverage becomes heavy (11 = 28 Feb)",
+    "ja": "テレビの報道が増える日（11 = 2 月 28 日）"
+   },
+   "type": "int",
+   "default": 11,
+   "min": 1,
+   "max": 60,
+   "step": 1,
+   "group": {
+    "en": "Information",
+    "ja": "情報"
+   },
+   "source": "news reports (ITmedia)",
+   "runtime": false
+  },
+  {
+   "id": "tv_coverage",
+   "label": {
+    "en": "Strength of TV coverage (1 = as it was, 0 = none)",
+    "ja": "テレビ報道の強さ（1 = 実際どおり、0 = なし）"
+   },
+   "type": "number",
+   "default": 1.0,
+   "min": 0.0,
+   "max": 1.2,
+   "step": 0.1,
+   "group": {
+    "en": "Information",
+    "ja": "情報"
+   },
+   "source": "assumed"
+  },
+  {
+   "id": "statement_day",
+   "label": {
+    "en": "Day of the statement that stock is plentiful (11 = 28 Feb)",
+    "ja": "「在庫は十分」の声明が出る日（11 = 2 月 28 日）"
+   },
+   "type": "int",
+   "default": 11,
+   "min": 1,
+   "max": 60,
+   "step": 1,
+   "group": {
+    "en": "Information",
+    "ja": "情報"
+   },
+   "source": "Japan Household Paper Industry Association statement, 28 Feb 2020"
+  },
+  {
+   "id": "limit_day",
+   "label": {
+    "en": "Day shops start limiting purchases (12 = 29 Feb)",
+    "ja": "店が購入制限を始める日（12 = 2 月 29 日）"
+   },
+   "type": "int",
+   "default": 12,
+   "min": 1,
+   "max": 60,
+   "step": 1,
+   "group": {
+    "en": "Shops",
+    "ja": "店"
+   },
+   "source": "assumed (limits are reported, the date is not)"
+  },
+  {
+   "id": "limit_packs",
+   "label": {
+    "en": "Packs allowed per customer under the limit",
+    "ja": "購入制限のときの 1 人あたりのパック数"
+   },
+   "type": "int",
+   "default": 1,
+   "min": 1,
+   "max": 4,
+   "step": 1,
+   "group": {
+    "en": "Shops",
+    "ja": "店"
+   },
+   "source": "news reports (one per customer)"
+  },
+  {
+   "id": "store_days",
+   "label": {
+    "en": "Shop stock at the start, in days of normal sales",
+    "ja": "最初の店の在庫（普段の販売の何日分か）"
+   },
+   "type": "number",
+   "default": 6.0,
+   "min": 1.0,
+   "max": 30.0,
+   "step": 0.5,
+   "group": {
+    "en": "Shops",
+    "ja": "店"
+   },
+   "source": "assumed",
+   "runtime": false
+  },
+  {
+   "id": "wholesale_days",
+   "label": {
+    "en": "Wholesaler's buffer, in days of normal sales",
+    "ja": "卸の在庫（普段の販売の何日分か）"
+   },
+   "type": "number",
+   "default": 8.0,
+   "min": 0.0,
+   "max": 60.0,
+   "step": 0.5,
+   "group": {
+    "en": "Shops",
+    "ja": "店"
+   },
+   "source": "set so that total supply in the week of 24 Feb can reach the real figure (about 17 days of normal sales); not independently known",
+   "runtime": false
+  },
+  {
+   "id": "max_delivery_factor",
+   "label": {
+    "en": "Most a shop can receive in a day (1 = a normal day's sales)",
+    "ja": "店が 1 日に受け取れる上限（1 = 普段の 1 日分）"
+   },
+   "type": "number",
+   "default": 3.0,
+   "min": 1.0,
+   "max": 10.0,
+   "step": 0.5,
+   "group": {
+    "en": "Shops",
+    "ja": "店"
+   },
+   "source": "assumed"
+  },
+  {
+   "id": "extra_supply_day",
+   "label": {
+    "en": "Day extra shipments start arriving (17 = 5 Mar)",
+    "ja": "増産分が届き始める日（17 = 3 月 5 日）"
+   },
+   "type": "int",
+   "default": 17,
+   "min": 1,
+   "max": 90,
+   "step": 1,
+   "group": {
+    "en": "Shops",
+    "ja": "店"
+   },
+   "source": "assumed"
+  },
+  {
+   "id": "extra_supply_factor",
+   "label": {
+    "en": "Deliveries during the extra shipments (1 = normal)",
+    "ja": "増産中の配送量（1 = 普段）"
+   },
+   "type": "number",
+   "default": 2.0,
+   "min": 1.0,
+   "max": 5.0,
+   "step": 0.1,
+   "group": {
+    "en": "Shops",
+    "ja": "店"
+   },
+   "source": "assumed"
+  },
+  {
+   "id": "extra_supply_days",
+   "label": {
+    "en": "Days the extra shipments last",
+    "ja": "増産が続く日数"
+   },
+   "type": "int",
+   "default": 21,
+   "min": 0,
+   "max": 90,
+   "step": 1,
+   "group": {
+    "en": "Shops",
+    "ja": "店"
+   },
+   "source": "assumed"
+  },
+  {
+   "id": "rolls_per_person_day",
+   "label": {
+    "en": "Rolls used per person per day",
+    "ja": "1 人が 1 日に使うロール数"
+   },
+   "type": "number",
+   "default": 0.14,
+   "min": 0.05,
+   "max": 0.4,
+   "step": 0.01,
+   "group": {
+    "en": "Households",
+    "ja": "世帯"
+   },
+   "source": "assumed (about one roll a week)",
+   "runtime": false
+  },
+  {
+   "id": "pack_rolls",
+   "label": {
+    "en": "Rolls in a pack",
+    "ja": "1 パックのロール数"
+   },
+   "type": "int",
+   "default": 12,
+   "min": 4,
+   "max": 24,
+   "step": 1,
+   "group": {
+    "en": "Households",
+    "ja": "世帯"
+   },
+   "source": "common pack size",
+   "runtime": false
+  },
+  {
+   "id": "review_days",
+   "label": {
+    "en": "A worried household is asked again every this many days (0 = never)",
+    "ja": "不安なままの世帯に、何日ごとに聞き直すか（0 = 聞かない）"
+   },
+   "type": "int",
+   "default": 7,
+   "min": 0,
+   "max": 30,
+   "step": 1,
+   "group": {
+    "en": "AI",
+    "ja": "AI"
+   },
+   "source": "tool setting"
+  },
+  {
+   "id": "max_asks",
+   "label": {
+    "en": "Most times one household is asked",
+    "ja": "1 世帯に聞く回数の上限"
+   },
+   "type": "int",
+   "default": 8,
+   "min": 1,
+   "max": 30,
+   "step": 1,
+   "group": {
+    "en": "AI",
+    "ja": "AI"
+   },
+   "source": "tool setting"
+  }
+ ],
+ "agents": [
+  {
+   "id": "household",
+   "name": {
+    "en": "Household",
+    "ja": "世帯"
+   },
+   "kind": "cohort",
+   "persona": "The person in a household who does the shopping. Each one has their own circumstances, habits and character, given below."
+  }
+ ],
+ "metrics": [
+  {
+   "id": "sales_index",
+   "label": {
+    "en": "Sales yesterday (normal day = 100)",
+    "ja": "昨日の販売（普段の 1 日 = 100）"
+   },
+   "unit": "",
+   "format": "float",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "feb28_index",
+   "label": {
+    "en": "Sales on 28 Feb (real: about 600)",
+    "ja": "2 月 28 日の販売（現実：約 600）"
+   },
+   "unit": "",
+   "format": "float",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "week_feb24_index",
+   "label": {
+    "en": "Week of 24 Feb (real: about 240)",
+    "ja": "2 月 24 日の週（現実：約 240）"
+   },
+   "unit": "",
+   "format": "float",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "empty_shops",
+   "label": {
+    "en": "Shops with an empty shelf",
+    "ja": "棚が空の店"
+   },
+   "unit": "%",
+   "format": "pct",
+   "good": "down",
+   "headline": true
+  },
+  {
+   "id": "stocked_up",
+   "label": {
+    "en": "Households holding over 60 days of paper",
+    "ja": "60 日分を超えて持っている世帯"
+   },
+   "unit": "%",
+   "format": "pct",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "last7_index",
+   "label": {
+    "en": "Sales, last 7 days (normal = 100)",
+    "ja": "直近 7 日の販売（普段 = 100）"
+   },
+   "unit": "",
+   "format": "float",
+   "good": "none"
+  },
+  {
+   "id": "peak_index",
+   "label": {
+    "en": "Highest day so far",
+    "ja": "これまでの最大の日"
+   },
+   "unit": "",
+   "format": "float",
+   "good": "none"
+  },
+  {
+   "id": "failed_trips",
+   "label": {
+    "en": "Households that went out and found nothing, yesterday",
+    "ja": "昨日、買いに行って買えなかった世帯"
+   },
+   "unit": "",
+   "format": "int",
+   "good": "down"
+  },
+  {
+   "id": "aware",
+   "label": {
+    "en": "Households that have heard the rumour",
+    "ja": "うわさを聞いた世帯"
+   },
+   "unit": "%",
+   "format": "pct",
+   "good": "none"
+  },
+  {
+   "id": "calmed",
+   "label": {
+    "en": "Of those, households acting normally",
+    "ja": "そのうち、普段どおりに動いている世帯"
+   },
+   "unit": "%",
+   "format": "pct",
+   "good": "up"
+  },
+  {
+   "id": "median_days_supply",
+   "label": {
+    "en": "Paper at home, median",
+    "ja": "家の在庫（中央値）"
+   },
+   "unit": {
+    "en": "days",
+    "ja": "日分"
+   },
+   "format": "float",
+   "good": "none"
+  },
+  {
+   "id": "shop_stock",
+   "label": {
+    "en": "Shop stock (usual level = 100)",
+    "ja": "店の在庫（普段 = 100）"
+   },
+   "unit": "%",
+   "format": "pct",
+   "good": "up"
+  },
+  {
+   "id": "demand_index",
+   "label": {
+    "en": "Packs people came for, yesterday (normal = 100)",
+    "ja": "昨日、買おうとした量（普段 = 100）"
+   },
+   "unit": "",
+   "format": "float",
+   "good": "none"
+  },
+  {
+   "id": "feb28_demand",
+   "label": {
+    "en": "Packs people came for on 28 Feb",
+    "ja": "2 月 28 日に買おうとした量"
+   },
+   "unit": "",
+   "format": "float",
+   "good": "none"
+  },
+  {
+   "id": "week_feb24_demand",
+   "label": {
+    "en": "Packs people came for, week of 24 Feb",
+    "ja": "2 月 24 日の週に買おうとした量"
+   },
+   "unit": "",
+   "format": "float",
+   "good": "none"
+  }
+ ],
+ "charts": [
+  {
+   "id": "sales",
+   "title": {
+    "en": "Sales per day (normal = 100)",
+    "ja": "1 日の販売（普段 = 100）"
+   },
+   "metrics": [
+    "sales_index",
+    "demand_index"
+   ]
+  },
+  {
+   "id": "shops",
+   "title": {
+    "en": "Shops",
+    "ja": "店"
+   },
+   "metrics": [
+    "shop_stock",
+    "empty_shops"
+   ]
+  },
+  {
+   "id": "minds",
+   "title": {
+    "en": "What households know and do",
+    "ja": "世帯が知っていること・していること"
+   },
+   "metrics": [
+    "aware",
+    "calmed",
+    "stocked_up"
+   ]
+  },
+  {
+   "id": "failed",
+   "title": {
+    "en": "Went out and found nothing",
+    "ja": "買いに行って買えなかった"
+   },
+   "metrics": [
+    "failed_trips"
+   ]
+  },
+  {
+   "id": "supply",
+   "title": {
+    "en": "Paper at home, median days",
+    "ja": "家の在庫（中央値・日分）"
+   },
+   "metrics": [
+    "median_days_supply"
+   ]
+  }
+ ],
+ "interventions": [
+  {
+   "id": "early_statement",
+   "label": {
+    "en": "The statement comes a day earlier, with the rumour",
+    "ja": "声明が 1 日早く、うわさと同時に出る"
+   },
+   "description": {
+    "en": "Makers and government answer on 27 Feb.",
+    "ja": "業界団体と政府が 2 月 27 日に答える。"
+   },
+   "patch": {
+    "statement_day": 9
+   }
+  },
+  {
+   "id": "limits_first",
+   "label": {
+    "en": "Purchase limits from the first day",
+    "ja": "最初の日から購入制限"
+   },
+   "description": {
+    "en": "One pack per customer from 27 Feb.",
+    "ja": "2 月 27 日から 1 人 1 パックまで。"
+   },
+   "patch": {
+    "limit_day": 10
+   }
+  },
+  {
+   "id": "no_tv",
+   "label": {
+    "en": "TV does not show the empty shelves",
+    "ja": "テレビが空の棚を流さない"
+   },
+   "description": {
+    "en": "TV coverage is switched off.",
+    "ja": "テレビの報道をなくす。"
+   },
+   "patch": {
+    "tv_coverage": 0.0
+   }
+  },
+  {
+   "id": "fast_supply",
+   "label": {
+    "en": "Extra shipments arrive within two days",
+    "ja": "増産分が 2 日で届く"
+   },
+   "description": {
+    "en": "Deliveries double from 29 Feb.",
+    "ja": "2 月 29 日から配送が 2 倍になる。"
+   },
+   "patch": {
+    "extra_supply_day": 12
+   }
+  }
+ ]
+}

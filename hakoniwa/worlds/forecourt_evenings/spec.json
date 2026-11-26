@@ -1,0 +1,520 @@
+{
+ "slug": "forecourt_evenings",
+ "title": {
+  "en": "Fuel in the depot, queues at the pump",
+  "ja": "燃料はあるのに、給油所には列ができる"
+ },
+ "summary": {
+  "en": "Follow 480 motorists from 13 September to 24 October. Compare the litres they seek with the litres that reach their tanks. Evening news can change tomorrow’s journeys, but cannot create another tanker.",
+  "ja": "9月13日から10月24日まで480人の運転者を追う。欲しかった量と、実際に車に入った量を比べる。晩のニュースは翌日の行動を変えられるが、タンクローリーは増やせない。"
+ },
+ "tick": {
+  "unit": {
+   "en": "day",
+   "ja": "日"
+  },
+  "default_ticks": 42,
+  "max_ticks": 42
+ },
+ "questions": [
+  {
+   "en": "On which day do purchases peak, by how much, and when do they fall back below normal?",
+   "ja": "販売のピークは何日でどれほど高いか。いつ平常を下回るか。"
+  },
+  {
+   "en": "When a site runs dry, how much demand disappears from its till but not from its queue?",
+   "ja": "給油所が干上がると、列には残るのに売上に現れない需要はどれほどか。"
+  },
+  {
+   "en": "Does changing the news, rationing purchases or moving deliveries forward do more to keep cars moving?",
+   "ja": "報道、購入制限、配送の前倒しのどれが移動を最も支えるか。"
+  }
+ ],
+ "assumptions": [
+  {
+   "en": "Nothing is fitted to the supplied sales or stock series. Peak date and height, duration, stock trough, transaction size and the October undershoot are tests. Only deliveries_index drives the run. Reference traces are observer diagnostics for retrospective comparison, not messages to the cast.",
+   "ja": "販売・在庫系列への当てはめはしない。ピークの日と高さ、長さ、在庫の底、購入量、10月の反動減は検証対象。日別入力は配送指数だけ。実測線は事後比較用で、運転者には見せない。"
+  },
+  {
+   "en": "Six miniature catchments, not six full-size sites or a projection to the 39.2m licensed vehicles (DfT licensing statistics). For scale, BEIS reports 17,700 L/site/day before Covid; the 2020 autumn 88/91% petrol/diesel comparator is not a 2021 seasonal correction. Petrol and diesel share a pooled site stock; the 4% other household cars are excluded.",
+   "ja": "6つの縮小商圏であり、実物大の6店舗でも登録車3920万台への外挿でもない。参考にBEISのコロナ前販売は1店日量17700 L。2020年秋のガソリン88%・軽油91%は2021年の季節補正に使わない。他燃料車4%を除き、店舗在庫は油種合算。"
+  },
+  {
+   "en": "Normal lot = daily litres × personal refill interval, clipped to tank headroom. This prioritises MOT mileage and the 4.71/9.62/19.38-day cardholder interval distribution over forcing the cardholder £-based estimate of about 24 L onto all motorists. Uniform starting phases give expected normal sales equal to that weekday’s burn. Traffic factors proxy weekday sales, not measured weekday sales.",
+   "ja": "通常購入量は日消費量×個人の給油間隔を空き容量で制限。カード利用者の約24 Lという支出換算値を全員に強制せず、車検走行距離と給油間隔の分位点4.71・9.62・19.38日を優先。開始位相を均一にずらし、曜日別の通常消費を販売の期待値とする。交通量は曜日別販売の代理値。"
+  },
+  {
+   "en": "Station allocations initially follow catchment mileage with route variation; from day 13 sharing shifts a portion toward sites with less stock. Refused overflow stays outside the system. A busy site adds a time cost, not a hard daily sales ceiling. Detour mileage is included in the ordinary mileage budget, not charged twice.",
+   "ja": "配送は商圏の消費に経路差を加えて配分し、13日目から共同配送で一部を低在庫店へ振り向ける。入り切らない分は系外。混雑は待ち時間となり、日販の上限ではない。迂回走行は日々の走行予算に含める。"
+  },
+  {
+   "en": "News reach, jobs, behavioural thresholds, review timing and travel flexibility are assumptions. Ofcom channel use is not causal exposure; neighbourhood home-working percentiles (17.86/53.12%) are not probabilities of cancelling a journey. Without the first report, queue pictures and crisis bulletins require an actual local rush to trigger coverage. Supply and sharing dates remain fixed in news experiments.",
+   "ja": "報道の到達率、職業、行動の閾値、再検討間隔、移動の自由度は仮定。Ofcomの媒体利用率は映像の効果ではなく、地域の在宅勤務率の分位点17.86/53.12%は移動を中止できる確率ではない。第一報なしでは現地の混雑が報道のきっかけになる。報道実験でも配送と共同配送の日程は固定。"
+  }
+ ],
+ "parameters": [
+  {
+   "id": "blind",
+   "label": {
+    "en": "Mask place and historical date",
+    "ja": "地名・史実の日付を伏せる"
+   },
+   "type": "bool",
+   "default": false,
+   "group": {
+    "en": "Check",
+    "ja": "検証"
+   },
+   "source": "assumed",
+   "runtime": false
+  },
+  {
+   "id": "story",
+   "label": {
+    "en": "Broadcast the first closure report",
+    "ja": "休業の第一報を伝える"
+   },
+   "type": "bool",
+   "default": true,
+   "group": {
+    "en": "News",
+    "ja": "報道"
+   },
+   "source": "Observer chronology, evening of 23 September",
+   "runtime": true
+  },
+  {
+   "id": "pictures",
+   "label": {
+    "en": "Show queues on television",
+    "ja": "テレビで行列を映す"
+   },
+   "type": "bool",
+   "default": true,
+   "group": {
+    "en": "News",
+    "ja": "報道"
+   },
+   "source": "Observer chronology; Ofcom News Consumption 2020/21: TV 79%, social 49%, overlapping; exposure probabilities assumed",
+   "runtime": true
+  },
+  {
+   "id": "capacity",
+   "label": {
+    "en": "Forecourt storage",
+    "ja": "給油所の貯蔵容量"
+   },
+   "type": "number",
+   "default": 9.5,
+   "min": 5,
+   "max": 15,
+   "step": 0.5,
+   "unit": "days",
+   "group": {
+    "en": "Supply",
+    "ja": "供給"
+   },
+   "source": "Observer: 9–10 days; DECC retail market study table 12 (2012): 11 and 7.3 days in two throughput bands",
+   "runtime": false
+  },
+  {
+   "id": "opening",
+   "label": {
+    "en": "Initial stock",
+    "ja": "開始時の在庫率"
+   },
+   "type": "number",
+   "default": 35,
+   "min": 10,
+   "max": 90,
+   "step": 1,
+   "unit": "%",
+   "group": {
+    "en": "Supply",
+    "ja": "供給"
+   },
+   "source": "Observer approximation; fuel-crisis transaction study Figs 2/A4: 31.3/36.4% on 22 September; applying it at opening is assumed",
+   "runtime": false
+  },
+  {
+   "id": "heel",
+   "label": {
+    "en": "Unpumpable stock",
+    "ja": "汲み出せない残量"
+   },
+   "type": "number",
+   "default": 3,
+   "min": 0,
+   "max": 8,
+   "step": 0.5,
+   "unit": "%",
+   "group": {
+    "en": "Supply",
+    "ja": "供給"
+   },
+   "source": "assumed; no measured GB grade threshold supplied",
+   "runtime": true
+  },
+  {
+   "id": "early",
+   "label": {
+    "en": "Move military loads to first weekend",
+    "ja": "軍の配送を最初の週末へ移す"
+   },
+   "type": "bool",
+   "default": false,
+   "group": {
+    "en": "Supply",
+    "ja": "供給"
+   },
+   "source": "UK government: 100 tanker drivers from 4 October; counterfactual start 25 September assumed. Select before run for volume-neutral comparison.",
+   "runtime": false
+  },
+  {
+   "id": "slice",
+   "label": {
+    "en": "Military component moved per day",
+    "ja": "移動する軍配送の日量"
+   },
+   "type": "number",
+   "default": 2,
+   "min": 0,
+   "max": 8,
+   "step": 0.5,
+   "unit": "index points",
+   "group": {
+    "en": "Supply",
+    "ja": "供給"
+   },
+   "source": "assumed nine-day tranche; RAF account of a 40,000 L load is not net incremental throughput",
+   "runtime": false
+  },
+  {
+   "id": "limit",
+   "label": {
+    "en": "All-site purchase ceiling, zero = off",
+    "ja": "全店購入上限（0は無制限）"
+   },
+   "type": "int",
+   "default": 0,
+   "min": 0,
+   "max": 60,
+   "step": 1,
+   "unit": "GBP",
+   "group": {
+    "en": "Service",
+    "ja": "販売"
+   },
+   "source": "EG Group £30 cap, 24 September to 4 October; extension to every simulated passenger car assumed. AA September prices 135.2/136.9 p/L.",
+   "runtime": true
+  },
+  {
+   "id": "miles",
+   "label": {
+    "en": "Mean daily mileage",
+    "ja": "平均日間走行距離"
+   },
+   "type": "number",
+   "default": 15.1,
+   "min": 6,
+   "max": 30,
+   "step": 0.1,
+   "unit": "mi",
+   "group": {
+    "en": "Cars",
+    "ja": "車"
+   },
+   "source": "Field Dynamics 2021 MOT analysis: 5,506 miles/year. UK IIR table 3-14: 49.7/52.6 g/km; assumed densities 745/835 g/L. DfT 2016 traffic indices Fri/Sat/Sun 112/86/81; equal Mon–Thu residual assumed.",
+   "runtime": false
+  },
+  {
+   "id": "tank",
+   "label": {
+    "en": "Family-car tank benchmark",
+    "ja": "家庭用車のタンク基準"
+   },
+   "type": "int",
+   "default": 55,
+   "min": 40,
+   "max": 75,
+   "step": 1,
+   "unit": "L",
+   "group": {
+    "en": "Cars",
+    "ja": "車"
+   },
+   "source": "RAC Fuel Watch September 2021; variation assumed. Fuel mix from DfT NTS 2021, 64:32 petrol:diesel among combustion cars.",
+   "runtime": false
+  },
+  {
+   "id": "gap",
+   "label": {
+    "en": "Median normal interval",
+    "ja": "通常給油間隔の中央値"
+   },
+   "type": "number",
+   "default": 9.62,
+   "min": 5,
+   "max": 18,
+   "step": 0.01,
+   "unit": "days",
+   "group": {
+    "en": "Cars",
+    "ja": "車"
+   },
+   "source": "Fuel-crisis transaction study table 1; log spread 0.55 approximates interval deciles. Same study: nearest site about 6 minutes each way.",
+   "runtime": false
+  },
+  {
+   "id": "asks",
+   "label": {
+    "en": "Maximum reviews per driver",
+    "ja": "1人の判断回数の上限"
+   },
+   "type": "int",
+   "default": 8,
+   "min": 1,
+   "max": 16,
+   "step": 1,
+   "group": {
+    "en": "Decisions",
+    "ja": "判断"
+   },
+   "source": "assumed; other unsourced cast distributions, controller constants, queue estimates and route shares are assumptions",
+   "runtime": false
+  }
+ ],
+ "agents": [
+  {
+   "id": "driver",
+   "name": {
+    "en": "Motorist",
+    "ja": "運転者"
+   },
+   "kind": "individual",
+   "persona": "One driver managing a car, its fuel and the journeys that matter to them."
+  }
+ ],
+ "metrics": [
+  {
+   "id": "sales",
+   "label": {
+    "en": "Sales, weekday normal = 100",
+    "ja": "販売（同曜日通常比）"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "wanted",
+   "label": {
+    "en": "Wanted before rationing",
+    "ja": "制限前の希望量"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "real_sales",
+   "label": {
+    "en": "Recorded weekday sales",
+    "ja": "実測販売指数"
+   },
+   "unit": "index",
+   "format": "float",
+   "good": "none",
+   "headline": false
+  },
+  {
+   "id": "stock",
+   "label": {
+    "en": "Mean site stock",
+    "ja": "平均店舗在庫率"
+   },
+   "unit": "%",
+   "format": "pct",
+   "good": "none",
+   "headline": true
+  },
+  {
+   "id": "real_stock",
+   "label": {
+    "en": "Recorded site stock",
+    "ja": "実測店舗在庫率"
+   },
+   "unit": "%",
+   "format": "pct",
+   "good": "none",
+   "headline": false
+  },
+  {
+   "id": "dry",
+   "label": {
+    "en": "Sites at unpumpable heel",
+    "ja": "給油不能な店"
+   },
+   "unit": "%",
+   "format": "pct",
+   "good": "down",
+   "headline": false
+  },
+  {
+   "id": "tank_fill",
+   "label": {
+    "en": "Mean car tank level",
+    "ja": "車の平均残量率"
+   },
+   "unit": "%",
+   "format": "pct",
+   "good": "none",
+   "headline": false
+  },
+  {
+   "id": "failed",
+   "label": {
+    "en": "Buyers returning empty",
+    "ja": "給油できなかった人"
+   },
+   "unit": "drivers",
+   "format": "int",
+   "good": "down",
+   "headline": true
+  },
+  {
+   "id": "short",
+   "label": {
+    "en": "Drivers unable to finish planned mileage",
+    "ja": "燃料切れで予定距離を走れない人"
+   },
+   "unit": "drivers",
+   "format": "int",
+   "good": "down",
+   "headline": false
+  },
+  {
+   "id": "lot",
+   "label": {
+    "en": "Litres per successful purchase",
+    "ja": "購入成立1件あたりの量"
+   },
+   "unit": "L",
+   "format": "float",
+   "good": "none",
+   "headline": false
+  }
+ ],
+ "charts": [
+  {
+   "id": "rush",
+   "title": {
+    "en": "The rush and its payback",
+    "ja": "殺到とその反動"
+   },
+   "metrics": [
+    "wanted",
+    "sales",
+    "real_sales"
+   ]
+  },
+  {
+   "id": "where",
+   "title": {
+    "en": "Where is the fuel at closing time?",
+    "ja": "閉店時、燃料はどこにあるか"
+   },
+   "metrics": [
+    "stock",
+    "real_stock",
+    "tank_fill",
+    "dry"
+   ]
+  },
+  {
+   "id": "access",
+   "title": {
+    "en": "Unserved motorists",
+    "ja": "給油と移動への影響"
+   },
+   "metrics": [
+    "failed",
+    "short"
+   ]
+  },
+  {
+   "id": "size",
+   "title": {
+    "en": "Size of a purchase",
+    "ja": "1件の購入量"
+   },
+   "metrics": [
+    "lot"
+   ]
+  }
+ ],
+ "interventions": [
+  {
+   "id": "no_tv",
+   "label": {
+    "en": "No TV pictures",
+    "ja": "テレビ映像なし"
+   },
+   "description": {
+    "en": "Remove only televised queue pictures. Social feeds, the press and trips still inform people.",
+    "ja": "テレビの行列映像だけを止める。SNS、新聞、自分の目からは情報が届く。"
+   },
+   "patch": {
+    "pictures": false
+   }
+  },
+  {
+   "id": "ration",
+   "label": {
+    "en": "£30 per customer",
+    "ja": "1人30ポンドまで"
+   },
+   "description": {
+    "en": "Apply the ceiling at every site from 24 September through 3 October.",
+    "ja": "9月24日から10月3日まで全店で上限を適用する。"
+   },
+   "patch": {
+    "limit": 30
+   }
+  },
+  {
+   "id": "army",
+   "label": {
+    "en": "Earlier tanker drivers",
+    "ja": "運転手を早期投入"
+   },
+   "description": {
+    "en": "Relocate nine daily military slices from days 21–29 to days 12–20; replay from the start.",
+    "ja": "21〜29日目の軍の配送分を12〜20日目へ移し、最初から再実行する。"
+   },
+   "patch": {
+    "early": true
+   }
+  },
+  {
+   "id": "no_report",
+   "label": {
+    "en": "No Thursday report",
+    "ja": "木曜の第一報なし"
+   },
+   "description": {
+    "en": "Suppress the closure story, not the delivery constraint. Start before Thursday evening.",
+    "ja": "配送制約は残し、休業報道を止める。木曜の晩より前に設定する。"
+   },
+   "patch": {
+    "story": false
+   }
+  }
+ ],
+ "scenario": {
+  "en": "Great Britain, 13 September to 24 October 2021 (42 days, one tick per day; day 0 is Monday 13 September).\n\nThere was no real shortage of petrol or diesel in the country, but there were too few tanker drivers, so deliveries to filling stations could not rise much. On the evening of Thursday 23 September (day 10) the news reported that a large fuel company would close some of its stations because of the driver shortage. From Friday 24 September newspapers, TV and social media showed queues at forecourts. Ministers said there was no shortage and asked people to buy as normal. On Sunday 26 September the government suspended competition law so that companies could share deliveries. On Monday 27 September the army was put on standby to drive tankers, and military drivers started deliveries on Monday 4 October. A trade body said that in some areas most stations had run dry on 26-27 September.\n\nSimulate several hundred drivers, each with their own car, tank size, daily driving, usual refuelling habit, job (some must drive for work or care, some can stay home), where they live, how they get news, and character. Each day they use fuel; they refuel at one of several filling stations according to their own rule (how empty the tank must be, whether to go out of their way, how many stations to try, whether to drive less). A tank cannot hold more than its size, so people who have filled up need less in the following weeks. Stations have storage of about nine to ten days of normal sales and were about 35% full before the news; a station is effectively dry below a few percent.\n\nReal data is supplied, one row per day. Column deliveries_index is an INPUT: fuel delivered to stations that day, where 100 is a normal day's sales. Use it to drive deliveries. Columns sales_index (sales that day, 100 = a normal day for that weekday) and stock_pct (average station stock at the end of the day, percent of capacity) are OBSERVED OUTCOMES: show them next to the simulated sales index and simulated stock, but never let the rules or the residents see them.\n\nI want to see whether the simulated drivers reproduce what happened: the size and day of the rush, how long it lasted, and what sales did in the weeks after. Then I want to test what would have changed it: no TV pictures of queues, a limit on how much each customer can buy, the army delivering from the first weekend, or the first news story never appearing.",
+  "ja": "Great Britain, 13 September to 24 October 2021 (42 days, one tick per day; day 0 is Monday 13 September).\n\nThere was no real shortage of petrol or diesel in the country, but there were too few tanker drivers, so deliveries to filling stations could not rise much. On the evening of Thursday 23 September (day 10) the news reported that a large fuel company would close some of its stations because of the driver shortage. From Friday 24 September newspapers, TV and social media showed queues at forecourts. Ministers said there was no shortage and asked people to buy as normal. On Sunday 26 September the government suspended competition law so that companies could share deliveries. On Monday 27 September the army was put on standby to drive tankers, and military drivers started deliveries on Monday 4 October. A trade body said that in some areas most stations had run dry on 26-27 September.\n\nSimulate several hundred drivers, each with their own car, tank size, daily driving, usual refuelling habit, job (some must drive for work or care, some can stay home), where they live, how they get news, and character. Each day they use fuel; they refuel at one of several filling stations according to their own rule (how empty the tank must be, whether to go out of their way, how many stations to try, whether to drive less). A tank cannot hold more than its size, so people who have filled up need less in the following weeks. Stations have storage of about nine to ten days of normal sales and were about 35% full before the news; a station is effectively dry below a few percent.\n\nReal data is supplied, one row per day. Column deliveries_index is an INPUT: fuel delivered to stations that day, where 100 is a normal day's sales. Use it to drive deliveries. Columns sales_index (sales that day, 100 = a normal day for that weekday) and stock_pct (average station stock at the end of the day, percent of capacity) are OBSERVED OUTCOMES: show them next to the simulated sales index and simulated stock, but never let the rules or the residents see them.\n\nI want to see whether the simulated drivers reproduce what happened: the size and day of the rush, how long it lasted, and what sales did in the weeks after. Then I want to test what would have changed it: no TV pictures of queues, a limit on how much each customer can buy, the army delivering from the first weekend, or the first news story never appearing."
+ }
+}

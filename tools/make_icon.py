@@ -9,6 +9,8 @@ never leaves the palette.
 
 Writes, under docs/images/ and hakoniwa/interface/web/:
   scene.svg   128px town, animated (people walk, boats move, clouds drift)
+  build.svg   the same town in pieces that carry a build order (web only): the page shows them one by one
+              while a world is being created
   town.png    the same town as a still image (1024px)
   icon.svg    48px simplified town for small sizes (header, favicon)
   icon.png, favicon.png
@@ -232,6 +234,55 @@ def scene_svg(b):
     return svg_open(b.size, label) + "<style>" + "".join(css) + "</style>" + "".join(back) + rects(b.render()) + "".join(front) + "</svg>\n"
 
 
+def run_rects(pixels):
+    """Pixels (later ones win) as SVG rects, merging runs of one colour in a row."""
+    seen = {}
+    for x, y, k in pixels:
+        seen[(x, y)] = k
+    out, done = [], set()
+    for (x, y) in sorted(seen, key=lambda q: (q[1], q[0])):
+        if (x, y) in done:
+            continue
+        k, w = seen[(x, y)], 1
+        while seen.get((x + w, y)) == k:
+            w += 1
+        done.update((x + i, y) for i in range(w))
+        out.append(f'<rect x="{x}" y="{y}" width="{w}" height="1" fill="{P[k]}"/>')
+    return "".join(out)
+
+
+def build_svg(b):
+    """The town in pieces, each with a place in the build order (--o). Painting order stays back to front; the page
+    reveals pieces up to a moving count: the empty box, the ground, the buildings floor by floor, trees, then people."""
+    paint = lambda it: (it["x"] + it["y"], it["z"], 0 if it["kind"] == "cube" else 1)
+    n2 = b.n * b.n * 2
+    ground, things = b.items[:n2], sorted(b.items[n2:], key=paint)
+    bands = 2 * b.n - 1
+    parts = []                                                   # (build order, svg), in painting order
+    for z in (0, 1):                                             # the box, then its surface, one diagonal row at a time
+        for band in range(bands):
+            px = [q for it in ground if it["z"] == z and it["x"] + it["y"] == band for q in b.pixels(it)]
+            parts.append((z * bands + band, run_rects(px)))
+    n_ground = 2 * bands
+    rise = sorted(range(len(things)), key=lambda i: ((0 if things[i]["kind"] in ("cube", "roof") else 1), things[i]["z"], things[i]["x"] + things[i]["y"]))
+    rank = {i: r for r, i in enumerate(rise)}                    # buildings rise floor by floor, then the trees
+    for i, it in enumerate(things):
+        parts.append((n_ground + rank[i], run_rects(b.pixels(it))))
+    n_things = len(things)
+    css, movers = [], []
+    for i, (item, (dx, dy), cells, secs) in enumerate(TOWN_BOATS + TOWN_WALKERS):
+        css.append(f".m{i}{{animation:m{i} {secs}s steps({cells * 2}) infinite alternate}}@keyframes m{i}{{to{{transform:translate({dx * cells}px,{dy * cells}px)}}}}")
+        movers.append((n_ground + n_things + i, f'<g class="m{i}">{loose(b.pixels(item))}</g>'))
+    total = n_ground + n_things + len(movers)
+    clouds = "".join(f'<g class="c{i}">{loose(cloud_pixels(*c))}</g>' for i, c in enumerate(TOWN_CLOUDS))
+    for i in range(len(TOWN_CLOUDS)):
+        css.append(f".c{i}{{animation:c{i} {30 + i * 11}s steps({12 + i * 4}) infinite alternate}}@keyframes c{i}{{to{{transform:translateX({12 + i * 4}px)}}}}")
+    css.append("@media (prefers-reduced-motion:reduce){*{animation:none!important}}")
+    body = "".join(f'<g class="b" style="--o:{o}">{svg}</g>' for o, svg in parts + movers)
+    head = svg_open(b.size, "A town in a box being built").replace("<svg ", f'<svg data-ground="{n_ground}" data-things="{n_things}" data-total="{total}" ')
+    return head + "<style>" + "".join(css) + "</style>" + clouds + body + "</svg>\n"
+
+
 def png(img, scale):
     size = len(img) * scale
     raw = bytearray()
@@ -257,6 +308,7 @@ if __name__ == "__main__":
         (ROOT / folder).mkdir(parents=True, exist_ok=True)
         (ROOT / folder / "scene.svg").write_text(scene_svg(big))
         (ROOT / folder / "icon.svg").write_text(svg_open(little.size, "Hakoniwa") + rects(icon) + "</svg>\n")
+    (ROOT / "hakoniwa/interface/web/build.svg").write_text(build_svg(big))
     (ROOT / "docs/images/town.png").write_bytes(png(still, 8))
     (ROOT / "docs/images/icon.png").write_bytes(png(icon, 8))
     (ROOT / "hakoniwa/interface/web/favicon.png").write_bytes(png(icon, 2))

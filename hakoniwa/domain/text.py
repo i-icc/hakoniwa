@@ -44,6 +44,11 @@ def extract_json(text: str) -> dict:
     raise ValueError("unterminated JSON object in reply")
 
 
+def fenced_blocks(text: str, lang: str) -> list[str]:
+    """Bodies of every ```lang fenced block, in order."""
+    return [m.group(1) for m in re.finditer(r"```" + lang + r"\s*\n(.*?)\n```", text, re.S)]
+
+
 def fenced_block(text: str, lang: str) -> str | None:
     """Return the body of the first ```lang fenced block."""
     m = re.search(r"```" + lang + r"\s*\n(.*?)\n```", text, re.S)

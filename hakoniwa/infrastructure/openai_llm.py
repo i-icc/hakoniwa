@@ -35,6 +35,9 @@ class MockLLM:
     async def list_models(self) -> list[str]:
         return []
 
+    async def decide(self, text: str, questions: list[dict]):
+        return None
+
     async def close(self) -> None:
         return None
 
@@ -52,7 +55,7 @@ class OpenAICompatLLM:
         self._models: tuple[float, list[str]] | None = None
 
     def model_for(self, role: str) -> str:
-        return self.s.role(role).model
+        return self.s.decision_model if role == "decision" else self.s.role(role).model
 
     async def list_models(self) -> list[str]:
         """Model ids the provider offers (cached for ten minutes). Empty when the provider has no list."""
@@ -141,6 +144,33 @@ class OpenAICompatLLM:
                     continue
                 break
         raise LLMError(last or "LLM request failed")
+
+    async def decide(self, text: str, questions: list[dict]):
+        """OpenAI Decisions API: each question comes back as probabilities over its options. Output is not billed."""
+        rc = self.s.role("agent")
+        model = self.s.decision_model
+        t0 = time.time()
+        last = ""
+        async with self._sem:
+            for attempt in range(4):
+                try:
+                    r = await self._http().post(rc.base_url + "/decisions", json={"model": model, "input": text, "questions": questions},
+                                                headers={"Authorization": f"Bearer {rc.api_key}", "Content-Type": "application/json"})
+                except httpx.HTTPError as e:
+                    last = f"{type(e).__name__}: {e}"
+                    await asyncio.sleep(min(8, 1.5 ** attempt))
+                    continue
+                if r.status_code == 200:
+                    data = r.json()
+                    tin = int((data.get("usage") or {}).get("input_tokens") or approx_tokens(text + str(questions)))
+                    return data.get("answers") or [], LLMResult(text="", model=model, tokens_in=tin, tokens_out=0,
+                                                              ms=int((time.time() - t0) * 1000), estimated=not data.get("usage"))
+                last = f"HTTP {r.status_code}: {r.text[:300]}"
+                if r.status_code in (408, 409, 429) or r.status_code >= 500:
+                    await asyncio.sleep(min(20, 2 ** attempt))
+                    continue
+                break
+        raise LLMError("decisions request failed: " + last)
 
     async def research(self, prompt: str) -> LLMResult | None:
         """Optional web research for the world designer (HAKONIWA_RESEARCH=responses).

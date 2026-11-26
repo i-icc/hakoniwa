@@ -11,11 +11,12 @@ from __future__ import annotations
 
 import asyncio
 import json
+import random
 import time
 from typing import Any
 
-from ..domain.contract import check_frame, clean_params, default_params
-from ..domain.decisions import (check_request, default_action, mock_decision,
+from ..domain.contract import chance_events, check_frame, clean_params, default_params, draw_schedule
+from ..domain.decisions import (check_request, default_action, habit_action, mock_decision,
                                 normalize_action, summarize_action)
 from ..domain.names import display_name, resident_names
 from ..domain.pricing import cost_usd
@@ -28,8 +29,18 @@ DEFAULT_CONFIG = {
     "ticks": None,                 # None = spec.tick.default_ticks
     "seed": 1,
     "ai": "auto",                  # auto | live | mock   (mock = model defaults, no API calls)
+    "brain": "chat",               # chat = thought and speech; decision = typed decisions API (fast, cheap, no speech)
     "agent_model": None,           # None = HAKONIWA_MODEL_AGENT
-    "max_decisions_per_tick": 40,
+    # AI residents react sooner and harder than real people. Two corrections, both off by default:
+    "gate": "off",                 # judge = a decision model first judges whether this person stops to think today
+    "follow_through": 1.0,         # share of changes of mind that are acted on; the rest carry on by habit
+    "stance": "habit",             # wording of the residents' instructions: habit | classic
+    "personas": True,              # False = ask without each person's own description (for comparison only)
+    "told": None,                  # what the observer has said to single residents: {key: [{"clock", "text"}]}
+    "life": None,                  # what has happened in single residents' own lives: {key: [{"at", "until", "text"}]}
+    "chance": False,               # True = things nobody chose may happen (the world's deck of chance events)
+    "schedule": None,              # which of them happen in this run and when; drawn from the seed when the run is created
+    "max_decisions_per_tick": 2000,
     "budget_usd": None,            # pause the run when spend passes this
     "tick_delay_ms": 250,
 }
@@ -45,6 +56,8 @@ def merged_config(spec: dict, given: dict | None) -> dict:
     cfg["ticks"] = max(1, min(int(cfg["ticks"]), int(spec["tick"].get("max_ticks", 5000))))
     cfg["seed"] = int(cfg["seed"])
     cfg["max_decisions_per_tick"] = max(0, int(cfg["max_decisions_per_tick"]))
+    cfg["follow_through"] = min(1.0, max(0.0, float(cfg["follow_through"])))
+    cfg["gate"] = cfg["gate"] if cfg["gate"] in ("off", "judge") else "off"
     return cfg
 
 
@@ -86,7 +99,7 @@ class RunWorker:
             return
         trusted = self.world["source"] == "builtin"
         self.sb = await self.mgr.sandboxes.open(trusted=trusted)
-        await self.sb.load(self.world["code"], self.params, self.config["seed"])
+        await self.sb.load(self.world["code"], {**self.params, "_data": self.spec.get("data")}, self.config["seed"])
         snap = self.db.snapshot(self.run_id, self.tick)
         if snap is None and self.tick > 0:
             raise SandboxError(f"no snapshot stored for tick {self.tick}")
@@ -129,13 +142,21 @@ class RunWorker:
             await self.open()
             assert self.sb is not None
             pre_events: list[dict] = []
+            pre_events.extend(await self._chance(self.tick + 1))
+            people: list[dict] = []                # the observer steps in on single residents this tick
             while self.pending:
-                pre_events.extend(await self._apply_intervention(self.pending.pop(0)))
+                iv = self.pending.pop(0)
+                if iv.get("person"):
+                    people.append(iv["person"])
+                else:
+                    pre_events.extend(await self._apply_intervention(iv))
             res = await self.sb.tick()
             t = res["t"]
             events = pre_events + list(res.get("events") or [])
             requests = [r for r in (res.get("requests") or []) if check_request(r, set(self.agents)) is None]
             actions = await self._resolve(t, requests)
+            for p in people:
+                events.extend(await self._step_in(t, p, requests, actions))
             frame = await self.sb.apply(actions)
             problems = [p for p in check_frame(self.spec, frame) if p.startswith("invariant") or "finite" in p]
             for p in problems[:3]:
@@ -156,9 +177,20 @@ class RunWorker:
                 "ja": f"予算 ${float(budget):.2f} に達しました。一時停止し、住人はモデルの既定の動きに戻ります。"}})
         context = self._context(t) if (live and not over and requests) else None
 
+        fast = self.config.get("brain") == "decision"
+        gate = self.config.get("gate") == "judge"
+        if not self.config.get("personas", True):
+            requests = [{k: v for k, v in r.items() if k != "persona"} for r in requests]
+
         async def one(i: int, req: dict) -> dict:
             if live and not over and i < cap:
                 try:
+                    if gate and not await self._stops_to_think(t, req, context):
+                        act = habit_action(req)
+                        self._record(t, req, act, {}, "habit", None, [])
+                        return act
+                    if fast:
+                        return await self._decide_fast(t, req, context)
                     return await self._decide_live(t, req, context)
                 except (LLMError, ValueError, json.JSONDecodeError, KeyError) as e:
                     act = default_action(req)
@@ -174,6 +206,56 @@ class RunWorker:
             return act
 
         return list(await asyncio.gather(*(one(i, r) for i, r in enumerate(requests))))
+
+    async def _step_in(self, t: int, p: dict, requests: list[dict], actions: list[dict]) -> list[dict]:
+        """The observer steps in on one resident: says something to them, or decides for them.
+        Told something, the resident is asked again there and then and answers for themselves; what was said
+        stays with them for later questions. A decision made for them is applied as it is."""
+        key = str(p.get("key"))
+        req = next((r for r in requests if r["key"] == key), None)
+        if req is None:                            # not asked this tick: take up the question they last answered
+            last = self.db.decisions(self.run_id, key=key, upto_tick=t, limit=1)
+            if not last:
+                return [{"kind": "alert", "text": {"en": "That resident has not been asked anything yet, so there is nothing to step in on.",
+                                                    "ja": "この住人はまだ一度も聞かれていないので、介入できません。"}}]
+            req = dict(last[-1]["request"])
+            req["situation"] = (req.get("situation") or "") + " (That was your situation when you last took stock; some time has passed since.)"
+        who = T(self._name(req)) or key
+        said = str(p.get("tell") or "").strip()[:500]
+        if said:
+            told = dict(self.config.get("told") or {})
+            told[key] = list(told.get(key) or []) + [{"at": t, "clock": self.last_clock or f"t={t}", "text": said}]
+            self.config["told"] = told
+            self.db.set_run(self.run_id, config=self.config)
+        ids = [o["id"] for o in req.get("options") or []]
+        if p.get("choice") in ids:
+            act = normalize_action(req, {"choice": p["choice"], "numbers": {n["id"]: n["default"] for n in req.get("numbers") or [] if "default" in n}})
+            self._record(t, req, act, {"thought": "(decided by the observer)"}, "observer", None, [])
+        elif said and self.ai_live:
+            try:
+                act = await self._decide_live(t, req, self._context(t))
+            except (LLMError, ValueError, json.JSONDecodeError, KeyError):
+                return []
+        else:
+            return []
+        for i, a in enumerate(actions):
+            if a.get("key") == key:
+                actions[i] = act
+                break
+        else:
+            actions.append(act)
+        did = summarize_action(req, act), summarize_action(req, act, "ja")
+        return [{"kind": "intervention", "agent": req["agent"], "node": req.get("node"), "text": {
+            "en": f"The observer stepped in on {who}" + (f': "{said}"' if said else "") + f" -> {did[0]}",
+            "ja": f"{who} に介入" + (f"：「{said}」" if said else "") + f" → {did[1]}"}}]
+
+    def _with_told(self, req: dict) -> dict:
+        """The question, with what the observer has said to this resident added to their situation."""
+        lines = [f'An outsider you spoke with ({x["clock"]}) said to you: "{x["text"]}"' for x in (self.config.get("told") or {}).get(req["key"], [])
+                 if x["text"] not in (req.get("situation") or "")]
+        lines += [f'In your own life lately: {x["text"]}' for x in (self.config.get("life") or {}).get(req["key"], [])
+                  if x["until"] > self.tick and x["text"] not in (req.get("situation") or "")]
+        return {**req, "situation": ((req.get("situation") or "") + " " + " ".join(lines)).strip()} if lines else req
 
     def _context(self, t: int) -> dict:
         evs = self.db.events(self.run_id, upto_tick=t, limit=8)
@@ -200,18 +282,104 @@ class RunWorker:
         return display_name(resident_names(self.spec, self.cast).get(req["key"]), req.get("population"))
 
     async def _decide_live(self, t: int, req: dict, context: dict | None) -> dict:
+        req = self._with_told(req)
         agent = self.agents[req["agent"]]
         msgs = prompts.decision_messages(
             self.spec, agent, req, clock=self.last_clock or f"t={t}", memory=self._memory(req["key"], t),
             events=(context or {}).get("events", []), facts=(context or {}).get("facts", []),
-            langs=self.mgr.langs, name=T(self._name(req)))
+            langs=self.mgr.langs, name=T(self._name(req)), stance=self.config.get("stance", "habit"))
         raw, results = await chat_json(self.llm, "agent", msgs, max_tokens=600, model=self.config.get("agent_model"))
-        act = normalize_action(req, raw)
-        self._record(t, req, act, raw, "llm", results[-1].model, results)
+        act, meant = self._follow(t, req, normalize_action(req, raw))
+        self._record(t, req, act, raw, "llm", results[-1].model, results, meant)
+        return act
+
+    async def _stops_to_think(self, t: int, req: dict, context: dict | None) -> bool:
+        """The gate: most people carry on by habit most days. A decision model gives the chance that this person
+        really weighs a change today; the draw decides. Providers without a decisions API let everyone through."""
+        agent = self.agents[req["agent"]]
+        brief = prompts.decision_brief(self.spec, agent, req, clock=self.last_clock or f"t={t}", memory=self._memory(req["key"], t),
+                                       events=(context or {}).get("events", []), facts=(context or {}).get("facts", []),
+                                       name=T(self._name(req)))
+        got = await self.llm.decide(prompts.DECIDE_INTRO + "\n\n" + "\n\n".join(brief), [prompts.GATE_QUESTION])
+        if got is None:
+            return True
+        answers, r = got
+        c = cost_usd(self.mgr.prices, r.model, r.tokens_in, r.tokens_out)
+        self.db.add_llm_call(self.run_id, self.world["id"], "agent", r.model, r.tokens_in, r.tokens_out, c, r.ms, r.estimated)
+        self.spent += c or 0.0
+        probs = {p.get("value"): float(p.get("probability") or 0) for a in answers if a.get("name") == "attend"
+                 for p in a.get("probabilities") or []}
+        if not probs:
+            return True
+        return random.Random(f"{self.config['seed']}:{t}:{req['key']}:gate").random() < probs.get("think", 0.0)
+
+    def _follow(self, t: int, req: dict, act: dict) -> tuple[dict, dict | None]:
+        """The gap between meaning to and doing: a change of mind is acted on with probability follow_through.
+        Returns the action that happens and, when the person did not follow through, what they meant to do."""
+        f = float(self.config.get("follow_through", 1.0))
+        if f >= 1.0:
+            return act, None
+        base = habit_action(req)
+        if "weights" in act:                    # a group: that share of it follows through
+            w = {k: f * act["weights"].get(k, 0.0) + (1 - f) * base["weights"].get(k, 0.0) for k in base["weights"]}
+            nums = {k: base["numbers"].get(k, v) + f * (v - base["numbers"].get(k, v)) for k, v in act["numbers"].items()}
+            return normalize_action(req, {"weights": w, "numbers": nums}), None
+        if act.get("choice") == base.get("choice") and act.get("numbers") == base.get("numbers"):
+            return act, None
+        if random.Random(f"{self.config['seed']}:{t}:{req['key']}:follow").random() < f:
+            return act, None
+        return base, {"en": summarize_action(req, act), "ja": summarize_action(req, act, "ja")}
+
+    async def _decide_fast(self, t: int, req: dict, context: dict | None) -> dict:
+        """Ask the decisions API: it returns probabilities, which are used as shares (groups) or drawn from (individuals)."""
+        req = self._with_told(req)
+        agent = self.agents[req["agent"]]
+        brief = prompts.decision_brief(self.spec, agent, req, clock=self.last_clock or f"t={t}", memory=self._memory(req["key"], t),
+                                       events=(context or {}).get("events", []), facts=(context or {}).get("facts", []),
+                                       name=T(self._name(req)))
+        got = await self.llm.decide(prompts.DECIDE_INTRO + "\n\n" + "\n\n".join(brief), prompts.decision_questions(req))
+        if got is None:
+            raise LLMError("this provider has no decisions API")
+        answers, result = got
+        by_name = {a.get("name"): a for a in answers if a.get("type") != "refusal"}
+        rng = random.Random(f"{self.config['seed']}:{t}:{req['key']}")
+        split = req.get("mode", "split") == "split"
+
+        def draw(pairs: list[tuple]):
+            total = sum(p for _, p in pairs) or 1.0
+            r, acc = rng.random() * total, 0.0
+            for v, p in pairs:
+                acc += p
+                if r <= acc:
+                    return v
+            return pairs[-1][0]
+
+        raw: dict = {"numbers": {}}
+        a = by_name.get("choice")
+        if a:
+            probs = [(p.get("value"), float(p.get("probability") or 0)) for p in a.get("probabilities") or []]
+            if split:
+                raw["weights"] = dict(probs)
+            elif probs:
+                raw["choice"] = draw(probs)
+            raw["confidence"] = a.get("confidence")
+        for n in req.get("numbers") or []:
+            a = by_name.get("num_" + n["id"])
+            if not a:
+                continue
+            levels = prompts.number_levels(n)
+            probs = [(levels[i], float(p.get("probability") or 0)) for i, p in enumerate(a.get("probabilities") or []) if i < len(levels)]
+            if probs:
+                # the levels are coarse steps, so take the probability-weighted value, not one drawn step
+                raw["numbers"][n["id"]] = sum(v * p for v, p in probs) / (sum(p for _, p in probs) or 1.0)
+        if not by_name:
+            raise LLMError("the decisions API declined to answer")
+        act, meant = self._follow(t, req, normalize_action(req, raw))
+        self._record(t, req, act, raw, "decision", result.model, [result], meant)
         return act
 
     def _record(self, t: int, req: dict, act: dict, raw: dict, source: str, model: str | None,
-                results: list[LLMResult]) -> None:
+                results: list[LLMResult], meant: dict | None = None) -> None:
         tin = sum(r.tokens_in for r in results)
         tout = sum(r.tokens_out for r in results)
         cost = 0.0
@@ -224,13 +392,51 @@ class RunWorker:
         response = {"action": act, "thought": raw.get("thought"), "say": say, "clock": self.last_clock,
                     "summary": summarize_action(req, act), "summary_ja": summarize_action(req, act, "ja"),
                     "error": raw.get("error")}
+        if meant:
+            response["meant"] = meant          # what they meant to do but did not
         self.db.add_decision(self.run_id, t, req["key"], req["agent"], req, response, source, model, tin, tout, cost)
         self.db.assert_fact(self.run_id, req["key"], "policy",
                             act.get("weights") or act.get("choice") or act.get("numbers"), t, origin="decision")
         if say:
-            self.db.add_event(self.run_id, t, "say", {"text": say, "key": req["key"], "source": source,
+            self.db.add_event(self.run_id, t, "say", {"text": say, "key": req["key"], "source": source, "meant": meant,
                                                       "summary": {"en": response["summary"], "ja": response["summary_ja"]}},
                               agent=req["agent"], node=req.get("node"))
+
+    async def _chance(self, t: int) -> list[dict]:
+        """Chance events due at this tick: the ones that begin, and the ones whose time is up."""
+        schedule = self.config.get("schedule") or []
+        if not schedule:
+            return []
+        deck = {e["id"]: e for e in chance_events(self.spec)}
+        out: list[dict] = []
+        touched = False
+        for s in schedule:
+            e = deck.get(s["id"])
+            if not e:
+                continue
+            if s["tick"] == t and e.get("personal"):
+                # it happens to some residents only: they carry it in mind when they are next asked
+                pool = sorted(c["key"] for c in self.cast)
+                hit = random.Random(f"{self.config['seed']}:life:{e['id']}").sample(pool, max(1, round(e["personal"]["share"] * len(pool)))) if pool else []
+                life = dict(self.config.get("life") or {})
+                for key in hit:
+                    life[key] = list(life.get(key) or []) + [{"at": t, "until": t + (e.get("lasts") or 10_000), "text": T(e["personal"]["text"], "en")}]
+                self.config["life"] = life
+                touched = True
+                out.append({"kind": "intervention", "text": {
+                    "en": f"By chance, for {len(hit)} residents: " + (T(e.get("label"), "en") or e["id"]),
+                    "ja": f"偶然の出来事（{len(hit)} 人に）：" + (T(e.get("label"), "ja") or e["id"])}})
+            if s["tick"] == t and e["patch"]:
+                s["prev"] = {k: self.params.get(k) for k in e["patch"]}          # to put things back when it is over
+                touched = True
+                out += await self._apply_intervention({"patch": e["patch"], "label": {
+                    "en": "By chance: " + (T(e.get("label"), "en") or e["id"]), "ja": "偶然の出来事：" + (T(e.get("label"), "ja") or e["id"])}})
+            elif s.get("lasts") and s.get("prev") and s["tick"] + s["lasts"] == t:
+                out += await self._apply_intervention({"patch": s["prev"], "label": {
+                    "en": "Over: " + (T(e.get("label"), "en") or e["id"]), "ja": "収まった：" + (T(e.get("label"), "ja") or e["id"])}})
+        if touched:
+            self.db.set_run(self.run_id, config=self.config)
+        return out
 
     # -- interventions ------------------------------------------------------
     async def _apply_intervention(self, iv: dict) -> list[dict]:
@@ -262,6 +468,7 @@ class RunWorker:
                 if self.tick >= total:
                     self.db.set_run(self.run_id, status="finished")
                     self.want = "paused"
+                    self._rest()
                     break
                 if self.want == "running" or self.step_budget > 0:
                     if self.step_budget > 0:
@@ -272,16 +479,22 @@ class RunWorker:
                         await asyncio.sleep(max(0, int(self.config.get("tick_delay_ms", 0))) / 1000)
                 else:
                     self.db.set_run(self.run_id, status="paused")
+                    self._rest()
                     self.wake.clear()
                     await self.wake.wait()
             if self.tick < self.config["ticks"] and self.want == "stopped":
                 self.db.set_run(self.run_id, status="paused")
         except SandboxError as e:
             self.db.set_run(self.run_id, status="failed", error=f"{e}\n{e.trace}"[:3000])
+            self._rest()
         except Exception as e:   # keep the server alive; show the error on the run
             self.db.set_run(self.run_id, status="failed", error=f"{type(e).__name__}: {e}"[:3000])
         finally:
             await self.close()
+
+    def _rest(self) -> None:
+        if self.mgr.on_milestone:
+            self.mgr.on_milestone()
 
     def control(self, action: str, **kw) -> None:
         if "budget_usd" in kw:
@@ -313,6 +526,7 @@ class RunManager:
         self.prices = prices or {}
         self.langs = langs
         self.workers: dict[int, RunWorker] = {}
+        self.on_milestone = None       # called when a run comes to rest (finished, paused, failed)
         self.db.pause_running_runs()
 
     def worker(self, run_id: int) -> RunWorker:
@@ -332,6 +546,7 @@ class RunManager:
         p = default_params(spec)
         p.update(clean_params(spec, params))
         cfg = merged_config(spec, config)
+        cfg["schedule"] = draw_schedule(chance_events(spec), cfg["seed"], cfg["ticks"]) if cfg.get("chance") else None
         n = len(self.db.runs_for_world(world_id)) + 1
         run_id = self.db.create_run(world_id, name or f"Run {n}", cfg, p)
         w = self.worker(run_id)
@@ -355,6 +570,11 @@ class RunManager:
             if k in DEFAULT_CONFIG and v is not None:
                 cfg[k] = v
         cfg = merged_config(world["spec"], cfg)
+        if cfg.get("schedule"):                    # the branch meets the same events; those after the fork have not happened yet
+            cfg["schedule"] = [{k: v for k, v in s.items() if k != "prev" or s["tick"] <= tick} for s in cfg["schedule"]]
+        for memory in ("told", "life"):            # what single residents heard or lived through after the fork point is not theirs yet
+            if cfg.get(memory):
+                cfg[memory] = {k: [x for x in v if x.get("at", 0) <= tick] for k, v in cfg[memory].items()}
         n = len(self.db.runs_for_world(src["world_id"])) + 1
         new_id = self.db.create_run(src["world_id"], name or f"Run {n} (fork of {src['name']} @ {tick})",
                                     cfg, snap["params"], parent=run_id, fork_tick=tick)
@@ -379,31 +599,11 @@ class RunManager:
                     w.task.cancel()
             await w.close()
 
-    @property
-    def busy(self) -> bool:
-        return any(w.lock.locked() or (
-            w.task is not None and not w.task.done() and (w.wake.is_set() or w.want != "paused")
-        ) for w in self.workers.values())
-
-    async def discard_workers(self) -> None:
-        """Discard idle workers and their cached snapshots after a database restore."""
-        workers = list(self.workers.values())
-        self.workers.clear()
-        await asyncio.gather(*(self._discard(w) for w in workers))
-
-    @staticmethod
-    async def _discard(w: RunWorker) -> None:
-        if w.task is not None and not w.task.done():
-            w.task.cancel()
-            await asyncio.gather(w.task, return_exceptions=True)
-        async with w.lock:
-            await w.close()
-
-    async def delete_run(self, run_id: int) -> None:
-        w = self.workers.get(run_id)
+    def delete_run(self, run_id: int) -> None:
+        w = self.workers.pop(run_id, None)
         if w:
-            await self._discard(w)
-            self.workers.pop(run_id, None)
+            w.want = "stopped"
+            w.wake.set()
         self.db.delete_run(run_id)
 
 

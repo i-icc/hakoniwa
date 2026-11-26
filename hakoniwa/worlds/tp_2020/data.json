@@ -1,0 +1,4804 @@
+{
+ "households": [
+  {
+   "id": 0,
+   "name": {
+    "en": "Yuta Matsumoto",
+    "ja": "松本 雄太"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.36,
+   "conformity": 0.65,
+   "trust": 0.68,
+   "shop_gap": 3,
+   "start_stock": 16,
+   "story": "Yuta Matsumoto and his wife are a retired couple who drive to nearby shops and check Twitter throughout the day. He tends to wait for reliable updates, but if neighbours start buying extra, he will pick up a little more too."
+  },
+  {
+   "id": 1,
+   "name": {
+    "en": "Tomoko Inoue",
+    "ja": "井上 智子"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "works shifts at a hospital",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.57,
+   "conformity": 0.47,
+   "trust": 0.44,
+   "shop_gap": 7,
+   "start_stock": 14,
+   "story": "Tomoko Inoue lives alone and works hospital shifts, so her meals and errands follow an irregular schedule. LINE rumours from friends can unsettle her, though she usually checks with someone she trusts before changing her plans."
+  },
+  {
+   "id": 2,
+   "name": {
+    "en": "Takashi Yamamoto",
+    "ja": "山本 隆"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "factory worker on rotating shifts",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.47,
+   "conformity": 0.42,
+   "trust": 0.7,
+   "shop_gap": 2,
+   "start_stock": 2,
+   "story": "Takashi Yamamoto lives alone in a small town and works rotating shifts at a factory, where shopping options are limited to one supermarket and one drugstore. He checks Twitter often but generally trusts official updates, so he stays practical when shelves are bare rather than joining a rush."
+  },
+  {
+   "id": 3,
+   "name": {
+    "en": "Tomoko Kimura",
+    "ja": "木村 智子"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.48,
+   "conformity": 0.5,
+   "trust": 0.69,
+   "shop_gap": 3,
+   "start_stock": 13,
+   "story": "Tomoko Kimura and her husband are retired and live in a small city-centre flat with little room to store extras. They watch the news at set times and usually keep to their normal shopping routine, even when reports of shortages make them uneasy."
+  },
+  {
+   "id": 4,
+   "name": {
+    "en": "Akiko Kato",
+    "ja": "加藤 明子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.47,
+   "conformity": 0.29,
+   "trust": 0.36,
+   "shop_gap": 3,
+   "start_stock": 4,
+   "story": "Akiko Kato lives alone in a small city-centre flat and gets much of her news through family and friends on LINE. She is wary of both forwarded rumours and official reassurances, and prefers to decide for herself rather than follow a crowd."
+  },
+  {
+   "id": 5,
+   "name": {
+    "en": "Daisuke Takahashi",
+    "ja": "高橋 大輔"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "care worker",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.33,
+   "conformity": 0.53,
+   "trust": 0.95,
+   "shop_gap": 1,
+   "start_stock": 10,
+   "story": "Daisuke Takahashi and his partner care for a small child, and he works as a care worker while they shop by car nearby. He trusts official guidance and stays calm when supplies run low, sometimes checking whether neighbours with young children need help."
+  },
+  {
+   "id": 6,
+   "name": {
+    "en": "Tomoko Hayashi",
+    "ja": "林 智子"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "public servant at the town hall",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.72,
+   "conformity": 0.67,
+   "trust": 0.71,
+   "shop_gap": 4,
+   "start_stock": 12,
+   "story": "Tomoko Hayashi works at the town hall and checks Twitter often between errands from her suburban home. Worries spread quickly for her, and she may follow a buying trend before looking for a clear official explanation."
+  },
+  {
+   "id": 7,
+   "name": {
+    "en": "Yuta Kimura",
+    "ja": "木村 雄太"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "care worker",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.33,
+   "conformity": 0.68,
+   "trust": 0.33,
+   "shop_gap": 5,
+   "start_stock": 8,
+   "story": "Yuta Kimura and his partner both work in care and make do with limited storage in their city-centre flat. He distrusts official statements and often doubts media reports too, so he relies on his own observations but can be swayed by a rumour that seems plausible."
+  },
+  {
+   "id": 8,
+   "name": {
+    "en": "Sachiko Takahashi",
+    "ja": "高橋 幸子"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.84,
+   "conformity": 0.78,
+   "trust": 0.95,
+   "shop_gap": 4,
+   "start_stock": 5,
+   "story": "Sachiko Takahashi and her husband are retired, live near shops, and follow Twitter closely. She worries easily and tends to join what others are doing, while taking official assurances seriously; a shortage report can send her out to shop sooner than planned."
+  },
+  {
+   "id": 9,
+   "name": {
+    "en": "Mika Tanaka",
+    "ja": "田中 美香"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.22,
+   "conformity": 0.23,
+   "trust": 0.61,
+   "shop_gap": 4,
+   "start_stock": 3,
+   "story": "Mika Tanaka and her husband are retired and have a short drive to their usual shops. She is unhurried about rumours, checks what is actually available, and remembers how panic buying can make a brief shortage worse."
+  },
+  {
+   "id": 10,
+   "name": {
+    "en": "Keiko Sato",
+    "ja": "佐藤 恵子"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "university student",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.74,
+   "conformity": 0.69,
+   "trust": 0.95,
+   "shop_gap": 3,
+   "start_stock": 3,
+   "story": "Keiko Sato is a university student raising two school-age children with her family, and she checks Twitter many times a day. She worries about keeping the household supplied and is quick to follow a visible shopping trend, though she puts strong faith in official guidance."
+  },
+  {
+   "id": 11,
+   "name": {
+    "en": "Ryo Watanabe",
+    "ja": "渡辺 亮"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.56,
+   "conformity": 0.53,
+   "trust": 0.95,
+   "shop_gap": 7,
+   "start_stock": 13,
+   "story": "Ryo Watanabe lives alone in a small city-centre flat and follows the morning and evening television news. He trusts official announcements and prefers a steady routine, but he may buy a modest extra supply if reports make a shortage sound likely."
+  },
+  {
+   "id": 12,
+   "name": {
+    "en": "Tomoko Hashimoto",
+    "ja": "橋本 智子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.51,
+   "conformity": 0.25,
+   "trust": 0.6,
+   "shop_gap": 5,
+   "start_stock": 9,
+   "story": "Tomoko Hashimoto lives alone in the suburbs and usually gets the news from television. She does not readily follow other shoppers, and when something is missing she is more likely to try another shop later than to stock up."
+  },
+  {
+   "id": 13,
+   "name": {
+    "en": "Yumi Yamada",
+    "ja": "山田 由美"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "care worker",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.71,
+   "conformity": 0.45,
+   "trust": 0.36,
+   "shop_gap": 5,
+   "start_stock": 6,
+   "story": "Yumi Yamada works as a care worker and raises two school-age children with her family in the suburbs. LINE messages can make her anxious, but she is skeptical of official statements and often asks friends what they have seen before acting on a rumour."
+  },
+  {
+   "id": 14,
+   "name": {
+    "en": "Kazuko Yamaguchi",
+    "ja": "山口 和子"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "university student",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.42,
+   "conformity": 0.83,
+   "trust": 0.47,
+   "shop_gap": 7,
+   "start_stock": 9,
+   "story": "Kazuko Yamaguchi and her partner are raising a small child in a town with just one supermarket and one drugstore; she is a university student. She tends to follow what other families are doing, so a shortage rumour on LINE may prompt an early shopping trip even when she is unsure it is true."
+  },
+  {
+   "id": 15,
+   "name": {
+    "en": "Shota Inoue",
+    "ja": "井上 翔太"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.58,
+   "conformity": 0.32,
+   "trust": 0.68,
+   "shop_gap": 3,
+   "start_stock": 13,
+   "story": "Shota Inoue lives alone in the suburbs and gets most news from morning and evening television. Having lived through past shortages, he dislikes panic buying and is inclined to wait calmly or make do with what he has."
+  },
+  {
+   "id": 16,
+   "name": {
+    "en": "Yuta Hayashi",
+    "ja": "林 雄太"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.81,
+   "conformity": 0.64,
+   "trust": 0.74,
+   "shop_gap": 4,
+   "start_stock": 11,
+   "story": "Yuta Hayashi is retired and helps care for two school-age children in his suburban household, with shops a short drive away. He worries about the family’s needs and takes official updates seriously, but messages from others can still persuade him to buy extra as a precaution."
+  },
+  {
+   "id": 17,
+   "name": {
+    "en": "Akiko Sato",
+    "ja": "佐藤 明子"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "factory worker on rotating shifts",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.49,
+   "conformity": 0.48,
+   "trust": 0.49,
+   "shop_gap": 7,
+   "start_stock": 10,
+   "story": "Akiko Sato works rotating shifts at a factory and raises two school-age children with her family in a small city-centre flat. With little storage, she cannot stock much; she listens to television reports but is cautious about treating every shortage rumour as fact."
+  },
+  {
+   "id": 18,
+   "name": {
+    "en": "Tomoko Yoshida",
+    "ja": "吉田 智子"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "part-time job at a supermarket",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.68,
+   "conformity": 0.26,
+   "trust": 0.9,
+   "shop_gap": 7,
+   "start_stock": 14,
+   "story": "Tomoko Yoshida lives alone in a small city-centre flat and works part-time at a supermarket, so she sees how quickly shelves change. She trusts official information but does not follow a crowd, and she tends to explain what she has observed rather than spread unverified rumours."
+  },
+  {
+   "id": 19,
+   "name": {
+    "en": "Ayumi Hayashi",
+    "ja": "林 あゆみ"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.23,
+   "conformity": 0.52,
+   "trust": 0.5,
+   "shop_gap": 4,
+   "start_stock": 6,
+   "story": "Ayumi Hayashi lives alone in the suburbs and often hears news from family and friends on LINE. She is generally calm and does not rush to copy other shoppers, preferring to ask whether a report is credible before changing her routine."
+  },
+  {
+   "id": 20,
+   "name": {
+    "en": "Daisuke Hayashi",
+    "ja": "林 大輔"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "care worker",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.28,
+   "conformity": 0.6,
+   "trust": 0.34,
+   "shop_gap": 2,
+   "start_stock": 15,
+   "story": "Daisuke Hayashi lives alone in a small city-centre flat and works long days caring for older people. He checks Twitter between shifts, but distrusts dramatic posts and usually waits before changing his shopping habits."
+  },
+  {
+   "id": 21,
+   "name": {
+    "en": "Mika Tanaka",
+    "ja": "田中 美香"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "factory worker on rotating shifts",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.72,
+   "conformity": 0.95,
+   "trust": 0.61,
+   "shop_gap": 4,
+   "start_stock": 14,
+   "story": "Mika Tanaka and her partner juggle rotating factory shifts while caring for their small child in a town with few shops. She worries easily and, if neighbours start buying extra supplies, tends to follow along rather than risk being caught short."
+  },
+  {
+   "id": 22,
+   "name": {
+    "en": "Keiko Ito",
+    "ja": "伊藤 恵子"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.42,
+   "conformity": 0.43,
+   "trust": 0.62,
+   "shop_gap": 5,
+   "start_stock": 11,
+   "story": "Keiko Ito and her retired partner live in a compact city flat and often hear family news through LINE. They stay fairly calm when shelves look bare, remembering that shortages can pass, and share practical advice rather than spreading alarming claims."
+  },
+  {
+   "id": 23,
+   "name": {
+    "en": "Tomoko Nakamura",
+    "ja": "中村 智子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.77,
+   "conformity": 0.37,
+   "trust": 0.42,
+   "shop_gap": 4,
+   "start_stock": 12,
+   "story": "Tomoko Nakamura lives alone in a small town and relies mostly on the morning and evening television news. After living through past shortages, she worries when familiar goods disappear but prefers to shop steadily instead of joining a rush."
+  },
+  {
+   "id": 24,
+   "name": {
+    "en": "Misaki Kimura",
+    "ja": "木村 美咲"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "runs a small shop",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.46,
+   "conformity": 0.34,
+   "trust": 0.59,
+   "shop_gap": 5,
+   "start_stock": 14,
+   "story": "Misaki Kimura and her partner run a small shop in a town with only a couple of main stores. She checks Twitter often but is independent-minded, and tries to reassure customers with what she can actually verify rather than repeating rumours."
+  },
+  {
+   "id": 25,
+   "name": {
+    "en": "Yuta Sasaki",
+    "ja": "佐々木 雄太"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "works shifts at a hospital",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.35,
+   "conformity": 0.6,
+   "trust": 0.74,
+   "shop_gap": 3,
+   "start_stock": 13,
+   "story": "Yuta Sasaki lives alone in the suburbs and works hospital shifts, so his days are planned around odd hours and quick drives to the shops. He trusts official updates more than chatter and stays measured if something is temporarily unavailable."
+  },
+  {
+   "id": 26,
+   "name": {
+    "en": "Keiko Kato",
+    "ja": "加藤 恵子"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.35,
+   "conformity": 0.45,
+   "trust": 0.64,
+   "shop_gap": 2,
+   "start_stock": 7,
+   "story": "Keiko Kato and her retired partner drive to nearby shops and keep up with local chatter on Twitter. They are fairly calm about shortages, comparing reports before deciding whether anything needs to change in their routine."
+  },
+  {
+   "id": 27,
+   "name": {
+    "en": "Daisuke Sato",
+    "ja": "佐藤 大輔"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "factory worker on rotating shifts",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.1,
+   "conformity": 0.2,
+   "trust": 0.57,
+   "shop_gap": 4,
+   "start_stock": 12,
+   "story": "Daisuke Sato lives alone in a small city flat and works rotating shifts at a factory. He is unflappable and dislikes being swept along by online excitement, so he buys only what he needs when rumours start spreading."
+  },
+  {
+   "id": 28,
+   "name": {
+    "en": "Kenji Matsumoto",
+    "ja": "松本 健二"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "runs a small shop",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.74,
+   "conformity": 0.52,
+   "trust": 0.41,
+   "shop_gap": 5,
+   "start_stock": 2,
+   "story": "Kenji Matsumoto lives alone above or near the small shop he runs in the city centre, with little room for supplies at home. He watches television closely but worries easily and may buy extra when shelves thin, even while doubting the explanations he hears."
+  },
+  {
+   "id": 29,
+   "name": {
+    "en": "Haruto Kobayashi",
+    "ja": "小林 陽斗"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.74,
+   "conformity": 0.53,
+   "trust": 0.48,
+   "shop_gap": 4,
+   "start_stock": 4,
+   "story": "Haruto Kobayashi and their partner are retired in a small town where shopping choices are limited, and they rarely follow the news. When neighbours mention a shortage, they can become anxious and copy the crowd, though neither has checked the story carefully."
+  },
+  {
+   "id": 30,
+   "name": {
+    "en": "Ryo Ishikawa",
+    "ja": "石川 亮"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "university student",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.3,
+   "conformity": 0.58,
+   "trust": 0.46,
+   "shop_gap": 5,
+   "start_stock": 3,
+   "story": "Ryo Ishikawa lives with a partner and two school-age children in a small city flat, while studying at university. He checks Twitter often but stays fairly composed, using it to compare reports before deciding what the family actually needs."
+  },
+  {
+   "id": 31,
+   "name": {
+    "en": "Osamu Nakamura",
+    "ja": "中村 修"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "freelance, works from home",
+   "area": "city centre, small flat, little storage",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.18,
+   "conformity": 0.5,
+   "trust": 0.82,
+   "shop_gap": 3,
+   "start_stock": 9,
+   "story": "Osamu Nakamura works freelance from home while raising two school-age children with a partner in a compact city flat. He trusts official information and, when rumours travel through LINE, gently asks relatives to check before forwarding them."
+  },
+  {
+   "id": 32,
+   "name": {
+    "en": "Ayumi Tanaka",
+    "ja": "田中 あゆみ"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "public servant at the town hall",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.78,
+   "conformity": 0.67,
+   "trust": 0.34,
+   "shop_gap": 5,
+   "start_stock": 12,
+   "story": "Ayumi Tanaka lives alone in the suburbs and works at the town hall, with shops a short drive away. She worries readily and is wary of official assurances, so a rumour can prompt her to make cautious extra purchases even if she does not fully believe it."
+  },
+  {
+   "id": 33,
+   "name": {
+    "en": "Misaki Ishikawa",
+    "ja": "石川 美咲"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.89,
+   "conformity": 0.18,
+   "trust": 0.55,
+   "shop_gap": 5,
+   "start_stock": 4,
+   "story": "Misaki Ishikawa and her partner are retired and drive to nearby shops for errands. She is easily unsettled but strongly dislikes following the crowd, so she may fret over a rumour while refusing to join a sudden buying rush."
+  },
+  {
+   "id": 34,
+   "name": {
+    "en": "Takashi Kato",
+    "ja": "加藤 隆"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "freelance, works from home",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.5,
+   "conformity": 0.43,
+   "trust": 0.65,
+   "shop_gap": 7,
+   "start_stock": 3,
+   "story": "Takashi Kato lives alone in the suburbs, works from home as a freelancer, and often hears local updates through LINE. He is practical and moderately trusting, checking with people he knows before reacting to claims about empty shelves."
+  },
+  {
+   "id": 35,
+   "name": {
+    "en": "Yuta Matsumoto",
+    "ja": "松本 雄太"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.57,
+   "conformity": 0.82,
+   "trust": 0.66,
+   "shop_gap": 2,
+   "start_stock": 15,
+   "story": "Yuta Matsumoto and his retired partner live in a small town with limited shopping options and watch television news regularly. They remember earlier shortages and, being inclined to follow the community, may shop a little earlier when others begin to worry."
+  },
+  {
+   "id": 36,
+   "name": {
+    "en": "Hiroshi Sasaki",
+    "ja": "佐々木 浩"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.58,
+   "conformity": 0.74,
+   "trust": 0.68,
+   "shop_gap": 5,
+   "start_stock": 5,
+   "story": "Hiroshi Sasaki and his retired partner drive to nearby shops and pay little attention to daily news. They are cautious but not easily panicked, and tend to rely on familiar routines and official guidance rather than neighbourhood speculation."
+  },
+  {
+   "id": 37,
+   "name": {
+    "en": "Ayumi Ikeda",
+    "ja": "池田 あゆみ"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "freelance, works from home",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.38,
+   "conformity": 0.48,
+   "trust": 0.36,
+   "shop_gap": 1,
+   "start_stock": 6,
+   "story": "Ayumi Ikeda lives alone in a small city flat and freelances from home, checking Twitter throughout the day. She is skeptical of both media and viral posts, so she looks for firsthand confirmation before deciding whether a shortage is real."
+  },
+  {
+   "id": 38,
+   "name": {
+    "en": "Kazuko Yoshida",
+    "ja": "吉田 和子"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "care worker",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.48,
+   "conformity": 0.3,
+   "trust": 0.6,
+   "shop_gap": 7,
+   "start_stock": 3,
+   "story": "Kazuko Yoshida lives alone in a small town and works as a care worker, often hearing family updates through LINE. She stays relatively independent when rumours spread and would rather check supplies herself than follow a crowd."
+  },
+  {
+   "id": 39,
+   "name": {
+    "en": "Mika Suzuki",
+    "ja": "鈴木 美香"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "works shifts at a hospital",
+   "area": "suburb, shops within a short drive",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.68,
+   "conformity": 0.42,
+   "trust": 0.64,
+   "shop_gap": 5,
+   "start_stock": 10,
+   "story": "Mika Suzuki and her partner work shifts at a hospital and drive to shops in the suburbs between work and rest. She worries about disruption but pays little attention to news, so she may ask trusted people for advice rather than act on every rumour."
+  },
+  {
+   "id": 40,
+   "name": {
+    "en": "Hiroshi Takahashi",
+    "ja": "高橋 浩"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.41,
+   "conformity": 0.95,
+   "trust": 0.56,
+   "shop_gap": 5,
+   "start_stock": 11,
+   "story": "Hiroshi and his wife are retired and drive to shops nearby, with Twitter often open during the day. They tend to follow what other shoppers are doing when a product runs short, though they are not easily alarmed by every rumour."
+  },
+  {
+   "id": 41,
+   "name": {
+    "en": "Sachiko Sasaki",
+    "ja": "佐々木 幸子"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.43,
+   "conformity": 0.37,
+   "trust": 0.79,
+   "shop_gap": 3,
+   "start_stock": 11,
+   "story": "Sachiko and her husband live in a small city-centre flat, so they shop often and keep little запас space at home. She checks Twitter but prefers official updates, and usually makes her own choice rather than joining a rush."
+  },
+  {
+   "id": 42,
+   "name": {
+    "en": "Yuta Suzuki",
+    "ja": "鈴木 雄太"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.42,
+   "conformity": 0.5,
+   "trust": 0.95,
+   "shop_gap": 2,
+   "start_stock": 16,
+   "story": "Yuta and his wife are retired, and family messages on LINE are part of their daily routine. He trusts reliable public updates and stays composed when shelves thin, while passing along only what he thinks is credible."
+  },
+  {
+   "id": 43,
+   "name": {
+    "en": "Osamu Hayashi",
+    "ja": "林 修"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "runs a small shop",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.22,
+   "conformity": 0.62,
+   "trust": 0.76,
+   "shop_gap": 3,
+   "start_stock": 8,
+   "story": "Osamu and his wife raise two school-age children while running a small-town shop, where they see customers’ habits firsthand. He stays practical when stock runs low, follows sensible local guidance, and avoids amplifying online rumours."
+  },
+  {
+   "id": 44,
+   "name": {
+    "en": "Kazuko Yamaguchi",
+    "ja": "山口 和子"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "works shifts at a hospital",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.42,
+   "conformity": 0.28,
+   "trust": 0.55,
+   "shop_gap": 3,
+   "start_stock": 11,
+   "story": "Kazuko lives alone and works hospital shifts, often fitting errands around an irregular schedule. She watches the evening news but likes to judge for herself, so she buys what she needs without copying a sudden crowd."
+  },
+  {
+   "id": 45,
+   "name": {
+    "en": "Misaki Hashimoto",
+    "ja": "橋本 美咲"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "factory worker on rotating shifts",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.56,
+   "conformity": 0.6,
+   "trust": 0.2,
+   "shop_gap": 5,
+   "start_stock": 5,
+   "story": "Misaki and her partner work rotating factory shifts and live in a compact flat with little room for extra supplies. She worries when shelves empty and distrusts official reassurances, so rumours can make her buy ahead of others."
+  },
+  {
+   "id": 46,
+   "name": {
+    "en": "Kazuko Nakamura",
+    "ja": "中村 和子"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "office worker with a long commute",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.33,
+   "conformity": 0.69,
+   "trust": 0.43,
+   "shop_gap": 2,
+   "start_stock": 10,
+   "story": "Kazuko and her partner juggle a long commute and caring for their small child, coordinating errands through family LINE chats. She tends to follow relatives’ lead when something is scarce, but checks claims before passing rumours on."
+  },
+  {
+   "id": 47,
+   "name": {
+    "en": "Sachiko Watanabe",
+    "ja": "渡辺 幸子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.44,
+   "conformity": 0.38,
+   "trust": 0.3,
+   "shop_gap": 2,
+   "start_stock": 2,
+   "story": "Sachiko lives alone in the suburbs and checks Twitter repeatedly between ordinary errands. She remembers shelves clearing in the past, distrusts sweeping claims, and would rather visit another shop than join a panic-buying crowd."
+  },
+  {
+   "id": 48,
+   "name": {
+    "en": "Keiko Abe",
+    "ja": "阿部 恵子"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "university student",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.67,
+   "conformity": 0.76,
+   "trust": 0.42,
+   "shop_gap": 5,
+   "start_stock": 12,
+   "story": "Keiko and her partner are students living in the suburbs, and messages from friends on LINE shape their plans. She worries easily and is likely to stock up when people around her say supplies are running low."
+  },
+  {
+   "id": 49,
+   "name": {
+    "en": "Makoto Nakamura",
+    "ja": "中村 誠"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.35,
+   "conformity": 0.72,
+   "trust": 0.73,
+   "shop_gap": 3,
+   "start_stock": 10,
+   "story": "Makoto and his wife are retired in a small town with only one supermarket and one drugstore. They watch the news, remember how limited local choices can be, and calmly buy a little extra when neighbours do the same."
+  },
+  {
+   "id": 50,
+   "name": {
+    "en": "Ryo Abe",
+    "ja": "阿部 亮"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.5,
+   "conformity": 0.68,
+   "trust": 0.82,
+   "shop_gap": 2,
+   "start_stock": 16,
+   "story": "Ryo and his wife live in a small city-centre flat and rely on nearby shops for frequent, modest grocery trips. He trusts television reports and tends to follow the crowd when a shortage is reported, without making a large stockpile."
+  },
+  {
+   "id": 51,
+   "name": {
+    "en": "Haruto Sato",
+    "ja": "佐藤 陽斗"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.78,
+   "conformity": 0.39,
+   "trust": 0.77,
+   "shop_gap": 5,
+   "start_stock": 11,
+   "story": "Haruto lives alone in a small city-centre flat and pays little attention to the news. He can become anxious when a familiar item is missing, but is not inclined to follow rumours or copy other shoppers."
+  },
+  {
+   "id": 52,
+   "name": {
+    "en": "Mika Yamada",
+    "ja": "山田 美香"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "university student",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.58,
+   "conformity": 0.34,
+   "trust": 0.88,
+   "shop_gap": 4,
+   "start_stock": 14,
+   "story": "Mika and her partner are students raising two school-age children in the suburbs, with errands usually made by car. She trusts official guidance, but worries about keeping the household supplied and may buy extra if others do."
+  },
+  {
+   "id": 53,
+   "name": {
+    "en": "Osamu Ikeda",
+    "ja": "池田 修"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "stays home with the children",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.51,
+   "conformity": 0.49,
+   "trust": 0.26,
+   "shop_gap": 3,
+   "start_stock": 13,
+   "story": "Osamu stays home with a small child in a compact city-centre flat and checks Twitter throughout the day. He is wary of media claims and does not automatically follow a crowd, though alarming rumours can make him uneasy."
+  },
+  {
+   "id": 54,
+   "name": {
+    "en": "Mika Kato",
+    "ja": "加藤 美香"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.69,
+   "conformity": 0.49,
+   "trust": 0.75,
+   "shop_gap": 4,
+   "start_stock": 5,
+   "story": "Mika and her husband are retired in a small town where shopping options are limited, and relatives keep in touch on LINE. She worries about shortages and listens closely to family advice, while trusting official updates more than unverified messages."
+  },
+  {
+   "id": 55,
+   "name": {
+    "en": "Hiroshi Yoshida",
+    "ja": "吉田 浩"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "office worker with a long commute",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.7,
+   "conformity": 0.78,
+   "trust": 0.95,
+   "shop_gap": 1,
+   "start_stock": 2,
+   "story": "Hiroshi and his partner balance a long commute with caring for their small child, often coordinating shopping through LINE. He trusts official information and readily follows family advice, but may buy extra when relatives warn of a shortage."
+  },
+  {
+   "id": 56,
+   "name": {
+    "en": "Misaki Yamada",
+    "ja": "山田 美咲"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "runs a small shop",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.7,
+   "conformity": 0.37,
+   "trust": 0.28,
+   "shop_gap": 4,
+   "start_stock": 6,
+   "story": "Misaki and her partner run a small shop while raising two school-age children in the suburbs. She is anxious but distrustful of news reports, so she relies on what she sees locally and can be stubborn when rumours circulate."
+  },
+  {
+   "id": 57,
+   "name": {
+    "en": "Kenji Ito",
+    "ja": "伊藤 健二"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "university student",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.58,
+   "conformity": 0.44,
+   "trust": 0.51,
+   "shop_gap": 2,
+   "start_stock": 13,
+   "story": "Kenji lives alone in a small city-centre flat and fits shopping around university and evening routines. He watches television but is cautious about following a rush, preferring to wait for clearer information when rumours spread."
+  },
+  {
+   "id": 58,
+   "name": {
+    "en": "Misaki Matsumoto",
+    "ja": "松本 美咲"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "works shifts at a hospital",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.57,
+   "conformity": 0.34,
+   "trust": 0.95,
+   "shop_gap": 3,
+   "start_stock": 4,
+   "story": "Misaki lives alone and works hospital shifts, so she plans errands around an unpredictable schedule. She trusts official updates but prefers to make her own decisions, staying measured when shops run short."
+  },
+  {
+   "id": 59,
+   "name": {
+    "en": "Yumi Yamaguchi",
+    "ja": "山口 由美"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.45,
+   "conformity": 0.28,
+   "trust": 0.62,
+   "shop_gap": 7,
+   "start_stock": 15,
+   "story": "Yumi and her husband are retired and drive to nearby shops, while family messages on LINE keep them connected. She is relatively self-reliant, remembers earlier shortages, and checks a claim before deciding whether to buy extra."
+  },
+  {
+   "id": 60,
+   "name": {
+    "en": "Makoto Shimizu",
+    "ja": "清水 誠"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "sales rep who drives all day",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.62,
+   "conformity": 0.95,
+   "trust": 0.73,
+   "shop_gap": 5,
+   "start_stock": 16,
+   "story": "Makoto Shimizu and their spouse share a suburban home; Makoto spends long days driving between sales calls and checks Twitter at every stop. They worry when shelves thin and tend to follow the crowd, but official updates usually reassure them."
+  },
+  {
+   "id": 61,
+   "name": {
+    "en": "Naoko Inoue",
+    "ja": "井上 直子"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "freelance, works from home",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.45,
+   "conformity": 0.47,
+   "trust": 0.53,
+   "shop_gap": 2,
+   "start_stock": 11,
+   "story": "Naoko Inoue works freelance from home in a small town where the supermarket and drugstore are her only nearby options. She checks Twitter often but weighs posts for herself, and usually waits for clear signs before changing her routine."
+  },
+  {
+   "id": 62,
+   "name": {
+    "en": "Kenji Kobayashi",
+    "ja": "小林 健二"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "university student",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.17,
+   "conformity": 0.21,
+   "trust": 0.61,
+   "shop_gap": 2,
+   "start_stock": 7,
+   "story": "Kenji Kobayashi is a university student raising two school-age children with a partner in a small city-centre flat. Morning and evening TV are his main news, and he stays calm about shortages, buying only what the family can store."
+  },
+  {
+   "id": 63,
+   "name": {
+    "en": "Kenji Ito",
+    "ja": "伊藤 健二"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "public servant at the town hall",
+   "area": "suburb, shops within a short drive",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.36,
+   "conformity": 0.59,
+   "trust": 0.64,
+   "shop_gap": 3,
+   "start_stock": 9,
+   "story": "Kenji Ito and his spouse live in the suburbs, and his town-hall work keeps him focused on practical schedules rather than headlines. He is fairly willing to follow common guidance and trusts official notices, so rumours rarely change his shopping habits."
+  },
+  {
+   "id": 64,
+   "name": {
+    "en": "Misaki Yamada",
+    "ja": "山田 美咲"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "freelance, works from home",
+   "area": "city centre, small flat, little storage",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.46,
+   "conformity": 0.59,
+   "trust": 0.56,
+   "shop_gap": 3,
+   "start_stock": 12,
+   "story": "Misaki Yamada works freelance from a compact city-centre flat and pays little attention to news. She is somewhat inclined to go along with others if a shelf is empty, but prefers not to make a fuss or stock up."
+  },
+  {
+   "id": 65,
+   "name": {
+    "en": "Hiroshi Watanabe",
+    "ja": "渡辺 浩"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "factory worker on rotating shifts",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.4,
+   "conformity": 0.73,
+   "trust": 0.86,
+   "shop_gap": 2,
+   "start_stock": 14,
+   "story": "Hiroshi Watanabe lives alone in a small flat and fits factory shifts around brief TV news updates. He trusts official reports and tends to follow the advice he hears, making a modest extra purchase if shops run short."
+  },
+  {
+   "id": 66,
+   "name": {
+    "en": "Ryo Sato",
+    "ja": "佐藤 亮"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.5,
+   "conformity": 0.46,
+   "trust": 0.95,
+   "shop_gap": 5,
+   "start_stock": 8,
+   "story": "Ryo Sato is a retired suburban resident who watches the evening news and drives to nearby shops when needed. Having lived through lean times before, he keeps a sensible reserve and trusts official guidance more than circulating rumours."
+  },
+  {
+   "id": 67,
+   "name": {
+    "en": "Keiko Ishikawa",
+    "ja": "石川 恵子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.37,
+   "conformity": 0.37,
+   "trust": 0.49,
+   "shop_gap": 5,
+   "start_stock": 7,
+   "story": "Keiko Ishikawa is retired and lives alone in a small town with just one supermarket and one drugstore. She pays little attention to news, shops by habit, and is slow to join a rush even when neighbours repeat a rumour."
+  },
+  {
+   "id": 68,
+   "name": {
+    "en": "Yumi Yamaguchi",
+    "ja": "山口 由美"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.44,
+   "conformity": 0.34,
+   "trust": 0.65,
+   "shop_gap": 1,
+   "start_stock": 14,
+   "story": "Yumi Yamaguchi is retired and lives in a compact city-centre flat, where she checks Twitter throughout the day. She does not readily follow a crowd, and compares claims before deciding whether a shortage is real."
+  },
+  {
+   "id": 69,
+   "name": {
+    "en": "Mika Ikeda",
+    "ja": "池田 美香"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "factory worker on rotating shifts",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.55,
+   "conformity": 0.79,
+   "trust": 0.86,
+   "shop_gap": 3,
+   "start_stock": 2,
+   "story": "Mika Ikeda and her partner raise a small child in the suburbs while she works rotating factory shifts. Twitter keeps her alert, and when supplies look scarce she is likely to buy a little extra and follow trusted official advice."
+  },
+  {
+   "id": 70,
+   "name": {
+    "en": "Takashi Hayashi",
+    "ja": "林 隆"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "freelance, works from home",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.74,
+   "conformity": 0.8,
+   "trust": 0.69,
+   "shop_gap": 5,
+   "start_stock": 5,
+   "story": "Takashi Hayashi and his spouse both work freelance from a small city-centre flat with little room for storage. He worries easily and checks Twitter often, so rumours can prompt an early shopping trip even though he generally trusts official statements."
+  },
+  {
+   "id": 71,
+   "name": {
+    "en": "Daisuke Yamada",
+    "ja": "山田 大輔"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "runs a small shop",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.55,
+   "conformity": 0.52,
+   "trust": 0.51,
+   "shop_gap": 1,
+   "start_stock": 12,
+   "story": "Daisuke Yamada lives alone and runs a small suburban shop, checking Twitter between serving customers. He watches stock closely and may hold back supplies for his business rather than join a rush, while treating rumours with caution."
+  },
+  {
+   "id": 72,
+   "name": {
+    "en": "Osamu Kato",
+    "ja": "加藤 修"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "university student",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.47,
+   "conformity": 0.35,
+   "trust": 0.84,
+   "shop_gap": 2,
+   "start_stock": 10,
+   "story": "Osamu Kato and his partner are university students raising a small child in a cramped city-centre flat. He checks Twitter but is not much of a follower, and relies on official information before deciding whether a reported shortage needs action."
+  },
+  {
+   "id": 73,
+   "name": {
+    "en": "Keiko Watanabe",
+    "ja": "渡辺 恵子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.31,
+   "conformity": 0.46,
+   "trust": 0.47,
+   "shop_gap": 2,
+   "start_stock": 15,
+   "story": "Keiko Watanabe is retired and lives alone in a small city-centre flat, getting most news from television. She is not easily alarmed and tends to wait for solid information rather than copy a sudden rush."
+  },
+  {
+   "id": 74,
+   "name": {
+    "en": "Sachiko Yamada",
+    "ja": "山田 幸子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.52,
+   "conformity": 0.52,
+   "trust": 0.69,
+   "shop_gap": 3,
+   "start_stock": 13,
+   "story": "Sachiko Yamada is retired and lives alone in a compact flat, checking Twitter many times a day. She can become uneasy when shelves empty and may buy extra, though she usually gives official updates considerable weight."
+  },
+  {
+   "id": 75,
+   "name": {
+    "en": "Takashi Hashimoto",
+    "ja": "橋本 隆"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "factory worker on rotating shifts",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.27,
+   "conformity": 0.28,
+   "trust": 0.65,
+   "shop_gap": 7,
+   "start_stock": 12,
+   "story": "Takashi Hashimoto lives alone in a small town and works rotating factory shifts, hearing most updates from family and friends on LINE. He is not easily swayed by a crowd and checks what he can before acting on a shortage story."
+  },
+  {
+   "id": 76,
+   "name": {
+    "en": "Yuta Watanabe",
+    "ja": "渡辺 雄太"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "freelance, works from home",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.77,
+   "conformity": 0.36,
+   "trust": 0.74,
+   "shop_gap": 3,
+   "start_stock": 2,
+   "story": "Yuta Watanabe and his spouse work freelance from home in a small town with few shops. He worries a lot but dislikes following the crowd, so he checks supplies himself and may quietly set aside essentials when rumours spread."
+  },
+  {
+   "id": 77,
+   "name": {
+    "en": "Tomoko Ikeda",
+    "ja": "池田 智子"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "sales rep who drives all day",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.61,
+   "conformity": 0.58,
+   "trust": 0.47,
+   "shop_gap": 2,
+   "start_stock": 7,
+   "story": "Tomoko Ikeda and her spouse live in the suburbs, where her sales job keeps her on the road most of the day. She watches TV news but is wary of official assurances, and may ask around locally before deciding how to respond to an empty shelf."
+  },
+  {
+   "id": 78,
+   "name": {
+    "en": "Shota Kobayashi",
+    "ja": "小林 翔太"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "part-time job at a supermarket",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.85,
+   "conformity": 0.23,
+   "trust": 0.5,
+   "shop_gap": 3,
+   "start_stock": 10,
+   "story": "Shota Kobayashi works part-time at a supermarket while raising two school-age children with a partner in the suburbs. Seeing stock levels firsthand can make him anxious, but he resists copying other shoppers and tries to keep enough for his family without overbuying."
+  },
+  {
+   "id": 79,
+   "name": {
+    "en": "Osamu Matsumoto",
+    "ja": "松本 修"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "university student",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.28,
+   "conformity": 0.49,
+   "trust": 0.52,
+   "shop_gap": 1,
+   "start_stock": 15,
+   "story": "Osamu Matsumoto is a university student living alone in a small city-centre flat with little storage. He gets most news from TV and is not quick to panic, usually buying only what fits his budget and space when a rumour circulates."
+  },
+  {
+   "id": 80,
+   "name": {
+    "en": "Makoto Tanaka",
+    "ja": "田中 誠"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.61,
+   "conformity": 0.33,
+   "trust": 0.32,
+   "shop_gap": 3,
+   "start_stock": 15,
+   "story": "Makoto Tanaka and his wife are a retired couple in a small city-centre flat with little room to store extras. LINE messages from relatives can make him uneasy, but he distrusts official-sounding claims and usually waits rather than joining a rush to buy things."
+  },
+  {
+   "id": 81,
+   "name": {
+    "en": "Ayumi Yoshida",
+    "ja": "吉田 あゆみ"
+   },
+   "kind": "three generations under one roof",
+   "members": 5,
+   "age": "50s",
+   "work": "sales rep who drives all day",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.51,
+   "conformity": 0.58,
+   "trust": 0.88,
+   "shop_gap": 3,
+   "start_stock": 6,
+   "story": "Ayumi Yoshida shares a home with three generations and spends much of the day driving as a sales representative. She checks Twitter often but puts strong faith in official guidance, so she tends to follow sensible advice when local shops run short."
+  },
+  {
+   "id": 82,
+   "name": {
+    "en": "Keiko Sato",
+    "ja": "佐藤 恵子"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "university student",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.49,
+   "conformity": 0.57,
+   "trust": 0.35,
+   "shop_gap": 3,
+   "start_stock": 10,
+   "story": "Keiko Sato and her partner are raising a small child in a suburb where shops are a short drive away; she is also a university student. She watches the TV news, but is not easily convinced by official reassurances and prefers to buy only what the family needs."
+  },
+  {
+   "id": 83,
+   "name": {
+    "en": "Shota Yamada",
+    "ja": "山田 翔太"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "part-time job at a supermarket",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.71,
+   "conformity": 0.21,
+   "trust": 0.71,
+   "shop_gap": 3,
+   "start_stock": 2,
+   "story": "Shota Yamada lives alone in a small city-centre flat and works part-time at a supermarket, where he sees how quickly shelves can change. Twitter can worry him, but he dislikes being swept along by a crowd and sticks to a modest shopping routine."
+  },
+  {
+   "id": 84,
+   "name": {
+    "en": "Naoko Takahashi",
+    "ja": "高橋 直子"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "office worker with a long commute",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.86,
+   "conformity": 0.65,
+   "trust": 0.52,
+   "shop_gap": 7,
+   "start_stock": 7,
+   "story": "Naoko Takahashi commutes a long way to her office and raises two school-age children with her family in a small flat. She follows Twitter closely and worries easily, so rumours can prompt her to stock up quickly, especially when other parents are doing the same."
+  },
+  {
+   "id": 85,
+   "name": {
+    "en": "Sachiko Yoshida",
+    "ja": "吉田 幸子"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "works shifts at a hospital",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.41,
+   "conformity": 0.32,
+   "trust": 0.47,
+   "shop_gap": 5,
+   "start_stock": 3,
+   "story": "Sachiko Yoshida and her partner work shifts at a hospital and live in a small town with just one supermarket and one drugstore. She stays fairly calm, checks family messages without taking every rumour as fact, and is willing to leave scarce goods for neighbours who need them more."
+  },
+  {
+   "id": 86,
+   "name": {
+    "en": "Makoto Kobayashi",
+    "ja": "小林 誠"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "factory worker on rotating shifts",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.14,
+   "conformity": 0.45,
+   "trust": 0.51,
+   "shop_gap": 3,
+   "start_stock": 16,
+   "story": "Makoto Kobayashi lives alone in the suburbs and works rotating shifts at a factory. He is even-tempered about shortages, watches the TV news now and then, and buys what fits his routine rather than reacting to rumours."
+  },
+  {
+   "id": 87,
+   "name": {
+    "en": "Ayumi Sasaki",
+    "ja": "佐々木 あゆみ"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.37,
+   "conformity": 0.41,
+   "trust": 0.57,
+   "shop_gap": 2,
+   "start_stock": 9,
+   "story": "Ayumi Sasaki is a retired older woman living alone in a suburban home, with shops a short drive away. She pays little attention to news and takes shortages in stride, preferring to ask someone she trusts before changing her habits."
+  },
+  {
+   "id": 88,
+   "name": {
+    "en": "Osamu Tanaka",
+    "ja": "田中 修"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.67,
+   "conformity": 0.28,
+   "trust": 0.31,
+   "shop_gap": 2,
+   "start_stock": 6,
+   "story": "Osamu Tanaka lives with his partner and small child in a suburb, and is listed as retired. TV reports can leave him worried, but he is wary of official claims and tends to make careful, practical choices instead of copying a sudden rush."
+  },
+  {
+   "id": 89,
+   "name": {
+    "en": "Shota Mori",
+    "ja": "森 翔太"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "freelance, works from home",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.65,
+   "conformity": 0.81,
+   "trust": 0.3,
+   "shop_gap": 2,
+   "start_stock": 2,
+   "story": "Shota Mori and his partner work from home in the suburbs, where shops are easy to reach by car. He is doubtful of official statements, yet readily follows what people around him are doing, so a widely repeated rumour may send him shopping with the crowd."
+  },
+  {
+   "id": 90,
+   "name": {
+    "en": "Tomoko Kato",
+    "ja": "加藤 智子"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "public servant at the town hall",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.78,
+   "conformity": 0.25,
+   "trust": 0.55,
+   "shop_gap": 4,
+   "start_stock": 10,
+   "story": "Tomoko Kato lives alone in the suburbs and works at the town hall, where she is used to checking practical details. She worries easily but is not much of a follower; LINE rumours make her uneasy, so she tries to verify them before buying extra supplies."
+  },
+  {
+   "id": 91,
+   "name": {
+    "en": "Makoto Kimura",
+    "ja": "木村 誠"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.27,
+   "conformity": 0.44,
+   "trust": 0.52,
+   "shop_gap": 4,
+   "start_stock": 3,
+   "story": "Makoto Kimura is a retired older man living alone in a compact city-centre flat with little storage. He pays little attention to the news and stays unruffled when something is missing, making do until his next ordinary shopping trip."
+  },
+  {
+   "id": 92,
+   "name": {
+    "en": "Keiko Shimizu",
+    "ja": "清水 恵子"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "factory worker on rotating shifts",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.63,
+   "conformity": 0.71,
+   "trust": 0.34,
+   "shop_gap": 3,
+   "start_stock": 7,
+   "story": "Keiko Shimizu and her partner work rotating factory shifts and live in the suburbs. She checks Twitter frequently and tends to follow what others are doing, but distrusts official assurances, so conflicting rumours can make her cautious and quick to buy a little extra."
+  },
+  {
+   "id": 93,
+   "name": {
+    "en": "Takashi Sato",
+    "ja": "佐藤 隆"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "office worker with a long commute",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.53,
+   "conformity": 0.36,
+   "trust": 0.49,
+   "shop_gap": 7,
+   "start_stock": 7,
+   "story": "Takashi Sato and his partner live in a small town where one supermarket and one drugstore serve the area, and he has a long office commute. They do not follow the news closely, and he prefers to wait out a shortage rather than chase rumours or join a queue."
+  },
+  {
+   "id": 94,
+   "name": {
+    "en": "Akiko Mori",
+    "ja": "森 明子"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "runs a small shop",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.05,
+   "conformity": 0.51,
+   "trust": 0.71,
+   "shop_gap": 3,
+   "start_stock": 3,
+   "story": "Akiko Mori runs a small shop with her partner in the suburbs and keeps a close eye on what customers actually need. She remains calm, trusts reliable official information, and is generous about helping regulars rather than turning a shortage into a chance to hoard."
+  },
+  {
+   "id": 95,
+   "name": {
+    "en": "Ayumi Nakamura",
+    "ja": "中村 あゆみ"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "factory worker on rotating shifts",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.71,
+   "conformity": 0.23,
+   "trust": 0.76,
+   "shop_gap": 3,
+   "start_stock": 10,
+   "story": "Ayumi Nakamura lives alone in a small city-centre flat and works rotating shifts at a factory. She checks Twitter often and can feel anxious when shelves are bare, but trusts well-sourced updates and resists copying dramatic online claims."
+  },
+  {
+   "id": 96,
+   "name": {
+    "en": "Ayumi Mori",
+    "ja": "森 あゆみ"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.55,
+   "conformity": 0.43,
+   "trust": 0.42,
+   "shop_gap": 7,
+   "start_stock": 3,
+   "story": "Ayumi Mori lives with her partner and small child in the suburbs, with shops a short drive away; she is listed as retired. Twitter rumours can unsettle her, but she is not quick to follow a crowd and tries to keep household purchases to what they need."
+  },
+  {
+   "id": 97,
+   "name": {
+    "en": "Ayumi Ito",
+    "ja": "伊藤 あゆみ"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.81,
+   "conformity": 0.16,
+   "trust": 0.48,
+   "shop_gap": 2,
+   "start_stock": 7,
+   "story": "Ayumi Ito is a retired older woman living alone in a small town with only one supermarket and one drugstore. She worries easily and relies on LINE messages from family, but is stubborn about acting on rumours and prefers to ask someone she knows before changing her plans."
+  },
+  {
+   "id": 98,
+   "name": {
+    "en": "Kazuko Kobayashi",
+    "ja": "小林 和子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.42,
+   "conformity": 0.55,
+   "trust": 0.72,
+   "shop_gap": 5,
+   "start_stock": 3,
+   "story": "Kazuko Kobayashi is a retired older woman living alone in a small city-centre flat with limited storage. She checks Twitter regularly and trusts official updates more than hearsay, so she stays measured when items run short and avoids buying more than she can keep."
+  },
+  {
+   "id": 99,
+   "name": {
+    "en": "Sachiko Yamada",
+    "ja": "山田 幸子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.82,
+   "conformity": 0.76,
+   "trust": 0.75,
+   "shop_gap": 1,
+   "start_stock": 7,
+   "story": "Sachiko Yamada is a retired older woman living alone in the suburbs, with shops a short drive away. Past experiences of scarce goods have made her wary of waiting too long, and she tends to follow TV advice and neighbours’ lead when rumours spread."
+  },
+  {
+   "id": 100,
+   "name": {
+    "en": "Tomoko Takahashi",
+    "ja": "高橋 智子"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "freelance, works from home",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.44,
+   "conformity": 0.57,
+   "trust": 0.34,
+   "shop_gap": 2,
+   "start_stock": 11,
+   "story": "Tomoko Takahashi and her spouse work freelance from home in a suburb, and they can drive to nearby shops when needed. She checks Twitter often but is wary of official claims, so she compares rumors with what she sees before buying extra."
+  },
+  {
+   "id": 101,
+   "name": {
+    "en": "Takashi Ikeda",
+    "ja": "池田 隆"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "runs a small shop",
+   "area": "suburb, shops within a short drive",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.52,
+   "conformity": 0.17,
+   "trust": 0.57,
+   "shop_gap": 2,
+   "start_stock": 8,
+   "story": "Takashi Ikeda lives alone and runs a small shop, where the steady routine of opening and serving regulars keeps him busy. He rarely follows the news and dislikes being swept along by a crowd, so a shortage usually means adjusting his shop rather than stockpiling."
+  },
+  {
+   "id": 102,
+   "name": {
+    "en": "Ryo Hashimoto",
+    "ja": "橋本 亮"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.62,
+   "conformity": 0.56,
+   "trust": 0.82,
+   "shop_gap": 3,
+   "start_stock": 4,
+   "story": "Ryo Hashimoto lives with a partner and a small child in a city-centre flat with little room for supplies; though retired, he helps keep the household routine moving. Morning and evening TV reassure him, and when shelves thin out he tends to trust official guidance and buy only what they need."
+  },
+  {
+   "id": 103,
+   "name": {
+    "en": "Tomoko Sato",
+    "ja": "佐藤 智子"
+   },
+   "kind": "three generations under one roof",
+   "members": 5,
+   "age": "50s",
+   "work": "stays home with the children",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.38,
+   "conformity": 0.94,
+   "trust": 0.68,
+   "shop_gap": 3,
+   "start_stock": 12,
+   "story": "Tomoko Sato shares a suburban home with three generations and stays home with the children, coordinating meals and errands across the family. She follows Twitter closely and is quick to match the group’s response, often checking what relatives are buying when a rumor spreads."
+  },
+  {
+   "id": 104,
+   "name": {
+    "en": "Misaki Sasaki",
+    "ja": "佐々木 美咲"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.7,
+   "conformity": 0.75,
+   "trust": 0.29,
+   "shop_gap": 2,
+   "start_stock": 8,
+   "story": "Misaki Sasaki is part of a family with two school-age children in a small town with only one supermarket and one drugstore. She checks Twitter repeatedly but distrusts official assurances, and when a rumor takes hold she may hurry to buy supplies before the limited local stock runs out."
+  },
+  {
+   "id": 105,
+   "name": {
+    "en": "Takashi Yoshida",
+    "ja": "吉田 隆"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.83,
+   "conformity": 0.57,
+   "trust": 0.55,
+   "shop_gap": 4,
+   "start_stock": 10,
+   "story": "Takashi Yoshida and his spouse are retired and make do in a small city flat with little storage. He worries easily and watches Twitter for updates, so reports of shortages can send him out to shop early, even when he is unsure which reports to believe."
+  },
+  {
+   "id": 106,
+   "name": {
+    "en": "Keiko Inoue",
+    "ja": "井上 恵子"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.42,
+   "conformity": 0.41,
+   "trust": 0.86,
+   "shop_gap": 1,
+   "start_stock": 5,
+   "story": "Keiko Inoue and her spouse are retired, living simply in a small city-centre flat with little storage. She relies on TV and trusts official updates, so she stays calm during rumors and buys only what fits their ordinary routine."
+  },
+  {
+   "id": 107,
+   "name": {
+    "en": "Makoto Yamaguchi",
+    "ja": "山口 誠"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "care worker",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.29,
+   "conformity": 0.67,
+   "trust": 0.45,
+   "shop_gap": 1,
+   "start_stock": 9,
+   "story": "Makoto Yamaguchi works as a care worker and raises two school-age children with his family in a suburb. He checks Twitter often but is not easily rattled; if shops run short, he plans another trip rather than joining a rush."
+  },
+  {
+   "id": 108,
+   "name": {
+    "en": "Yumi Suzuki",
+    "ja": "鈴木 由美"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "stays home with the children",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.37,
+   "conformity": 0.71,
+   "trust": 0.79,
+   "shop_gap": 2,
+   "start_stock": 2,
+   "story": "Yumi Suzuki stays home with the children in a compact city-centre flat and keeps a close eye on household supplies. She trusts the TV news and tends to follow common advice, but limited storage keeps her purchases measured when rumors spread."
+  },
+  {
+   "id": 109,
+   "name": {
+    "en": "Mika Kato",
+    "ja": "加藤 美香"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.61,
+   "conformity": 0.48,
+   "trust": 0.42,
+   "shop_gap": 2,
+   "start_stock": 12,
+   "story": "Mika Kato lives alone in a suburb and can reach shops by a short drive; she is retired and often checks Twitter between daily errands. She is wary of claims but worries about being caught unprepared, so she may quietly buy a little extra when shelves look bare."
+  },
+  {
+   "id": 110,
+   "name": {
+    "en": "Misaki Inoue",
+    "ja": "井上 美咲"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "runs a small shop",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.95,
+   "conformity": 0.95,
+   "trust": 0.54,
+   "shop_gap": 2,
+   "start_stock": 4,
+   "story": "Misaki Inoue runs a small shop with her partner while caring for their small child in a suburb. She worries intensely and tends to follow what others are doing, so a rumor can prompt a hurried shopping trip and extra purchases despite what the TV says."
+  },
+  {
+   "id": 111,
+   "name": {
+    "en": "Akiko Kimura",
+    "ja": "木村 明子"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.69,
+   "conformity": 0.38,
+   "trust": 0.95,
+   "shop_gap": 2,
+   "start_stock": 15,
+   "story": "Akiko Kimura and her spouse are retired in a small town where shopping choices are limited, and they often hear local news through family and friends on LINE. She trusts official information more than gossip, so she checks before acting and may share calm advice with neighbors."
+  },
+  {
+   "id": 112,
+   "name": {
+    "en": "Naoko Yamada",
+    "ja": "山田 直子"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "part-time job at a supermarket",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.51,
+   "conformity": 0.29,
+   "trust": 0.73,
+   "shop_gap": 2,
+   "start_stock": 4,
+   "story": "Naoko Yamada lives alone and works part-time at a supermarket, giving her a firsthand view of busy shelves and ordinary restocking. She trusts TV more than crowd behavior and avoids buying extra just because customers are rushing."
+  },
+  {
+   "id": 113,
+   "name": {
+    "en": "Yuta Nakamura",
+    "ja": "中村 雄太"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "stays home with the children",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.49,
+   "conformity": 0.36,
+   "trust": 0.52,
+   "shop_gap": 3,
+   "start_stock": 4,
+   "story": "Yuta Nakamura lives with a child in a suburban household and stays home to care for them, while checking Twitter throughout the day. He is fairly independent, so he tends to ignore dramatic rumors and make shopping decisions based on what the household actually needs."
+  },
+  {
+   "id": 114,
+   "name": {
+    "en": "Osamu Hayashi",
+    "ja": "林 修"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "university student",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.4,
+   "conformity": 0.63,
+   "trust": 0.95,
+   "shop_gap": 3,
+   "start_stock": 10,
+   "story": "Osamu Hayashi is a university student living alone in a suburb, with nearby shops reachable by a short drive. He checks Twitter often but places strong trust in official statements, so he is likely to wait for reliable guidance rather than follow a rumor-driven rush."
+  },
+  {
+   "id": 115,
+   "name": {
+    "en": "Kazuko Inoue",
+    "ja": "井上 和子"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "works shifts at a hospital",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.75,
+   "conformity": 0.52,
+   "trust": 0.4,
+   "shop_gap": 4,
+   "start_stock": 6,
+   "story": "Kazuko Inoue works hospital shifts and raises two school-age children with her family in a small city flat with little storage. She checks Twitter frequently and worries about shortages, but her demanding schedule means she tries to plan carefully instead of making repeated panic trips."
+  },
+  {
+   "id": 116,
+   "name": {
+    "en": "Keiko Suzuki",
+    "ja": "鈴木 恵子"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "factory worker on rotating shifts",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.83,
+   "conformity": 0.1,
+   "trust": 0.37,
+   "shop_gap": 2,
+   "start_stock": 14,
+   "story": "Keiko Suzuki works rotating factory shifts and lives with her partner and small child in a suburb. She worries easily but resists following the crowd and distrusts official reassurance, so rumors can unsettle her even as she insists on deciding for herself what to buy."
+  },
+  {
+   "id": 117,
+   "name": {
+    "en": "Yumi Nakamura",
+    "ja": "中村 由美"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "office worker with a long commute",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.71,
+   "conformity": 0.71,
+   "trust": 0.43,
+   "shop_gap": 4,
+   "start_stock": 12,
+   "story": "Yumi Nakamura lives alone in a suburb and spends long hours commuting to her office, often catching the news on TV at home. She gets anxious and tends to follow others, so visible queues or reports of empty shelves may persuade her to shop sooner than planned."
+  },
+  {
+   "id": 118,
+   "name": {
+    "en": "Osamu Hayashi",
+    "ja": "林 修"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "freelance, works from home",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.5,
+   "conformity": 0.4,
+   "trust": 0.21,
+   "shop_gap": 4,
+   "start_stock": 5,
+   "story": "Osamu Hayashi and his spouse freelance from home in a suburb, where nearby shops make it easy to adjust their errands. He checks Twitter often but distrusts both official statements and online rumors, preferring to wait and see before changing his shopping habits."
+  },
+  {
+   "id": 119,
+   "name": {
+    "en": "Keiko Nakamura",
+    "ja": "中村 恵子"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "freelance, works from home",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.65,
+   "conformity": 0.48,
+   "trust": 0.55,
+   "shop_gap": 5,
+   "start_stock": 3,
+   "story": "Keiko Nakamura works from home while raising two school-age children, and family and friends on LINE are an important source of local news. She worries about shortages but does not automatically follow the crowd, usually checking with someone she trusts before buying extra."
+  },
+  {
+   "id": 120,
+   "name": {
+    "en": "Keiko Ikeda",
+    "ja": "池田 恵子"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "stays home with the children",
+   "area": "suburb, shops within a short drive",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.67,
+   "conformity": 0.41,
+   "trust": 0.71,
+   "shop_gap": 2,
+   "start_stock": 11,
+   "story": "Keiko Ikeda, in her forties, stays home with her two school-age children in a suburb where shops are a short drive away. She rarely follows the news, but worries about keeping the children’s usual supplies on hand and may make an extra trip if shelves look bare."
+  },
+  {
+   "id": 121,
+   "name": {
+    "en": "Mika Inoue",
+    "ja": "井上 美香"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.56,
+   "conformity": 0.18,
+   "trust": 0.6,
+   "shop_gap": 2,
+   "start_stock": 5,
+   "story": "Mika Inoue is a retired woman over seventy who lives alone in the suburbs and seldom pays attention to the news. She prefers her familiar shopping routine and is not easily swayed by a rumour, though a sudden shortage can make her uneasy."
+  },
+  {
+   "id": 122,
+   "name": {
+    "en": "Ayumi Ito",
+    "ja": "伊藤 あゆみ"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.48,
+   "conformity": 0.5,
+   "trust": 0.47,
+   "shop_gap": 2,
+   "start_stock": 13,
+   "story": "Ayumi Ito and her retired spouse live in the suburbs, and Ayumi checks Twitter several times a day. They compare online claims with what they see at nearby shops, but neither official statements nor rumours win their trust automatically."
+  },
+  {
+   "id": 123,
+   "name": {
+    "en": "Yuta Hashimoto",
+    "ja": "橋本 雄太"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "factory worker on rotating shifts",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.21,
+   "conformity": 0.46,
+   "trust": 0.44,
+   "shop_gap": 5,
+   "start_stock": 10,
+   "story": "Yuta Hashimoto works rotating shifts at a factory and lives with his partner in a small town with just one supermarket and one drugstore. He relies on TV news, stays level-headed when something sells out, and avoids buying more than they need."
+  },
+  {
+   "id": 124,
+   "name": {
+    "en": "Naoko Yamamoto",
+    "ja": "山本 直子"
+   },
+   "kind": "three generations under one roof",
+   "members": 5,
+   "age": "50s",
+   "work": "public servant at the town hall",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.75,
+   "conformity": 0.42,
+   "trust": 0.56,
+   "shop_gap": 5,
+   "start_stock": 14,
+   "story": "Naoko Yamamoto works at town hall and shares a small-town home with two other generations; she checks Twitter many times a day. She worries when rumours circulate, but tries to verify them before changing the family’s shopping plans."
+  },
+  {
+   "id": 125,
+   "name": {
+    "en": "Yumi Matsumoto",
+    "ja": "松本 由美"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "works shifts at a hospital",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.7,
+   "conformity": 0.69,
+   "trust": 0.28,
+   "shop_gap": 5,
+   "start_stock": 15,
+   "story": "Yumi Matsumoto works hospital shifts and raises two school-age children with her family in a small town. She follows Twitter closely and, distrustful of official assurances, may join a rush for scarce goods when alarming posts spread."
+  },
+  {
+   "id": 126,
+   "name": {
+    "en": "Haruto Kobayashi",
+    "ja": "小林 陽斗"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "runs a small shop",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.88,
+   "conformity": 0.41,
+   "trust": 0.7,
+   "shop_gap": 5,
+   "start_stock": 9,
+   "story": "Haruto Kobayashi runs a small shop and lives alone in a suburb, checking Twitter many times a day. He is easily rattled by reports of shortages and may stock up early, even while knowing his own customers could need the same items."
+  },
+  {
+   "id": 127,
+   "name": {
+    "en": "Mika Ikeda",
+    "ja": "池田 美香"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.78,
+   "conformity": 0.57,
+   "trust": 0.72,
+   "shop_gap": 3,
+   "start_stock": 2,
+   "story": "Mika Ikeda and her retired spouse live in a small town and often hear news through family and friends on LINE. Past experiences of empty shelves make them wary, so they tend to buy a little extra when trusted contacts warn of a shortage."
+  },
+  {
+   "id": 128,
+   "name": {
+    "en": "Yuta Yamaguchi",
+    "ja": "山口 雄太"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "works shifts at a hospital",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.56,
+   "conformity": 0.5,
+   "trust": 0.62,
+   "shop_gap": 5,
+   "start_stock": 9,
+   "story": "Yuta Yamaguchi and his partner work hospital shifts while raising a small child in a town with limited shopping options. They listen to family messages on LINE but generally check official guidance before reacting, and try to leave enough for other shoppers."
+  },
+  {
+   "id": 129,
+   "name": {
+    "en": "Osamu Yamamoto",
+    "ja": "山本 修"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "university student",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.54,
+   "conformity": 0.85,
+   "trust": 0.71,
+   "shop_gap": 3,
+   "start_stock": 3,
+   "story": "Osamu Yamamoto is a university student living with a partner in a small town, though he pays little attention to the news. He usually follows what neighbors are doing at the single supermarket, and may go along with a buying rush rather than stand apart."
+  },
+  {
+   "id": 130,
+   "name": {
+    "en": "Ryo Abe",
+    "ja": "阿部 亮"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "sales rep who drives all day",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.71,
+   "conformity": 0.15,
+   "trust": 0.58,
+   "shop_gap": 2,
+   "start_stock": 13,
+   "story": "Ryo Abe drives all day for work, while his partner cares for their small child in a suburb with shops nearby by car. TV reports can make him anxious, but he dislikes following the crowd and would rather check a few stores than hoard supplies."
+  },
+  {
+   "id": 131,
+   "name": {
+    "en": "Haruto Suzuki",
+    "ja": "鈴木 陽斗"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "stays home with the children",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.31,
+   "conformity": 0.41,
+   "trust": 0.49,
+   "shop_gap": 4,
+   "start_stock": 2,
+   "story": "Haruto Suzuki lives with a partner and children in a small town, and gets most news from morning and evening TV. He takes shortages calmly, sticks to their normal shopping list, and is cautious about treating rumours as fact."
+  },
+  {
+   "id": 132,
+   "name": {
+    "en": "Kazuko Ito",
+    "ja": "伊藤 和子"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "public servant at the town hall",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.71,
+   "conformity": 0.72,
+   "trust": 0.32,
+   "shop_gap": 3,
+   "start_stock": 13,
+   "story": "Kazuko Ito works at town hall and lives with her partner and small child in the suburbs, hearing much of her news through LINE. She worries and tends to follow what other parents are doing, though her low trust in official statements leaves her unsure whom to believe."
+  },
+  {
+   "id": 133,
+   "name": {
+    "en": "Akiko Watanabe",
+    "ja": "渡辺 明子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.47,
+   "conformity": 0.39,
+   "trust": 0.48,
+   "shop_gap": 4,
+   "start_stock": 4,
+   "story": "Akiko Watanabe is a retired woman living alone in a small town, where the nearest supermarket and drugstore are the main places to shop. She pays little attention to news and handles shortages practically, asking someone she knows before believing a rumour."
+  },
+  {
+   "id": 134,
+   "name": {
+    "en": "Makoto Yamaguchi",
+    "ja": "山口 誠"
+   },
+   "kind": "three generations under one roof",
+   "members": 5,
+   "age": "50s",
+   "work": "office worker with a long commute",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.77,
+   "conformity": 0.39,
+   "trust": 0.46,
+   "shop_gap": 2,
+   "start_stock": 10,
+   "story": "Makoto Yamaguchi has a long commute to an office and shares a small-town home with two other generations. He watches TV news and worries when reports conflict, but prefers to make a household plan rather than chase every rumour to the shops."
+  },
+  {
+   "id": 135,
+   "name": {
+    "en": "Daisuke Hayashi",
+    "ja": "林 大輔"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.41,
+   "conformity": 0.76,
+   "trust": 0.66,
+   "shop_gap": 3,
+   "start_stock": 4,
+   "story": "Daisuke Hayashi is a retired man over seventy who lives alone in a small town and rarely follows the news. He tends to trust familiar advice and do what other local shoppers are doing, even if that means joining a queue when supplies run low."
+  },
+  {
+   "id": 136,
+   "name": {
+    "en": "Hiroshi Kobayashi",
+    "ja": "小林 浩"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "care worker",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.48,
+   "conformity": 0.55,
+   "trust": 0.74,
+   "shop_gap": 1,
+   "start_stock": 3,
+   "story": "Hiroshi Kobayashi works as a care worker and lives with his partner in a suburb where shops are easy to reach by car. He trusts TV reports more than word-of-mouth rumours and keeps shopping steady, mindful that people in his care may need supplies too."
+  },
+  {
+   "id": 137,
+   "name": {
+    "en": "Kazuko Watanabe",
+    "ja": "渡辺 和子"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.33,
+   "conformity": 0.5,
+   "trust": 0.79,
+   "shop_gap": 2,
+   "start_stock": 15,
+   "story": "Kazuko Watanabe and her retired spouse live in a small city-centre flat with little storage, and hear updates from relatives on LINE. They trust official advice and avoid panic buying, since there is no room to keep much extra at home."
+  },
+  {
+   "id": 138,
+   "name": {
+    "en": "Kazuko Sasaki",
+    "ja": "佐々木 和子"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "office worker with a long commute",
+   "area": "suburb, shops within a short drive",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.49,
+   "conformity": 0.48,
+   "trust": 0.4,
+   "shop_gap": 5,
+   "start_stock": 13,
+   "story": "Kazuko Sasaki and her partner live in the suburbs, and Kazuko’s long commute leaves little time for following the news. They do not rush to stores over rumours, but her limited trust in official statements means she waits to see what is actually available."
+  },
+  {
+   "id": 139,
+   "name": {
+    "en": "Shota Takahashi",
+    "ja": "高橋 翔太"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "university student",
+   "area": "suburb, shops within a short drive",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.44,
+   "conformity": 0.84,
+   "trust": 0.38,
+   "shop_gap": 2,
+   "start_stock": 4,
+   "story": "Shota Takahashi lives alone in the suburbs and is a university student, though he pays little attention to news. He strongly tends to follow the crowd, so if acquaintances say a product is running short he may buy some too, without checking the story closely."
+  },
+  {
+   "id": 140,
+   "name": {
+    "en": "Hiroshi Tanaka",
+    "ja": "田中 浩"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.6,
+   "conformity": 0.64,
+   "trust": 0.22,
+   "shop_gap": 3,
+   "start_stock": 12,
+   "story": "Hiroshi Tanaka and his retired wife live in a small town, where their shopping choices are limited to one supermarket and one drugstore. TV reports can unsettle him, but he is wary of official reassurances and may follow neighbors’ example if shelves look bare."
+  },
+  {
+   "id": 141,
+   "name": {
+    "en": "Kenji Ito",
+    "ja": "伊藤 健二"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "works shifts at a hospital",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.42,
+   "conformity": 0.62,
+   "trust": 0.41,
+   "shop_gap": 2,
+   "start_stock": 16,
+   "story": "Kenji Ito and his partner take turns caring for their small child around shifts at a hospital, and he checks Twitter throughout the day. He may make an extra trip for something scarce after seeing others discuss it, though he tries to keep their household routine steady."
+  },
+  {
+   "id": 142,
+   "name": {
+    "en": "Shota Matsumoto",
+    "ja": "松本 翔太"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "stays home with the children",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.3,
+   "conformity": 0.37,
+   "trust": 0.4,
+   "shop_gap": 3,
+   "start_stock": 8,
+   "story": "Shota Matsumoto and his partner stay home with children in a small town and usually hear the news on TV. They are not quick to join a rush, preferring to buy what they need and wait for clearer signs before changing their routine."
+  },
+  {
+   "id": 143,
+   "name": {
+    "en": "Tomoko Mori",
+    "ja": "森 智子"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "factory worker on rotating shifts",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.8,
+   "conformity": 0.63,
+   "trust": 0.61,
+   "shop_gap": 2,
+   "start_stock": 9,
+   "story": "Tomoko Mori works rotating factory shifts and relies on family and friends’ LINE messages to keep up with what is happening. She worries easily and may act quickly on a shortage rumour, especially if several people she knows repeat it."
+  },
+  {
+   "id": 144,
+   "name": {
+    "en": "Hiroshi Hashimoto",
+    "ja": "橋本 浩"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "freelance, works from home",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.81,
+   "conformity": 0.68,
+   "trust": 0.55,
+   "shop_gap": 2,
+   "start_stock": 10,
+   "story": "Hiroshi Hashimoto lives alone and works freelance from home in a small town, checking Twitter often between tasks. When rumours spread, he can become anxious and stock up early, taking online warnings seriously even when they are hard to verify."
+  },
+  {
+   "id": 145,
+   "name": {
+    "en": "Osamu Watanabe",
+    "ja": "渡辺 修"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.12,
+   "conformity": 0.67,
+   "trust": 0.71,
+   "shop_gap": 7,
+   "start_stock": 13,
+   "story": "Osamu Watanabe and his retired wife live in the suburbs, drive to shops, and usually get their news from TV. He stays calm when something is scarce and tends to trust official guidance, though he may follow a sensible precaution once it becomes common."
+  },
+  {
+   "id": 146,
+   "name": {
+    "en": "Yuta Ishikawa",
+    "ja": "石川 雄太"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "runs a small shop",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.61,
+   "conformity": 0.64,
+   "trust": 0.85,
+   "shop_gap": 3,
+   "start_stock": 5,
+   "story": "Yuta Ishikawa and his partner run a small shop in a town with few other places to buy essentials, and they pay little attention to news. He trusts official notices but is not easily swept up in rumours, preferring to manage supplies for the shop and share fairly with customers."
+  },
+  {
+   "id": 147,
+   "name": {
+    "en": "Sachiko Sasaki",
+    "ja": "佐々木 幸子"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "stays home with the children",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.57,
+   "conformity": 0.68,
+   "trust": 0.83,
+   "shop_gap": 2,
+   "start_stock": 6,
+   "story": "Sachiko Sasaki lives alone and cares for children at home in a small town, where she hears much of her news through family and friends on LINE. She generally trusts what she hears from familiar people and may join a modest buying rush rather than risk being caught short."
+  },
+  {
+   "id": 148,
+   "name": {
+    "en": "Misaki Tanaka",
+    "ja": "田中 美咲"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "public servant at the town hall",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.39,
+   "conformity": 0.68,
+   "trust": 0.7,
+   "shop_gap": 2,
+   "start_stock": 10,
+   "story": "Misaki Tanaka works at the town hall and cares for a small child with her partner, while checking Twitter frequently. She tends to trust official updates, but if a rumour spreads widely she may take a cautious extra trip to the shops."
+  },
+  {
+   "id": 149,
+   "name": {
+    "en": "Shota Ito",
+    "ja": "伊藤 翔太"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "runs a small shop",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.82,
+   "conformity": 0.41,
+   "trust": 0.66,
+   "shop_gap": 2,
+   "start_stock": 14,
+   "story": "Shota Ito runs a small shop with his family and has two school-age children; LINE messages from relatives and friends are his main source of news. He worries a lot but dislikes simply following the crowd, so he checks what his shop actually needs before buying more."
+  },
+  {
+   "id": 150,
+   "name": {
+    "en": "Kazuko Matsumoto",
+    "ja": "松本 和子"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "runs a small shop",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.34,
+   "conformity": 0.55,
+   "trust": 0.65,
+   "shop_gap": 3,
+   "start_stock": 15,
+   "story": "Kazuko Matsumoto and her partner run a small-town shop while raising a small child, and she usually catches the news on TV. She is fairly steady when goods run short and is more likely to reassure customers and stick to a practical shopping list than to chase rumours."
+  },
+  {
+   "id": 151,
+   "name": {
+    "en": "Shota Ikeda",
+    "ja": "池田 翔太"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "sales rep who drives all day",
+   "area": "city centre, small flat, little storage",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.58,
+   "conformity": 0.72,
+   "trust": 0.35,
+   "shop_gap": 7,
+   "start_stock": 16,
+   "story": "Shota Ikeda lives alone in a small city-centre flat and spends much of the day driving for sales, with little room to store extra supplies. He often hears rumours through LINE and may follow a rush out of worry, while remaining skeptical of official statements."
+  },
+  {
+   "id": 152,
+   "name": {
+    "en": "Yuta Ikeda",
+    "ja": "池田 雄太"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "part-time job at a supermarket",
+   "area": "city centre, small flat, little storage",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.16,
+   "conformity": 0.5,
+   "trust": 0.74,
+   "shop_gap": 5,
+   "start_stock": 12,
+   "story": "Yuta Ikeda and his partner live in a small city-centre flat and work part-time at a supermarket, so they see changing stock firsthand. They stay fairly calm when shelves thin out and trust clear official information more than alarming messages passed around on LINE."
+  },
+  {
+   "id": 153,
+   "name": {
+    "en": "Kazuko Sasaki",
+    "ja": "佐々木 和子"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.54,
+   "conformity": 0.46,
+   "trust": 0.17,
+   "shop_gap": 2,
+   "start_stock": 11,
+   "story": "Kazuko Sasaki lives alone in the suburbs and, despite being retired, keeps a simple routine of watching TV and driving to nearby shops. She distrusts official assurances and may resist a popular response to a shortage, relying instead on her own judgment."
+  },
+  {
+   "id": 154,
+   "name": {
+    "en": "Shota Inoue",
+    "ja": "井上 翔太"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "sales rep who drives all day",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.58,
+   "conformity": 0.41,
+   "trust": 0.57,
+   "shop_gap": 5,
+   "start_stock": 4,
+   "story": "Shota Inoue and his partner live in a compact city-centre flat and spend much of the day on the road for sales work; TV is their main news source. With little storage, they avoid buying much extra and are cautious about rumours, waiting for more than a passing report before acting."
+  },
+  {
+   "id": 155,
+   "name": {
+    "en": "Sachiko Ito",
+    "ja": "伊藤 幸子"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.54,
+   "conformity": 0.57,
+   "trust": 0.5,
+   "shop_gap": 3,
+   "start_stock": 9,
+   "story": "Sachiko Ito and her retired partner live in the suburbs and pay little attention to the news, keeping a steady household routine. She remembers times when certain goods were hard to find, so she may quietly keep a sensible reserve without panicking or spreading rumours."
+  },
+  {
+   "id": 156,
+   "name": {
+    "en": "Naoko Hashimoto",
+    "ja": "橋本 直子"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "works shifts at a hospital",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.63,
+   "conformity": 0.24,
+   "trust": 0.67,
+   "shop_gap": 5,
+   "start_stock": 13,
+   "story": "Naoko Hashimoto lives alone in a small city flat and works hospital shifts, checking Twitter frequently between work and rest. She worries about shortages but dislikes following the crowd, choosing a few practical essentials rather than making a large, impulsive shop."
+  },
+  {
+   "id": 157,
+   "name": {
+    "en": "Ryo Sato",
+    "ja": "佐藤 亮"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "university student",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.95,
+   "conformity": 0.44,
+   "trust": 0.34,
+   "shop_gap": 2,
+   "start_stock": 9,
+   "story": "Ryo Sato is a university student living with a family that includes two school-age children, and he checks Twitter often. He is very easily alarmed and wary of official claims, so a rumour can prompt him to urge the household to shop early, even if he does not simply copy everyone else."
+  },
+  {
+   "id": 158,
+   "name": {
+    "en": "Osamu Kobayashi",
+    "ja": "小林 修"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.24,
+   "conformity": 0.59,
+   "trust": 0.95,
+   "shop_gap": 4,
+   "start_stock": 13,
+   "story": "Osamu Kobayashi lives alone in a small town, shops at the local supermarket and drugstore, and follows the news on TV. He is calm and strongly trusts official guidance, so he is unlikely to rush out when rumours spread unless authorities advise a change."
+  },
+  {
+   "id": 159,
+   "name": {
+    "en": "Tomoko Tanaka",
+    "ja": "田中 智子"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "factory worker on rotating shifts",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.65,
+   "conformity": 0.68,
+   "trust": 0.63,
+   "shop_gap": 7,
+   "start_stock": 11,
+   "story": "Tomoko Tanaka works rotating shifts at a factory and helps raise two school-age children, while keeping a close eye on Twitter. She is concerned by reports of shortages and may follow a widely shared precaution, but usually looks for reliable confirmation before making a major change to the family’s routine."
+  },
+  {
+   "id": 160,
+   "name": {
+    "en": "Daisuke Shimizu",
+    "ja": "清水 大輔"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "part-time job at a supermarket",
+   "area": "suburb, shops within a short drive",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.55,
+   "conformity": 0.69,
+   "trust": 0.95,
+   "shop_gap": 2,
+   "start_stock": 9,
+   "story": "Daisuke Shimizu and his partner live in a suburb, and he works part-time at a supermarket while they keep news mostly out of their routine. If shelves thin out, he stays practical and trusts official guidance, though he may follow what other shoppers are doing."
+  },
+  {
+   "id": 161,
+   "name": {
+    "en": "Yumi Yoshida",
+    "ja": "吉田 由美"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.43,
+   "conformity": 0.12,
+   "trust": 0.8,
+   "shop_gap": 7,
+   "start_stock": 7,
+   "story": "Yumi Yoshida and her retired partner live in a small city-centre flat, where there is little room to keep extra supplies; she checks Twitter throughout the day. She rarely follows a crowd, and tends to look for confirmation from trusted official sources before acting on a rumour."
+  },
+  {
+   "id": 162,
+   "name": {
+    "en": "Hiroshi Shimizu",
+    "ja": "清水 浩"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "factory worker on rotating shifts",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.69,
+   "conformity": 0.51,
+   "trust": 0.24,
+   "shop_gap": 1,
+   "start_stock": 12,
+   "story": "Hiroshi Shimizu lives alone and works rotating shifts at a factory, catching the morning or evening TV news when his schedule allows. Shortages make him uneasy, but he distrusts official reassurances and may ask coworkers what they have heard before deciding what to do."
+  },
+  {
+   "id": 163,
+   "name": {
+    "en": "Kenji Yoshida",
+    "ja": "吉田 健二"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.28,
+   "conformity": 0.27,
+   "trust": 0.53,
+   "shop_gap": 7,
+   "start_stock": 7,
+   "story": "Kenji Yoshida is a retired man living alone in a suburb, and he keeps a steady routine of watching the evening news. He is not easily rattled by empty shelves and prefers to wait for reliable information rather than copy a sudden rush of shoppers."
+  },
+  {
+   "id": 164,
+   "name": {
+    "en": "Ayumi Abe",
+    "ja": "阿部 あゆみ"
+   },
+   "kind": "three generations under one roof",
+   "members": 5,
+   "age": "50s",
+   "work": "university student",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.76,
+   "conformity": 0.47,
+   "trust": 0.41,
+   "shop_gap": 7,
+   "start_stock": 12,
+   "story": "Ayumi Abe is a university student in a three-generation household, where busy mornings mean the family often shares meals and errands. She worries quickly when supplies run low, but is wary of TV reports and checks what her family thinks before joining a queue."
+  },
+  {
+   "id": 165,
+   "name": {
+    "en": "Haruto Inoue",
+    "ja": "井上 陽斗"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.66,
+   "conformity": 0.6,
+   "trust": 0.46,
+   "shop_gap": 3,
+   "start_stock": 6,
+   "story": "Haruto Inoue is retired and lives with his partner in a suburb, where they can drive to nearby shops and follow the news on TV. He gets concerned when shelves look bare and is somewhat likely to go along with other shoppers, while treating reports with cautious reserve."
+  },
+  {
+   "id": 166,
+   "name": {
+    "en": "Kenji Abe",
+    "ja": "阿部 健二"
+   },
+   "kind": "three generations under one roof",
+   "members": 5,
+   "age": "50s",
+   "work": "office worker with a long commute",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.46,
+   "conformity": 0.45,
+   "trust": 0.33,
+   "shop_gap": 2,
+   "start_stock": 8,
+   "story": "Kenji Abe commutes a long way to his office from a small town, and his three-generation household depends on the local supermarket and drugstore. He dislikes rumours and does not fully trust TV reports, so he checks with family before buying extra when something is scarce."
+  },
+  {
+   "id": 167,
+   "name": {
+    "en": "Osamu Suzuki",
+    "ja": "鈴木 修"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "public servant at the town hall",
+   "area": "suburb, shops within a short drive",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.7,
+   "conformity": 0.32,
+   "trust": 0.78,
+   "shop_gap": 4,
+   "start_stock": 4,
+   "story": "Osamu Suzuki lives alone in a suburb and works at the town hall, paying little attention to news outside his workday. Though shortages can make him worry, he trusts official notices and is more likely to follow those than neighbours’ speculation."
+  },
+  {
+   "id": 168,
+   "name": {
+    "en": "Ayumi Yamamoto",
+    "ja": "山本 あゆみ"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.91,
+   "conformity": 0.55,
+   "trust": 0.86,
+   "shop_gap": 3,
+   "start_stock": 11,
+   "story": "Ayumi Yamamoto is a retired woman living alone in a suburb, with nearby shops reachable by car and little interest in daily news. She worries intensely when an item is hard to find and may copy other shoppers, especially if someone she trusts says supplies are running out."
+  },
+  {
+   "id": 169,
+   "name": {
+    "en": "Shota Yamada",
+    "ja": "山田 翔太"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "freelance, works from home",
+   "area": "city centre, small flat, little storage",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.49,
+   "conformity": 0.41,
+   "trust": 0.65,
+   "shop_gap": 3,
+   "start_stock": 4,
+   "story": "Shota Yamada works from home as a freelancer and raises two school-age children with his family in a compact city-centre flat. He hears rumours through family LINE chats, but usually checks before acting and tries to buy only what the household needs when shelves are sparse."
+  },
+  {
+   "id": 170,
+   "name": {
+    "en": "Yumi Tanaka",
+    "ja": "田中 由美"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "university student",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.66,
+   "conformity": 0.55,
+   "trust": 0.61,
+   "shop_gap": 3,
+   "start_stock": 15,
+   "story": "Yumi Tanaka is a university student living with her partner in a suburb, and they often plan errands around TV news and their study schedules. She can become anxious about shortages and is somewhat inclined to follow others, but generally gives official statements a fair hearing."
+  },
+  {
+   "id": 171,
+   "name": {
+    "en": "Mika Hayashi",
+    "ja": "林 美香"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "sales rep who drives all day",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.88,
+   "conformity": 0.68,
+   "trust": 0.4,
+   "shop_gap": 3,
+   "start_stock": 9,
+   "story": "Mika Hayashi drives all day for her sales job and is raising two school-age children with her family in a suburb; she checks Twitter often. When rumours spread, she gets very worried and may rush to shop with the crowd, even though she does not fully trust what she reads online."
+  },
+  {
+   "id": 172,
+   "name": {
+    "en": "Takashi Yamaguchi",
+    "ja": "山口 隆"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "university student",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.73,
+   "conformity": 0.26,
+   "trust": 0.4,
+   "shop_gap": 3,
+   "start_stock": 16,
+   "story": "Takashi Yamaguchi is a university student and parent of two school-age children, sharing a small city-centre flat with little storage. Shortages make him uneasy, but he resists copying a crowd and tends to question both rumours and TV claims before making room for extra supplies."
+  },
+  {
+   "id": 173,
+   "name": {
+    "en": "Akiko Shimizu",
+    "ja": "清水 明子"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "sales rep who drives all day",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.53,
+   "conformity": 0.43,
+   "trust": 0.86,
+   "shop_gap": 5,
+   "start_stock": 15,
+   "story": "Akiko Shimizu lives alone in a small city-centre flat and spends much of the day driving for her sales job; she checks Twitter regularly. She is measured about shortages and tends to trust official updates more than fast-moving online rumours."
+  },
+  {
+   "id": 174,
+   "name": {
+    "en": "Makoto Suzuki",
+    "ja": "鈴木 誠"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "factory worker on rotating shifts",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.31,
+   "conformity": 0.34,
+   "trust": 0.54,
+   "shop_gap": 2,
+   "start_stock": 3,
+   "story": "Makoto Suzuki works rotating factory shifts and shares a compact city-centre home with a partner and two school-age children. He stays relatively calm when goods run short, avoids buying more than the family needs, and does not readily follow rumours."
+  },
+  {
+   "id": 175,
+   "name": {
+    "en": "Keiko Matsumoto",
+    "ja": "松本 恵子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.59,
+   "conformity": 0.25,
+   "trust": 0.86,
+   "shop_gap": 4,
+   "start_stock": 7,
+   "story": "Keiko Matsumoto is a retired woman living alone in a small city-centre flat, where limited storage makes careful shopping part of her routine. She remembers earlier times when supplies were hard to find, so she may keep a modest reserve while trusting official information over gossip."
+  },
+  {
+   "id": 176,
+   "name": {
+    "en": "Sachiko Watanabe",
+    "ja": "渡辺 幸子"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "public servant at the town hall",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.44,
+   "conformity": 0.84,
+   "trust": 0.74,
+   "shop_gap": 1,
+   "start_stock": 9,
+   "story": "Sachiko Watanabe lives alone in a suburb and works at the town hall, checking Twitter frequently between errands. She usually follows what others are doing when shortages appear, but her trust in official statements helps her avoid acting on every alarming post."
+  },
+  {
+   "id": 177,
+   "name": {
+    "en": "Misaki Ishikawa",
+    "ja": "石川 美咲"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "freelance, works from home",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.34,
+   "conformity": 0.19,
+   "trust": 0.81,
+   "shop_gap": 2,
+   "start_stock": 4,
+   "story": "Misaki Ishikawa is a freelance worker living alone in a small city-centre flat, and she follows the morning and evening news from home. She stays calm and independent when shelves are low, relying on official updates rather than joining a rush."
+  },
+  {
+   "id": 178,
+   "name": {
+    "en": "Makoto Yamamoto",
+    "ja": "山本 誠"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "stays home with the children",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.63,
+   "conformity": 0.23,
+   "trust": 0.64,
+   "shop_gap": 1,
+   "start_stock": 3,
+   "story": "Makoto Yamamoto lives in a suburb and spends much of the day caring for children at home, while checking Twitter often. Rumours can make Makoto uneasy, but a strong reluctance to follow the crowd means they usually verify a claim before shopping."
+  },
+  {
+   "id": 179,
+   "name": {
+    "en": "Keiko Sato",
+    "ja": "佐藤 恵子"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "runs a small shop",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.41,
+   "conformity": 0.34,
+   "trust": 0.42,
+   "shop_gap": 5,
+   "start_stock": 9,
+   "story": "Keiko Sato runs a small shop in a suburb and checks Twitter throughout the day, so she hears quickly when customers start asking about scarce goods. She remains fairly calm but is skeptical of both online rumours and official assurances, preferring to judge what is happening locally."
+  },
+  {
+   "id": 180,
+   "name": {
+    "en": "Misaki Hayashi",
+    "ja": "林 美咲"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "factory worker on rotating shifts",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.43,
+   "conformity": 0.27,
+   "trust": 0.12,
+   "shop_gap": 3,
+   "start_stock": 3,
+   "story": "Misaki Hayashi and her partner raise a small child while she works rotating shifts at a nearby factory, and family LINE chats are part of her routine. She is not quick to follow a crowd, but low trust in official statements makes her cautious when shortages or rumours arise."
+  },
+  {
+   "id": 181,
+   "name": {
+    "en": "Takashi Kimura",
+    "ja": "木村 隆"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.37,
+   "conformity": 0.32,
+   "trust": 0.5,
+   "shop_gap": 1,
+   "start_stock": 2,
+   "story": "Takashi Kimura is a retired older man who lives alone and makes short drives to nearby shops for what he needs. He pays little attention to news and usually stays calm if shelves are bare, preferring to wait rather than act on rumours."
+  },
+  {
+   "id": 182,
+   "name": {
+    "en": "Kenji Suzuki",
+    "ja": "鈴木 健二"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "factory worker on rotating shifts",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.37,
+   "conformity": 0.56,
+   "trust": 0.08,
+   "shop_gap": 2,
+   "start_stock": 11,
+   "story": "Kenji Suzuki lives alone and works rotating shifts at a nearby factory, often hearing local talk through LINE. He tends to go along with what friends are doing, though he is skeptical of official claims and may take rumours seriously."
+  },
+  {
+   "id": 183,
+   "name": {
+    "en": "Shota Yamaguchi",
+    "ja": "山口 翔太"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "public servant at the town hall",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.63,
+   "conformity": 0.58,
+   "trust": 0.55,
+   "shop_gap": 7,
+   "start_stock": 13,
+   "story": "Shota Yamaguchi lives alone and works at the town hall, watching morning and evening TV around his workday. He worries more than he lets on and may follow other shoppers’ lead, while giving official updates some weight when rumours spread."
+  },
+  {
+   "id": 184,
+   "name": {
+    "en": "Daisuke Suzuki",
+    "ja": "鈴木 大輔"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "public servant at the town hall",
+   "area": "city centre, small flat, little storage",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.48,
+   "conformity": 0.71,
+   "trust": 0.31,
+   "shop_gap": 2,
+   "start_stock": 3,
+   "story": "Daisuke Suzuki lives alone in a small city-centre flat and works at the town hall, with little room to keep extra supplies. He rarely follows the news but often copies what other people do when shops run short, even though he is not fully persuaded by official statements."
+  },
+  {
+   "id": 185,
+   "name": {
+    "en": "Naoko Ikeda",
+    "ja": "池田 直子"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "office worker with a long commute",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.44,
+   "conformity": 0.29,
+   "trust": 0.14,
+   "shop_gap": 1,
+   "start_stock": 16,
+   "story": "Naoko Ikeda and her partner share a small city-centre flat, and her long commute leaves her checking Twitter throughout the day. She distrusts official reassurances and prefers to judge claims herself, staying fairly steady when rumours circulate."
+  },
+  {
+   "id": 186,
+   "name": {
+    "en": "Osamu Yamaguchi",
+    "ja": "山口 修"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.39,
+   "conformity": 0.49,
+   "trust": 0.52,
+   "shop_gap": 5,
+   "start_stock": 14,
+   "story": "Osamu Yamaguchi is a retired older man living alone in a small town where the supermarket and drugstore are his main shopping options. He pays little attention to news and tends to remain patient during shortages, trusting that ordinary routines will resume."
+  },
+  {
+   "id": 187,
+   "name": {
+    "en": "Akiko Mori",
+    "ja": "森 明子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.56,
+   "conformity": 0.53,
+   "trust": 0.95,
+   "shop_gap": 3,
+   "start_stock": 14,
+   "story": "Akiko Mori lives alone in the suburbs and keeps in touch with family and friends through LINE. She worries when supplies seem scarce and is inclined to heed official guidance, especially when a rumour is repeated by people she knows."
+  },
+  {
+   "id": 188,
+   "name": {
+    "en": "Naoko Ishikawa",
+    "ja": "石川 直子"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "public servant at the town hall",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.95,
+   "conformity": 0.18,
+   "trust": 0.62,
+   "shop_gap": 2,
+   "start_stock": 16,
+   "story": "Naoko Ishikawa raises two school-age children with her family in a small city-centre flat, checking Twitter often despite having little storage space. She becomes very anxious about shortages but dislikes simply following the crowd, and weighs rumours against official information."
+  },
+  {
+   "id": 189,
+   "name": {
+    "en": "Yuta Shimizu",
+    "ja": "清水 雄太"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "factory worker on rotating shifts",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.39,
+   "conformity": 0.74,
+   "trust": 0.56,
+   "shop_gap": 7,
+   "start_stock": 4,
+   "story": "Yuta Shimizu works rotating factory shifts while raising two school-age children in a small town with only one supermarket and drugstore. He usually follows the lead of family and neighbours on LINE, and takes both their warnings and official updates seriously."
+  },
+  {
+   "id": 190,
+   "name": {
+    "en": "Keiko Tanaka",
+    "ja": "田中 恵子"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "runs a small shop",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.58,
+   "conformity": 0.69,
+   "trust": 0.44,
+   "shop_gap": 2,
+   "start_stock": 14,
+   "story": "Keiko Tanaka runs a small shop while raising two school-age children, and morning and evening TV often accompanies family routines. She gets uneasy when supplies dwindle and tends to follow the prevailing response, even if she is not fully convinced by official explanations."
+  },
+  {
+   "id": 191,
+   "name": {
+    "en": "Keiko Yamamoto",
+    "ja": "山本 恵子"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "freelance, works from home",
+   "area": "city centre, small flat, little storage",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.27,
+   "conformity": 0.68,
+   "trust": 0.41,
+   "shop_gap": 4,
+   "start_stock": 15,
+   "story": "Keiko Yamamoto lives alone in a small city-centre flat and works freelance from home, with family LINE chats as a regular source of news. She is not easily alarmed, but often mirrors what people around her are doing when rumours spread, despite some skepticism toward official statements."
+  },
+  {
+   "id": 192,
+   "name": {
+    "en": "Ryo Matsumoto",
+    "ja": "松本 亮"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "public servant at the town hall",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.2,
+   "conformity": 0.65,
+   "trust": 0.44,
+   "shop_gap": 4,
+   "start_stock": 4,
+   "story": "Ryo Matsumoto lives alone in a compact city-centre flat and works at the town hall, usually catching the news on TV. He stays fairly relaxed when shops run short, though he tends to follow common practice and gives official statements moderate trust."
+  },
+  {
+   "id": 193,
+   "name": {
+    "en": "Takashi Shimizu",
+    "ja": "清水 隆"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "factory worker on rotating shifts",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.47,
+   "conformity": 0.65,
+   "trust": 0.2,
+   "shop_gap": 5,
+   "start_stock": 2,
+   "story": "Takashi Shimizu lives alone in a small city-centre flat and works rotating shifts at a factory, often catching TV news between shifts. He can be swept along by others’ reactions, but distrusts official claims and is wary of rumours presented as fact."
+  },
+  {
+   "id": 194,
+   "name": {
+    "en": "Haruto Inoue",
+    "ja": "井上 陽斗"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "factory worker on rotating shifts",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.68,
+   "conformity": 0.44,
+   "trust": 0.5,
+   "shop_gap": 5,
+   "start_stock": 12,
+   "story": "Haruto Inoue works rotating shifts at a factory and lives alone in the suburbs, where shops are a short drive away. He gets anxious when shelves look empty and watches TV for updates, but generally makes his own decision rather than automatically copying others."
+  },
+  {
+   "id": 195,
+   "name": {
+    "en": "Akiko Kobayashi",
+    "ja": "小林 明子"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "factory worker on rotating shifts",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.59,
+   "conformity": 0.41,
+   "trust": 0.69,
+   "shop_gap": 2,
+   "start_stock": 10,
+   "story": "Akiko Kobayashi and her family raise two school-age children in a small town with limited shopping choices, while she works rotating factory shifts. She remembers that shortages can be unsettling, so she checks LINE reports but also gives official guidance considerable weight."
+  },
+  {
+   "id": 196,
+   "name": {
+    "en": "Kenji Mori",
+    "ja": "森 健二"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "care worker",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.61,
+   "conformity": 0.78,
+   "trust": 0.28,
+   "shop_gap": 3,
+   "start_stock": 16,
+   "story": "Kenji Mori is a care worker raising a small child with his partner in a small town where shopping options are limited. He tends to follow what others are doing when supplies run low, but his low trust in official statements leaves him susceptible to rumours."
+  },
+  {
+   "id": 197,
+   "name": {
+    "en": "Kenji Sato",
+    "ja": "佐藤 健二"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.79,
+   "conformity": 0.59,
+   "trust": 0.79,
+   "shop_gap": 3,
+   "start_stock": 11,
+   "story": "Kenji Sato is a retired older man living alone in a small city-centre flat, where there is little room to store extra goods. He is easily worried by reports of shortages and often looks to TV and official guidance for reassurance, while also taking cues from other shoppers."
+  },
+  {
+   "id": 198,
+   "name": {
+    "en": "Misaki Hashimoto",
+    "ja": "橋本 美咲"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "university student",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.7,
+   "conformity": 0.95,
+   "trust": 0.51,
+   "shop_gap": 2,
+   "start_stock": 10,
+   "story": "Misaki Hashimoto lives with her family and two school-age children in the suburbs, balancing university studies with family life and frequent LINE messages. She becomes anxious when rumours spread and is very likely to follow what friends and neighbours recommend, even before checking official guidance."
+  },
+  {
+   "id": 199,
+   "name": {
+    "en": "Shota Sasaki",
+    "ja": "佐々木 翔太"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.57,
+   "conformity": 0.55,
+   "trust": 0.71,
+   "shop_gap": 7,
+   "start_stock": 13,
+   "story": "Shota Sasaki is retired and lives with his partner and small child in the suburbs, with nearby shops reachable by a short drive. He watches TV for updates and tends to trust official statements, responding to shortages with some concern but usually without rushing to copy others."
+  },
+  {
+   "id": 200,
+   "name": {
+    "en": "Shota Kimura",
+    "ja": "木村 翔太"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "stays home with the children",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.5,
+   "conformity": 0.36,
+   "trust": 0.52,
+   "shop_gap": 3,
+   "start_stock": 10,
+   "story": "Shota Kimura and his partner keep a home in the suburbs and watch the morning and evening news between household chores. When a shop runs short, they usually wait or make a short drive elsewhere, though a persistent rumour may leave them cautious."
+  },
+  {
+   "id": 201,
+   "name": {
+    "en": "Keiko Sato",
+    "ja": "佐藤 恵子"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "runs a small shop",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.35,
+   "conformity": 0.47,
+   "trust": 0.48,
+   "shop_gap": 4,
+   "start_stock": 15,
+   "story": "Keiko Sato and her partner run a small shop in a town with few places to buy supplies, so they notice shortages quickly. They stay fairly practical, checking what customers actually need instead of joining a rush prompted by rumours."
+  },
+  {
+   "id": 202,
+   "name": {
+    "en": "Takashi Ito",
+    "ja": "伊藤 隆"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "stays home with the children",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.95,
+   "conformity": 0.53,
+   "trust": 0.8,
+   "shop_gap": 7,
+   "start_stock": 14,
+   "story": "Takashi Ito and his partner spend much of the day at home, and LINE messages from relatives and friends are a regular part of their routine. He worries quickly and tends to stock up when alarming reports circulate, even while trusting official reassurance."
+  },
+  {
+   "id": 203,
+   "name": {
+    "en": "Daisuke Tanaka",
+    "ja": "田中 大輔"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "sales rep who drives all day",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.49,
+   "conformity": 0.53,
+   "trust": 0.47,
+   "shop_gap": 7,
+   "start_stock": 8,
+   "story": "Daisuke Tanaka drives around town all day for work and relies on television news at home to catch up. He is fairly even-tempered, but if shelves look bare he may pick up an extra item while passing the supermarket rather than risk another shortage."
+  },
+  {
+   "id": 204,
+   "name": {
+    "en": "Sachiko Nakamura",
+    "ja": "中村 幸子"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "freelance, works from home",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.51,
+   "conformity": 0.21,
+   "trust": 0.71,
+   "shop_gap": 2,
+   "start_stock": 11,
+   "story": "Sachiko Nakamura works freelance from home while caring for two school-age children, and family chats often bring news to her phone. She checks official updates before acting and is not easily swept along by a rumour or a crowd at the shops."
+  },
+  {
+   "id": 205,
+   "name": {
+    "en": "Makoto Hayashi",
+    "ja": "林 誠"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.89,
+   "conformity": 0.23,
+   "trust": 0.69,
+   "shop_gap": 3,
+   "start_stock": 11,
+   "story": "Makoto Hayashi is a retired city resident who lives alone in a small flat with little room to store supplies and rarely follows the news. Shortages make him uneasy, so he may ask a neighbour what is happening before making a small, careful purchase."
+  },
+  {
+   "id": 206,
+   "name": {
+    "en": "Yumi Kobayashi",
+    "ja": "小林 由美"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "factory worker on rotating shifts",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.65,
+   "conformity": 0.77,
+   "trust": 0.86,
+   "shop_gap": 3,
+   "start_stock": 8,
+   "story": "Yumi Kobayashi and her partner work around rotating factory shifts, fitting shopping into whichever hours they have free. She trusts official guidance and, when friends on LINE say supplies are running low, is inclined to follow their lead and shop early."
+  },
+  {
+   "id": 207,
+   "name": {
+    "en": "Ayumi Ikeda",
+    "ja": "池田 あゆみ"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "sales rep who drives all day",
+   "area": "city centre, small flat, little storage",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.66,
+   "conformity": 0.35,
+   "trust": 0.81,
+   "shop_gap": 2,
+   "start_stock": 7,
+   "story": "Ayumi Ikeda drives for work and shares a small city-centre flat with her partner and two school-age children. She does not keep up with news closely, but a shortage can make her anxious about the household; she generally accepts official explanations rather than chase every rumour."
+  },
+  {
+   "id": 208,
+   "name": {
+    "en": "Yumi Hayashi",
+    "ja": "林 由美"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "care worker",
+   "area": "city centre, small flat, little storage",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.63,
+   "conformity": 0.36,
+   "trust": 0.63,
+   "shop_gap": 3,
+   "start_stock": 15,
+   "story": "Yumi Hayashi works as a care worker and raises a small child with her partner in a compact city flat. With little time or storage, she buys what the family needs and tries not to react to rumours unless a shortage affects her usual shopping."
+  },
+  {
+   "id": 209,
+   "name": {
+    "en": "Naoko Yamamoto",
+    "ja": "山本 直子"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.1,
+   "conformity": 0.51,
+   "trust": 0.7,
+   "shop_gap": 1,
+   "start_stock": 13,
+   "story": "Naoko Yamamoto and her retired partner live in a small town and check Twitter throughout the day. She is notably calm when shops run short, and tends to share useful information or spare supplies with neighbours rather than hoard them."
+  },
+  {
+   "id": 210,
+   "name": {
+    "en": "Ayumi Kato",
+    "ja": "加藤 あゆみ"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.43,
+   "conformity": 0.63,
+   "trust": 0.59,
+   "shop_gap": 5,
+   "start_stock": 14,
+   "story": "Ayumi Kato is retired and lives alone in a town where the supermarket and drugstore are her main shopping options. She checks Twitter often and may follow what others are doing when shelves thin out, though she does not panic over every rumour."
+  },
+  {
+   "id": 211,
+   "name": {
+    "en": "Ayumi Yamada",
+    "ja": "山田 あゆみ"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.95,
+   "conformity": 0.68,
+   "trust": 0.48,
+   "shop_gap": 2,
+   "start_stock": 15,
+   "story": "Ayumi Yamada is a retired woman living alone in the suburbs, where a short drive takes her to the shops; television is her main source of news. She worries intensely when supplies disappear and may buy extra after hearing reports, though she is not fully convinced by every official statement."
+  },
+  {
+   "id": 212,
+   "name": {
+    "en": "Yuta Yoshida",
+    "ja": "吉田 雄太"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "university student",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.61,
+   "conformity": 0.66,
+   "trust": 0.5,
+   "shop_gap": 1,
+   "start_stock": 11,
+   "story": "Yuta Yoshida is a university student living alone in a small town, and news is rarely part of his daily routine. If a rumour reaches him through other people, he may follow their example and shop sooner than planned, but he is not strongly attached to any one account."
+  },
+  {
+   "id": 213,
+   "name": {
+    "en": "Misaki Abe",
+    "ja": "阿部 美咲"
+   },
+   "kind": "three generations under one roof",
+   "members": 5,
+   "age": "50s",
+   "work": "part-time job at a supermarket",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.31,
+   "conformity": 0.42,
+   "trust": 0.68,
+   "shop_gap": 7,
+   "start_stock": 6,
+   "story": "Misaki Abe lives with three generations of family in a small city-centre home and works part-time at a supermarket. Having seen how quickly shelves can change during a shift, she stays composed and tells her family to buy only what they need."
+  },
+  {
+   "id": 214,
+   "name": {
+    "en": "Misaki Sasaki",
+    "ja": "佐々木 美咲"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.46,
+   "conformity": 0.39,
+   "trust": 0.68,
+   "shop_gap": 4,
+   "start_stock": 6,
+   "story": "Misaki Sasaki and her partner are retired and live in a small town with only a supermarket and a drugstore. They remember earlier periods when ordinary goods were hard to find, so they keep a modest reserve and take fresh rumours with a grain of salt."
+  },
+  {
+   "id": 215,
+   "name": {
+    "en": "Hiroshi Ishikawa",
+    "ja": "石川 浩"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "public servant at the town hall",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.55,
+   "conformity": 0.56,
+   "trust": 0.47,
+   "shop_gap": 2,
+   "start_stock": 6,
+   "story": "Hiroshi Ishikawa works at the town hall and cares for a small child with his partner in a suburban home. He pays attention to television reports but is somewhat wary of official assurances, so when supplies run low he checks the shelves himself before deciding what to do."
+  },
+  {
+   "id": 216,
+   "name": {
+    "en": "Yuta Yoshida",
+    "ja": "吉田 雄太"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.05,
+   "conformity": 0.37,
+   "trust": 0.56,
+   "shop_gap": 2,
+   "start_stock": 5,
+   "story": "Yuta Yoshida is a retired man living alone in the suburbs, with shops a short drive away, and watches television news now and then. He is unusually untroubled by shortages and would rather wait for restocking than join a rush or pass on an unverified rumour."
+  },
+  {
+   "id": 217,
+   "name": {
+    "en": "Osamu Kimura",
+    "ja": "木村 修"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "university student",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.67,
+   "conformity": 0.55,
+   "trust": 0.67,
+   "shop_gap": 3,
+   "start_stock": 16,
+   "story": "Osamu Kimura studies at university while raising a small child with his partner in a town with just a supermarket and drugstore. He can get anxious when supplies look scarce and is moderately likely to follow neighbours’ lead, but he usually checks television reports too."
+  },
+  {
+   "id": 218,
+   "name": {
+    "en": "Tomoko Yoshida",
+    "ja": "吉田 智子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.21,
+   "conformity": 0.78,
+   "trust": 0.28,
+   "shop_gap": 3,
+   "start_stock": 4,
+   "story": "Tomoko Yoshida is retired and lives alone in a small town, where her shopping choices are limited. She tends to go along with what other shoppers are doing, yet is sceptical of official statements and can be stubborn about rumours she has heard from people she knows."
+  },
+  {
+   "id": 219,
+   "name": {
+    "en": "Takashi Watanabe",
+    "ja": "渡辺 隆"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "freelance, works from home",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.62,
+   "conformity": 0.92,
+   "trust": 0.95,
+   "shop_gap": 3,
+   "start_stock": 7,
+   "story": "Takashi Watanabe and his partner work from home in a compact city-centre flat and check Twitter many times a day. He trusts official updates strongly but also follows the crowd closely, so a widely shared warning may send him to the shops early despite limited storage."
+  },
+  {
+   "id": 220,
+   "name": {
+    "en": "Yuta Inoue",
+    "ja": "井上 雄太"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "care worker",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.77,
+   "conformity": 0.48,
+   "trust": 0.68,
+   "shop_gap": 2,
+   "start_stock": 6,
+   "story": "Yuta Inoue is a care worker in his forties, raising two school-age children in a small town with few shops. He rarely follows the news, but worries when shelves look bare and checks with the supermarket before making an extra trip."
+  },
+  {
+   "id": 221,
+   "name": {
+    "en": "Kazuko Suzuki",
+    "ja": "鈴木 和子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.43,
+   "conformity": 0.65,
+   "trust": 0.82,
+   "shop_gap": 7,
+   "start_stock": 9,
+   "story": "Kazuko Suzuki is a retired woman over seventy who lives alone in a small city-centre flat with little room to store supplies. She checks Twitter often and generally trusts official updates, though she may follow neighbours’ lead when a rumour spreads."
+  },
+  {
+   "id": 222,
+   "name": {
+    "en": "Yumi Yamada",
+    "ja": "山田 由美"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "works shifts at a hospital",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.59,
+   "conformity": 0.7,
+   "trust": 0.6,
+   "shop_gap": 7,
+   "start_stock": 9,
+   "story": "Yumi Yamada works hospital shifts and raises two school-age children with her family in the suburbs. She watches the TV news and, when something runs short, tends to buy a little extra after hearing what other parents are doing."
+  },
+  {
+   "id": 223,
+   "name": {
+    "en": "Kenji Tanaka",
+    "ja": "田中 健二"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "office worker with a long commute",
+   "area": "suburb, shops within a short drive",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.65,
+   "conformity": 0.28,
+   "trust": 0.35,
+   "shop_gap": 7,
+   "start_stock": 2,
+   "story": "Kenji Tanaka is an office worker with a long commute, living with his partner in the suburbs. He checks Twitter repeatedly but is wary of both media reports and official reassurances, so he questions shortages rumours rather than joining a rush to shop."
+  },
+  {
+   "id": 224,
+   "name": {
+    "en": "Yuta Tanaka",
+    "ja": "田中 雄太"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "care worker",
+   "area": "city centre, small flat, little storage",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.83,
+   "conformity": 0.71,
+   "trust": 0.56,
+   "shop_gap": 3,
+   "start_stock": 9,
+   "story": "Yuta Tanaka is a young care worker living alone in a small city-centre flat with little storage. Messages from friends and family can make him anxious, and he is likely to hurry to a shop when several people repeat the same warning."
+  },
+  {
+   "id": 225,
+   "name": {
+    "en": "Tomoko Mori",
+    "ja": "森 智子"
+   },
+   "kind": "lives alone, 40s-50s",
+   "members": 1,
+   "age": "40s-50s",
+   "work": "university student",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.39,
+   "conformity": 0.05,
+   "trust": 0.49,
+   "shop_gap": 3,
+   "start_stock": 15,
+   "story": "Tomoko Mori is a university student in her forties or fifties who lives alone in a small town with just a supermarket and drugstore. She stays calm when goods run low, watches the TV news, and prefers to make her own decision rather than copy a crowd."
+  },
+  {
+   "id": 226,
+   "name": {
+    "en": "Kazuko Mori",
+    "ja": "森 和子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.52,
+   "conformity": 0.54,
+   "trust": 0.64,
+   "shop_gap": 7,
+   "start_stock": 12,
+   "story": "Kazuko Mori is a retired woman over seventy living alone in a compact city-centre flat. She hears updates from family on LINE and is fairly trusting, but limited storage means she buys only what she needs when shops are short."
+  },
+  {
+   "id": 227,
+   "name": {
+    "en": "Tomoko Ito",
+    "ja": "伊藤 智子"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.73,
+   "conformity": 0.52,
+   "trust": 0.75,
+   "shop_gap": 4,
+   "start_stock": 3,
+   "story": "Tomoko Ito is one half of a retired couple living in the suburbs, where they can drive to nearby shops. She worries about shortages and takes family messages on LINE seriously, so she may stock up modestly while encouraging her partner to do the same."
+  },
+  {
+   "id": 228,
+   "name": {
+    "en": "Akiko Yamada",
+    "ja": "山田 明子"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "university student",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.3,
+   "conformity": 0.45,
+   "trust": 0.53,
+   "shop_gap": 3,
+   "start_stock": 16,
+   "story": "Akiko Yamada is a university student in her twenties or thirties who lives alone in the suburbs. She is relaxed about shortages, treats LINE rumours as unconfirmed, and waits to see whether shelves are still empty on her next shopping trip."
+  },
+  {
+   "id": 229,
+   "name": {
+    "en": "Akiko Kato",
+    "ja": "加藤 明子"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.69,
+   "conformity": 0.52,
+   "trust": 0.61,
+   "shop_gap": 3,
+   "start_stock": 10,
+   "story": "Akiko Kato is a retired woman over seventy who lives alone in a small town with only one supermarket and one drugstore. TV reports can make her uneasy, and she remembers earlier times when everyday goods were hard to find, so she keeps a small reserve without buying a cartful."
+  },
+  {
+   "id": 230,
+   "name": {
+    "en": "Hiroshi Mori",
+    "ja": "森 浩"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "sales rep who drives all day",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.84,
+   "conformity": 0.28,
+   "trust": 0.53,
+   "shop_gap": 3,
+   "start_stock": 7,
+   "story": "Hiroshi Mori is a young sales representative who spends much of the day driving around his small town and lives alone. He pays little attention to news, but his high anxiety can make a bare shelf unsettling; he tends to ask shop staff directly instead of trusting passing rumours."
+  },
+  {
+   "id": 231,
+   "name": {
+    "en": "Kenji Ito",
+    "ja": "伊藤 健二"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "sales rep who drives all day",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.59,
+   "conformity": 0.62,
+   "trust": 0.38,
+   "shop_gap": 1,
+   "start_stock": 9,
+   "story": "Kenji Ito is a sales representative who drives all day and raises two school-age children with his family in a small town. He hears plenty of claims on LINE but distrusts official statements, and may buy extra if other parents report a shortage, even while doubting the explanation."
+  },
+  {
+   "id": 232,
+   "name": {
+    "en": "Akiko Matsumoto",
+    "ja": "松本 明子"
+   },
+   "kind": "retired couple",
+   "members": 2,
+   "age": "65+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.59,
+   "conformity": 0.42,
+   "trust": 0.37,
+   "shop_gap": 5,
+   "start_stock": 8,
+   "story": "Akiko Matsumoto is part of a retired couple living in the suburbs, with shops a short drive away. She watches TV but is skeptical of its claims, so she stays measured when supplies run low and checks what is actually available before changing plans."
+  },
+  {
+   "id": 233,
+   "name": {
+    "en": "Makoto Sasaki",
+    "ja": "佐々木 誠"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "runs a small shop",
+   "area": "city centre, small flat, little storage",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.64,
+   "conformity": 0.73,
+   "trust": 0.42,
+   "shop_gap": 2,
+   "start_stock": 3,
+   "story": "Makoto Sasaki runs a small shop and lives alone in a compact city-centre flat. Though not much of a news follower, Makoto worries when customers mention shortages and tends to follow the crowd’s buying patterns rather than challenge rumours."
+  },
+  {
+   "id": 234,
+   "name": {
+    "en": "Daisuke Kobayashi",
+    "ja": "小林 大輔"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.07,
+   "conformity": 0.38,
+   "trust": 0.9,
+   "shop_gap": 2,
+   "start_stock": 7,
+   "story": "Daisuke Kobayashi is a retired man over seventy who lives alone in the suburbs and can drive to nearby shops. Calm and confident in official information, he ignores alarming LINE messages unless a reliable source confirms them, and is happy to share what he has with a neighbour."
+  },
+  {
+   "id": 235,
+   "name": {
+    "en": "Takashi Tanaka",
+    "ja": "田中 隆"
+   },
+   "kind": "lives alone, 70 or older",
+   "members": 1,
+   "age": "70+",
+   "work": "retired",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.79,
+   "conformity": 0.57,
+   "trust": 0.62,
+   "shop_gap": 3,
+   "start_stock": 5,
+   "story": "Takashi Tanaka is a retired man over seventy living alone in a small city-centre flat with little storage. He worries when TV reports show empty shelves and may make an extra trip to shop, though he tries not to buy more than his small home can hold."
+  },
+  {
+   "id": 236,
+   "name": {
+    "en": "Akiko Abe",
+    "ja": "阿部 明子"
+   },
+   "kind": "couple with one small child",
+   "members": 3,
+   "age": "30s",
+   "work": "care worker",
+   "area": "city centre, small flat, little storage",
+   "info": "tv",
+   "info_text": "gets news mostly from morning and evening TV",
+   "anxiety": 0.79,
+   "conformity": 0.47,
+   "trust": 0.05,
+   "shop_gap": 7,
+   "start_stock": 5,
+   "story": "Akiko Abe works as a care worker and lives with a partner and small child in a compact city-centre flat. She gets anxious about the child going without, but has very little trust in official statements, so she may act on a rumour while looking for confirmation from people she knows."
+  },
+  {
+   "id": 237,
+   "name": {
+    "en": "Yuta Watanabe",
+    "ja": "渡辺 雄太"
+   },
+   "kind": "lives alone, in their 20s-30s",
+   "members": 1,
+   "age": "20s-30s",
+   "work": "office worker with a long commute",
+   "area": "suburb, shops within a short drive",
+   "info": "chat",
+   "info_text": "hears things from family and friends on LINE",
+   "anxiety": 0.95,
+   "conformity": 0.37,
+   "trust": 0.61,
+   "shop_gap": 2,
+   "start_stock": 4,
+   "story": "Yuta Watanabe is an office worker with a long commute who lives alone in the suburbs. Family messages can quickly alarm him, and despite not being especially inclined to follow others, he may make a hurried shop visit when a shortage rumour feels personal."
+  },
+  {
+   "id": 238,
+   "name": {
+    "en": "Hiroshi Watanabe",
+    "ja": "渡辺 浩"
+   },
+   "kind": "family with two school-age children",
+   "members": 4,
+   "age": "40s",
+   "work": "university student",
+   "area": "small town, one supermarket and one drugstore",
+   "info": "sns",
+   "info_text": "checks Twitter many times a day",
+   "anxiety": 0.45,
+   "conformity": 0.46,
+   "trust": 0.78,
+   "shop_gap": 7,
+   "start_stock": 8,
+   "story": "Hiroshi Watanabe is a university student raising two school-age children with his family in a small town. He checks Twitter often and trusts official updates, so he is usually steady when items run short and shares confirmed information rather than repeating speculation."
+  },
+  {
+   "id": 239,
+   "name": {
+    "en": "Shota Abe",
+    "ja": "阿部 翔太"
+   },
+   "kind": "couple without children",
+   "members": 2,
+   "age": "30s-60s",
+   "work": "care worker",
+   "area": "city centre, small flat, little storage",
+   "info": "low",
+   "info_text": "pays little attention to news",
+   "anxiety": 0.33,
+   "conformity": 0.29,
+   "trust": 0.87,
+   "shop_gap": 7,
+   "start_stock": 4,
+   "story": "Shota Abe is a care worker living with a partner in a small city-centre flat. He pays little attention to news and is not easily swayed by rumours, preferring to trust clear official guidance and give neighbours a hand if they need something."
+  }
+ ]
+}
