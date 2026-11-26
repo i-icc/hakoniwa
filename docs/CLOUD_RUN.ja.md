@@ -1,5 +1,7 @@
 # Cloud Run に IAP 付きでデプロイする
 
+[English](./CLOUD_RUN.md)
+
 同梱サンプルを試せる Hakoniwa を、Google アカウントでアクセスを許可した人に共有します。Cloud Run サービスで IAP を有効にします。許可された利用者は、同じ世界・実行履歴を閲覧、変更できます。 [Cloud Run の IAP 設定](https://docs.cloud.google.com/run/docs/securing/identity-aware-proxy-cloud-run)
 
 この構成はデモ向けです。SQLite はインスタンス内の `/tmp` に置くため、インスタンスの交換や再デプロイで消えます。「データ」メニューがある版では、残したい実行を SQLite に書き出してから更新し、更新後に取り込めます。HTTP/1 の取り込みリクエストには 32 MiB の上限があります。 [Cloud Run のファイルシステム](https://docs.cloud.google.com/run/docs/container-contract#file-system) · [リクエスト上限](https://docs.cloud.google.com/run/quotas#request-limits-for-cloud-run)
@@ -8,14 +10,18 @@
 
 課金を有効にした Google Cloud プロジェクト、`gcloud`、Docker を用意します。実行者には、サービスのデプロイと IAM 設定、Artifact Registry への push、実行用サービスアカウントの使用に必要な権限を付与してください。 [Cloud Run の IAM ロール](https://docs.cloud.google.com/run/docs/reference/iam/roles) · [Artifact Registry への push](https://docs.cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling)
 
-リポジトリのルートで、プロジェクト ID とアクセスを許可するメールアドレスを入れて実行します。グループを許可する場合は `IAP_MEMBER` を `group:グループのメールアドレス` にしてください。
+リポジトリのルートで Bash を使って実行します。プロジェクト ID を設定し、`IAP_MEMBERS` に許可するメンバーを 1 行に 1 件ずつ指定します。個人の Google アカウントは `user:メールアドレス`、Google グループは `group:グループのメールアドレス` で指定します。
 
 ```bash
 PROJECT_ID="your-project-id"
 REGION="asia-northeast1"
 SERVICE="hakoniwa"
 REPOSITORY="hakoniwa"
-IAP_MEMBER="user:you@example.com"
+IAP_MEMBERS=(
+  "user:you@example.com"
+  "user:teammate@example.com"
+  "group:demo-team@example.com"
+)
 RUNTIME_SA="hakoniwa-run@$PROJECT_ID.iam.gserviceaccount.com"
 
 gcloud auth login
@@ -60,9 +66,11 @@ gcloud run services add-iam-policy-binding "$SERVICE" \
   --member="serviceAccount:service-$PROJECT_NUMBER@gcp-sa-iap.iam.gserviceaccount.com" \
   --role="roles/run.invoker"
 
-gcloud iap web add-iam-policy-binding \
-  --project="$PROJECT_ID" --region="$REGION" --resource-type=cloud-run --service="$SERVICE" \
-  --member="$IAP_MEMBER" --role="roles/iap.httpsResourceAccessor"
+for member in "${IAP_MEMBERS[@]}"; do
+  gcloud iap web add-iam-policy-binding \
+    --project="$PROJECT_ID" --region="$REGION" --resource-type=cloud-run --service="$SERVICE" \
+    --member="$member" --role="roles/iap.httpsResourceAccessor" || break
+done
 ```
 
 サービスエージェントが見つからない場合は、コンソールで IAP を設定するか、CLI でサービス ID を作成してから権限付与を再実行します。CLI では `gcloud beta services identity create --service=iap.googleapis.com --project="$PROJECT_ID"` を使います。 [サービス ID の作成](https://docs.cloud.google.com/sdk/gcloud/reference/beta/services/identity/create)
@@ -78,7 +86,7 @@ curl -sS -o /dev/null -w '%{http_code}\n' "$URL/api/info"
 
 1. サービスの詳細に `Iap Enabled: true` が表示されていることを確認します。
 2. 未ログインのリクエストでは、ログインへのリダイレクトかアクセス拒否が返ることを確認します。
-3. ブラウザーで URL を開き、許可した Google アカウントでサインインして、同梱サンプルの実行を開始します。別の許可していないアカウントでもアクセスが拒否されることを確認できます。
+3. ブラウザーで URL を開き、許可した Google アカウントでサインインして、同梱サンプルの実行を開始します。Google グループを指定した場合は、グループのメンバーでもアクセスを確認します。許可対象に含まれないアカウントでアクセスが拒否されることも確認します。
 
 ## オプションでサンプルの AI を有効にする
 
