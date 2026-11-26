@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Protocol
 
 from ..domain.text import extract_json
@@ -98,6 +99,8 @@ class SandboxFactory(Protocol):
 class Store(Protocol):
     """Worlds, runs, per-tick history, snapshots, the temporal fact graph, usage."""
 
+    def backup_to(self, path: Path) -> None: ...
+    def restore_from(self, path: Path, builtin: list[dict]) -> None: ...
     # worlds
     def upsert_world(self, slug: str, source: str, spec: dict, code: str, notes: str = "") -> int: ...
     def world(self, world_id: int) -> dict | None: ...

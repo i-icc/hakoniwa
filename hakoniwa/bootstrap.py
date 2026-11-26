@@ -1,7 +1,9 @@
 """Composition root: the only place that knows which adapter fills which port."""
 from __future__ import annotations
 
+import asyncio
 from dataclasses import dataclass
+from pathlib import Path
 
 from .application.designer import WorldDesigner
 from .application.engine import RunManager
@@ -34,17 +36,25 @@ class App:
         await self.runs.shutdown()
         await self.llm.close()
 
+    async def restore_data(self, path: Path) -> None:
+        await asyncio.to_thread(self.store.restore_from, path, load_builtin_worlds())
+        self.designer.jobs.clear()
+        self.set_models(self.store.get_setting("models"), remember=False)
+        await self.runs.discard_workers()
+
     # -- model choices --------------------------------------------------------
     def model_choices(self) -> dict:
         return {role: {"model": rc.model, "effort": rc.effort, "default_model": self.env_models[role][0],
                        "default_effort": self.env_models[role][1]} for role, rc in self.settings.roles.items()}
 
-    def set_models(self, choices: dict | None) -> dict:
+    def set_models(self, choices: dict | None, *, remember: bool = True) -> dict:
         """Apply model choices from the viewer (None = back to .env) and remember them."""
         clean: dict = {}
         for role, rc in self.settings.roles.items():
             rc.model, rc.effort = self.env_models[role]
-            c = (choices or {}).get(role) or {}
+            c = choices.get(role) if isinstance(choices, dict) else None
+            if not isinstance(c, dict):
+                c = {}
             model = str(c.get("model") or "").strip()
             effort = c.get("effort")
             if model:
@@ -53,7 +63,8 @@ class App:
                 rc.effort = effort
             if choices is not None:
                 clean[role] = {"model": rc.model, "effort": rc.effort}
-        self.store.set_setting("models", clean or None)
+        if remember:
+            self.store.set_setting("models", clean or None)
         return self.model_choices()
 
 

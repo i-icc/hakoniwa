@@ -1,6 +1,12 @@
 // UI strings. English is the default; Japanese is selectable (top right, or ?lang=ja).
 const S = {
   en: {
+    data: "Data", dataExport: "Export SQLite", dataImport: "Import SQLite", dataFile: "SQLite backup file",
+    dataExportHelp: "Download one file with worlds, runs, reports, and model settings.",
+    dataImportHelp: "Import replaces all current Hakoniwa data. Export a backup first if you want to keep it.",
+    dataConfirm: "Replace all current Hakoniwa data with this backup?",
+    dataPause: "Pause active runs and wait for ongoing work to finish before transferring data.",
+    dataWorking: "Transferring…", dataImported: "Backup restored.", worldReportDownload: "Download report (.md)",
     draft: "Draft with AI", drafting: "Thinking…", draftHelp: "Type a rough idea (or nothing), and AI writes it up as a scenario.",
     modelsTitle: "Models", per1m: "USD per 1M tokens, in / out", effort: "Effort", save: "Save", resetEnv: "Back to .env",
     roleDesigner: "World design", roleDesignerHelp: "Turns a scenario into a world. One large call.", roleAgent: "Residents", roleAgentHelp: "Decisions and speech during a run. Many small calls.",
@@ -49,6 +55,12 @@ const S = {
     slow: "Slow", normal: "Normal", fast: "Fast", max: "Max", none: "none", changed: "changed", sourcesNote: "△ = assumption, not a measured number",
   },
   ja: {
+    data: "データ", dataExport: "SQLite を書き出す", dataImport: "SQLite を取り込む", dataFile: "SQLite バックアップファイル",
+    dataExportHelp: "世界、実行履歴、レポート、モデル設定を1つのファイルに保存します。",
+    dataImportHelp: "取り込むと現在の Hakoniwa データがすべて置き換わります。残しておくには、先に書き出してください。",
+    dataConfirm: "現在の Hakoniwa データをすべて、このバックアップで置き換えますか？",
+    dataPause: "実行を一時停止し、進行中の処理が終わってから操作してください。",
+    dataWorking: "処理中…", dataImported: "バックアップを取り込みました。", worldReportDownload: "レポートをダウンロード（.md）",
     draft: "AI でシナリオを考える", drafting: "考え中…", draftHelp: "ざっくりした要望を書くと（空でも可）、AI がシナリオの文章に整えます。",
     modelsTitle: "モデル", per1m: "100 万トークンあたり USD（入力 / 出力）", effort: "考える深さ", save: "保存", resetEnv: ".env の設定に戻す",
     roleDesigner: "世界の設計", roleDesignerHelp: "シナリオから世界を作る。大きな呼び出しが 1 回。", roleAgent: "住人", roleAgentHelp: "実行中の判断と発言。小さな呼び出しが多数。",

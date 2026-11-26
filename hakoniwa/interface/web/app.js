@@ -13,6 +13,8 @@ const api = {
 };
 
 const app = document.getElementById("app");
+const SQLITE_MEDIA = "application/vnd.sqlite3";
+const DATA_CHANGE = "hakoniwa.data-restored";
 let info = null;
 let cleanup = [];
 const later = (fn, ms) => { const id = setTimeout(fn, ms); cleanup.push(() => clearTimeout(id)); return id; };
@@ -195,6 +197,62 @@ async function historyPage() {
   render();
 }
 
+// ---------------------------------------------------------------- data transfer
+function dataPage() {
+  crumbs([{ text: t("data") }]);
+  const file = el("input", { id: "backup-file", type: "file", accept: ".sqlite3,.sqlite,.db," + SQLITE_MEDIA });
+  const notice = el("p", { role: "status", hidden: true });
+  const exp = el("button", { onclick: () => transfer(false) }, t("dataExport"));
+  const imp = el("button", { class: "primary", disabled: true, onclick: () => transfer(true) }, t("dataImport"));
+  file.addEventListener("change", () => { imp.disabled = !file.files.length; });
+  function status(message, error = false) {
+    notice.className = error ? "banner err" : "banner";
+    notice.textContent = message;
+    notice.hidden = !message;
+  }
+  async function transfer(importing) {
+    const backup = file.files[0];
+    if (importing && (!backup || !confirm(t("dataConfirm") + "\n\n" + backup.name))) return;
+    exp.disabled = imp.disabled = file.disabled = true;
+    status(t("dataWorking"));
+    try {
+      const response = await fetch(importing ? "/api/data/import" : "/api/data/export", importing
+        ? { method: "POST", headers: { "Content-Type": SQLITE_MEDIA }, body: backup } : undefined);
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(response.status === 409 ? t("dataPause") : data.error || data.detail || `HTTP ${response.status}`);
+      }
+      if (importing) {
+        info = null;
+        file.value = "";
+        localStorage.setItem(DATA_CHANGE, String(Date.now()));
+        status(t("dataImported"));
+      } else {
+        const url = URL.createObjectURL(await response.blob());
+        const link = el("a", { href: url, download: "hakoniwa.sqlite3" });
+        document.body.append(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        status("");
+      }
+    } catch (e) {
+      status(e.message, true);
+    } finally {
+      exp.disabled = file.disabled = false;
+      imp.disabled = !file.files.length;
+    }
+  }
+  app.replaceChildren(el("div", { class: "stack narrow" }, el("h1", {}, t("data")),
+    el("div", { class: "card stack" }, el("h2", {}, t("dataExport")), el("p", {}, t("dataExportHelp")), exp),
+    el("div", { class: "card stack" }, el("h2", {}, t("dataImport")), el("p", {}, t("dataImportHelp")),
+      el("label", { for: file.id }, t("dataFile")), el("div", { class: "row" }, file, imp)),
+    el("p", { class: "muted small" }, t("dataPause")), notice));
+}
+window.addEventListener("storage", (e) => {
+  if (e.key === DATA_CHANGE) location.reload();
+});
+
 // ---------------------------------------------------------------- world lines
 function lineRuns(spec, defaults, runs, results) {
   const byId = new Map(runs.map((r) => [r.id, r]));
@@ -321,6 +379,7 @@ async function worldPage(id) {
   if (w.runs.length) runResults(id).then((results) => queueMicrotask(() => worldLines(linesHost, { runs: lineRuns(spec, w.defaults, w.runs, results), current: null, unit: L(spec.tick.unit), onOpen: (r) => { location.hash = `#/run/${r.id}`; } })));
   app.replaceChildren(el("div", { class: "stack" },
     el("div", {}, el("div", { class: "row" }, el("h1", {}, L(spec.title)), el("span", { class: "tag" }, w.source === "builtin" ? t("sample") : t("generated")),
+      el("a", { class: "btn", href: `/api/worlds/${id}/report.md?lang=${lang}`, download: true }, t("worldReportDownload")),
       w.source !== "builtin" ? el("button", { class: "ghost danger", onclick: async () => { if (confirm(t("confirmDelete"))) { await api.del(`/api/worlds/${id}`); location.hash = "#/"; } } }, t("delete")) : null),
       el("p", { class: "muted", style: { maxWidth: "900px" } }, L(spec.summary))),
     el("div", { class: "two" },
@@ -697,7 +756,9 @@ async function route() {
     chrome();
     const m = location.hash.match(/^#\/(world|run)\/(\d+)/);
     document.getElementById("nav-history").textContent = t("history");
+    document.getElementById("nav-data").textContent = t("data");
     if (location.hash.startsWith("#/history")) await historyPage();
+    else if (location.hash === "#/data") dataPage();
     else if (!m) await home();
     else if (m[1] === "world") await worldPage(Number(m[2]));
     else await runPage(Number(m[2]));

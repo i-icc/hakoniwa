@@ -379,11 +379,31 @@ class RunManager:
                     w.task.cancel()
             await w.close()
 
-    def delete_run(self, run_id: int) -> None:
-        w = self.workers.pop(run_id, None)
+    @property
+    def busy(self) -> bool:
+        return any(w.lock.locked() or (
+            w.task is not None and not w.task.done() and (w.wake.is_set() or w.want != "paused")
+        ) for w in self.workers.values())
+
+    async def discard_workers(self) -> None:
+        """Discard idle workers and their cached snapshots after a database restore."""
+        workers = list(self.workers.values())
+        self.workers.clear()
+        await asyncio.gather(*(self._discard(w) for w in workers))
+
+    @staticmethod
+    async def _discard(w: RunWorker) -> None:
+        if w.task is not None and not w.task.done():
+            w.task.cancel()
+            await asyncio.gather(w.task, return_exceptions=True)
+        async with w.lock:
+            await w.close()
+
+    async def delete_run(self, run_id: int) -> None:
+        w = self.workers.get(run_id)
         if w:
-            w.want = "stopped"
-            w.wake.set()
+            await self._discard(w)
+            self.workers.pop(run_id, None)
         self.db.delete_run(run_id)
 
 
