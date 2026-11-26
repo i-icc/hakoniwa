@@ -264,7 +264,8 @@ class Observer:
         r1 = lambda v: (round(v) if abs(v) >= 100 else round(v, 1)) if isinstance(v, float) else v
         out = []
         for run in self.store.runs_for_world(world_id):
-            rows = [r for r in self.store.ticks(run["id"]) if r["tick"] > 0]
+            history = self.store.ticks(run["id"])
+            rows = [r for r in history if r["tick"] > 0]
             clock = {r["tick"]: T(r.get("clock"), lang) or f"t={r['tick']}" for r in rows}
             figures = {}
             for m in outcomes:
@@ -293,6 +294,9 @@ class Observer:
                       for e in self.store.events(run["id"], limit=2000) if e["kind"] == "say" and e["payload"].get("key") != key and e["payload"].get("source") == "llm"]
             first = outcomes[0] if outcomes else None
             out.append({"id": run["id"], "name": run["name"], "path": run["params"].get(focus.get("path_param", "path")), "seed": run["config"].get("seed"),
+                        "parent_run_id": run["parent_run_id"], "fork_tick": run["fork_tick"],
+                        "outcomes": {m: [[r["tick"], r["metrics"][m]] for r in history
+                                         if isinstance(r["metrics"].get(m), (int, float))] for m in outcomes},
                         "status": run["status"], "tick": run["tick"], "total": run["config"].get("ticks"), "figures": figures,
                         "series": [r["metrics"].get(first) for r in rows] if first else [],
                         "turns": turns, "happened": happened, "last_words": last, "voices": voices[-4:],

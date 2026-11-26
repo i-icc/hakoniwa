@@ -483,7 +483,22 @@ async function lifePage(id, w) {
   cleanup.push(() => { alive = false; });
   const k = kept();
   let per = k?.per || 3;
-  keepState = () => ({ per });
+  const query = new URLSearchParams(location.hash.split("?")[1] || "");
+  let selected = k?.selected ?? Number(query.get("run"));
+  let at = k ? k.at : query.has("tick") ? Number(query.get("tick")) : null;
+  const metrics = focus.outcomes.map((id) => spec.metrics.find((m) => m.id === id)).filter(Boolean);
+  const switchPath = spec.parameters.find((p) => p.id === "next_path" && p.type === "choice" && p.runtime !== false);
+  const timeline = el("div", { class: "life-timeline" }), explorer = el("div", {}), chart = el("div", { class: "life-outcome" });
+  const metric = el("select", { "aria-label": t("lifeOutcome"), onchange: renderOutcome },
+    metrics.map((m) => el("option", { value: m.id, selected: k?.metric === m.id }, L(m.label))));
+  const point = el("input", { type: "range", min: 0, value: 0, oninput: () => { at = Number(point.value); renderPoint(); } });
+  const pointLabel = el("span", {}), detail = el("a", { class: "btn" }, t("lifeDetails"));
+  const split = el("button", { class: "primary", onclick: () => branch(futures.find((f) => f.id === selected)) }, t("lifeBranch"));
+  const opening = el("select", {}, focus.options.map((o) => el("option", { value: o.id, selected: (k?.opening || w.defaults[focus.path_param]) === o.id }, L(o.label))));
+  let futures = [], pollTimer, refreshNumber = 0;
+  const styles = new Map();
+  cleanup.push(() => clearTimeout(pollTimer));
+  keepState = () => ({ per, selected, at, metric: metric.value, opening: opening.value });
   const board = el("div", {}), reportBox = el("div", { class: "report" }), makeErr = el("div", {});
   const saveMd = el("a", { class: "btn", hidden: true, download: "", href: `/api/worlds/${id}/life-report.md?lang=${lang}` }, t("saveMd"));
   const perIn = el("input", { type: "number", min: 1, max: 6, value: per, style: { width: "64px" }, onchange: (e) => { per = Math.max(1, Math.min(6, Number(e.target.value) || 3)); } });
@@ -499,6 +514,97 @@ async function lifePage(id, w) {
     writeBtn.disabled = false; writeBtn.textContent = t("lifeWrite");
   } }, t("lifeWrite"));
   const showReport = (rep) => { saveMd.hidden = !(rep && rep.body); reportBox.replaceChildren(rep && rep.body ? el("div", { html: md(L(rep.body)) }) : ""); };
+  const playPath = el("button", { class: "primary", onclick: async () => {
+    playPath.disabled = true; makeErr.replaceChildren();
+    try {
+      const label = opening.selectedOptions[0].textContent;
+      const run = await api.post(`/api/worlds/${id}/runs`, {
+        name: label, params: { [focus.path_param]: opening.value }, config: { chance: true, tick_delay_ms: 1000 },
+      });
+      if (alive) location.hash = `#/run/${run.id}`;
+    } catch (e) { makeErr.replaceChildren(el("div", { class: "banner err" }, e.message)); }
+    finally { playPath.disabled = false; }
+  } }, t("lifeStartPath"));
+
+  function renderOutcome() {
+    const m = metrics.find((m) => m.id === metric.value);
+    if (!m || !futures.length) return;
+    const series = futures.map((f) => ({
+      name: f.name, ...styles.get(f.id), selected: f.id === selected, points: f.outcomes[m.id] || [],
+    }));
+    const marks = [...new Set(futures.map((f) => f.fork_tick).filter((tk) => tk != null))]
+      .map((tick) => ({ tick, label: `${t("lifeSeparate")} · ${tick}` }));
+    const graph = el("div", {});
+    chart.replaceChildren(legend(series), graph);
+    lineChart(graph, { series, format: m.format, unit: m.unit, cursor: Number(point.value), marks, xLabel: L(spec.tick.unit) });
+  }
+  function renderPoint() {
+    const f = futures.find((v) => v.id === selected);
+    const tick = Number(point.value);
+    pointLabel.textContent = `${t("lifeAt")} · ${tick} / ${f.tick} ${L(spec.tick.unit)}`;
+    split.disabled = tick >= f.total;
+    detail.href = `#/run/${f.id}?tick=${tick}`;
+    renderOutcome();
+  }
+  function renderExplorer() {
+    const f = futures.find((v) => v.id === selected) || futures[0];
+    explorer.hidden = !f;
+    if (!f) return;
+    selected = f.id;
+    for (const v of futures) {
+      if (styles.has(v.id)) continue;
+      const i = styles.size;
+      const dashes = [null, "6 4", "2 4", "8 4 2 4"];
+      styles.set(v.id, { color: SERIES[i % SERIES.length], dash: dashes[Math.floor(i / SERIES.length) % dashes.length] });
+    }
+    const focused = timeline.contains(document.activeElement) && document.activeElement.matches(":focus-visible")
+      ? document.activeElement.getAttribute("data-run-id") : null;
+    worldLines(timeline, {
+      runs: futures.map((v) => ({ ...v, ...styles.get(v.id), statusText: statusText(v.status) })), current: selected,
+      label: t("lifeTimeline"), unit: L(spec.tick.unit), onOpen: (v) => {
+        if (selected === v.id) return;
+        at ??= Number(point.value);
+        selected = v.id;
+        renderExplorer();
+      },
+    });
+    if (focused) timeline.querySelector(`[data-run-id="${focused}"]`)?.focus({ preventScroll: true });
+    point.max = f.tick;
+    point.value = at !== null && Number.isFinite(at) ? Math.max(0, Math.min(f.tick, at)) : Math.min(f.tick, f.total - 1);
+    renderPoint();
+  }
+  function branch(f) {
+    const tick = Number(point.value);
+    const dlg = el("dialog", { class: "dlg" });
+    const events = spec.interventions || [];
+    const options = (switchPath?.choices || []).filter((o) => focus.options.some((p) => p.id === o.id));
+    const choice = el("select", {}, el("option", { value: "" }, t("lifeContinue")),
+      options.map((o) => el("option", { value: `path:${o.id}` }, L(o.label))),
+      events.map((ev) => el("option", { value: `event:${ev.id}` }, L(ev.label))));
+    const name = el("input", { type: "text", placeholder: `${f.name} ⑂ ${tick}`, style: { width: "100%" } });
+    const error = el("div", {});
+    const go = el("button", { class: "primary", onclick: async () => {
+      go.disabled = true; error.replaceChildren();
+      const path = options.find((o) => choice.value === `path:${o.id}`);
+      const event = events.find((ev) => choice.value === `event:${ev.id}`);
+      const intervention = path ? { patch: { [switchPath.id]: path.id }, label: path.label } : event ? { id: event.id } : null;
+      const title = L((path || event)?.label);
+      try {
+        const run = await api.post(`/api/runs/${f.id}/fork`, {
+          tick, name: name.value.trim() || (title ? `${title} ⑂ ${tick}` : name.placeholder), intervention, start: true,
+        });
+        dlg.close();
+        selected = run.id; at = tick;
+        await refresh();
+      } catch (e) { error.replaceChildren(el("div", { class: "banner err" }, e.message)); go.disabled = false; }
+    } }, t("fork"));
+    dlg.append(el("div", { class: "stack" }, el("h2", {}, `${t("lifeBranch")} · ${tick} ${L(spec.tick.unit)}`),
+      el("p", { class: "muted small" }, t("lifeBranchHelp")),
+      el("label", {}, t("name"), name), el("label", {}, t("forkEvent"), choice), error,
+      el("div", { class: "row" }, el("button", { onclick: () => dlg.close() }, t("cancel")), go)));
+    dlg.addEventListener("close", () => dlg.remove());
+    document.body.append(dlg); dlg.showModal();
+  }
 
   const spark = (series, lo, hi) => {
     const W = 220, H = 44, n = series.length;
@@ -548,9 +654,14 @@ async function lifePage(id, w) {
   };
   async function refresh() {
     if (!alive) return;
+    clearTimeout(pollTimer);
+    const request = ++refreshNumber;
     let data;
-    try { data = await api.get(`/api/worlds/${id}/futures?lang=${lang}`); } catch { return later(refresh, 4000); }
-    if (!alive) return;
+    try { data = await api.get(`/api/worlds/${id}/futures?lang=${lang}`); }
+    catch { if (alive && request === refreshNumber) pollTimer = setTimeout(refresh, 4000); return; }
+    if (!alive || request !== refreshNumber) return;
+    futures = data.futures.sort((a, b) => a.id - b.id);
+    renderExplorer();
     const all = data.futures.flatMap((f) => f.series).filter((v) => Number.isFinite(v));
     const lo = all.length ? Math.min(...all) : 0, hi = all.length ? Math.max(...all) : 100;
     board.replaceChildren(...(data.futures.length ? focus.options.map((o) => {
@@ -560,16 +671,25 @@ async function lifePage(id, w) {
     }) : [el("p", { class: "muted" }, t("lifeNone"))]));
     if (data.report && !reportBox.childElementCount) showReport(data.report);
     writeBtn.disabled = !info.llm_live || !data.futures.some((f) => f.tick > 0);
-    if (data.futures.some((f) => f.status === "running")) later(refresh, 2500);
+    if (data.futures.some((f) => f.status === "running")) pollTimer = setTimeout(refresh, 2500);
   }
+  explorer.append(el("section", { class: "card stack" }, el("h2", {}, t("lifeTimeline")), timeline,
+    el("div", { class: "life-controls" },
+      el("label", {}, t("lifeOutcome"), metric), el("label", { class: "life-point" }, pointLabel, point), detail, split),
+    chart));
+  explorer.hidden = true;
+  window.addEventListener("resize", renderOutcome);
+  cleanup.push(() => window.removeEventListener("resize", renderOutcome));
   app.replaceChildren(el("div", { class: "stack" },
     el("div", {}, el("div", { class: "row" }, el("h1", {}, L(focus.question) || L(spec.title)), el("span", { class: "tag" }, t("lifeTag")),
       w.source !== "builtin" ? el("button", { class: "ghost danger", onclick: async () => { if (confirm(t("confirmDelete"))) { await api.del(`/api/worlds/${id}`); location.hash = "#/"; } } }, t("delete")) : null),
       el("p", { class: "muted", style: { maxWidth: "900px", margin: "4px 0" } }, t("lifeNot")),
       w.protagonist ? el("details", {}, el("summary", { class: "small" }, `${t("lifeProfile")}: ${L(w.protagonist.name)}`), el("p", { class: "muted small", style: { maxWidth: "900px" } }, w.protagonist.profile)) : ""),
     el("div", { class: "card stack" }, el("div", { class: "row", style: { alignItems: "flex-end" } },
-      el("div", {}, el("label", { title: t("lifeMakeHelp") }, t("lifePer")), perIn), makeBtn, el("span", { class: "muted small", style: { flex: 1 } }, t("lifeMakeHelp"))), makeErr),
-    board,
+      el("label", { class: "row" }, t("lifeOpening"), opening), playPath),
+      el("details", {}, el("summary", {}, t("lifeMake")), el("div", { class: "row" },
+        el("label", { class: "row" }, t("lifePer"), perIn), makeBtn, el("span", { class: "muted small" }, t("lifeMakeHelp")))), makeErr),
+    explorer, board,
     el("div", { class: "card stack" }, el("div", { class: "row" }, el("h2", { style: { margin: 0 } }, t("lifeReport")), writeBtn, saveMd), reportBox),
     el("p", {}, el("a", { class: "muted small", href: `#/world/${id}?raw=1` }, t("lifeInside")))));
   refresh();
@@ -760,6 +880,7 @@ async function runPage(id) {
 
   // skeleton
   const $ = {};
+  $.lifeBranch = spec.focus ? el("a", { class: "btn" }, t("lifeBranch")) : null;
   $.status = el("span", {}); $.clock = el("span", { class: "clock" }); $.cost = el("span", { class: "chip" });
   $.range = el("input", { type: "range", min: 0, max: 1, value: 0 });
   $.play = el("button", { class: "primary" }); $.step = el("button", {}, "⏭ " + t("step"));
@@ -791,7 +912,7 @@ async function runPage(id) {
   $.extend = el("button", { hidden: true, onclick: () => control("start", { ticks: R.total + spec.tick.default_ticks }) }, `+${spec.tick.default_ticks} ${t("ticksWord")}`);
   $.play.title = "Space"; $.range.title = "← →";
   const bar = el("div", { class: "runbar" }, $.play, $.step, $.extend, el("label", { class: "row", style: { margin: 0 } }, $.follow, t("live")), $.speed, $.clock, $.range, $.status, $.cost,
-    el("button", { onclick: () => forkDialog() }, "⑂ " + t("forkHere")));
+    $.lifeBranch || el("button", { onclick: () => forkDialog() }, "⑂ " + t("forkHere")));
   const parent = world.runs.find((r) => r.id === R.run.parent_run_id);
   $.about = el("div", { class: "row small about" });
   const renderAbout = () => {
@@ -842,6 +963,7 @@ async function runPage(id) {
     renderAbout();
     $.range.max = Math.max(1, R.total || 1); $.range.value = R.cursor;
     $.clock.textContent = `${clockOf(R.cursor)} · ${R.cursor} ${t("of")} ${R.total ?? "?"}`;
+    if ($.lifeBranch) $.lifeBranch.href = `#/world/${world.id}?run=${id}&tick=${R.cursor}`;
     const u = R.usage;
     $.cost.textContent = u ? (u.calls ? `${usd(u.cost)} · ${u.calls} ${t("calls")}` : (R.run.ai_live ? usd(0) : t("noAI"))) : "";
     $.err.replaceChildren(R.error ? el("div", { class: "banner err" }, el("b", {}, t("failed")), el("pre", { class: "code" }, R.error)) : "");

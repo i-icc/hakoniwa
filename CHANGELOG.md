@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1 (2026-11-26)
+
+- In life worlds, play one path, pick a point on its timeline, and branch from the same history. Choose a different direction in worlds that support it, or introduce an event.
+- View every future on the same outcome chart, using the same colours as the world lines. Select a future to highlight it and open its details at the selected point.
+
 ## 0.3.0 (2026-11-26)
 
 - **A second mode: one person's crossroads.** The top page asks what you would like to do. Besides watching a society, you can now say where you stand and what you are weighing ("should I change jobs?") and look at futures that could be. Same engine, different way in and different way of looking.

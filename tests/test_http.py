@@ -137,3 +137,51 @@ async def test_a_life_world_is_lived_several_times_over(client):
     rep = (await client.post(f"/api/worlds/{life['id']}/life-report", json={"lang": "en"})).json()
     assert rep["source"] == "template" and "## Where each path tended to lead" in rep["body"]["en"]
     assert (await client.get(f"/api/worlds/{life['id']}/life-report.md?lang=en")).text.startswith("# ")
+
+
+async def test_life_path_can_switch_after_a_shared_history(client, app):
+    import asyncio
+
+    worlds = (await client.get("/api/worlds")).json()
+    world = next(w for w in worlds if w["slug"] == "eight_years_at_the_kitchen_table")
+    url = f"/api/worlds/{world['id']}"
+    original = (await client.post(f"{url}/runs", json={
+        "params": {"path": "stay_current_role"},
+        "config": {"ticks": 6, "tick_delay_ms": 0},
+        "start": True,
+    })).json()
+    original_id = original["id"]
+    for _ in range(200):
+        old = (await client.get(f"/api/runs/{original_id}/ticks")).json()
+        if old["status"] == "finished":
+            break
+        await asyncio.sleep(0.025)
+    assert old["status"] == "finished"
+
+    response = await client.post(f"/api/runs/{original_id}/fork", json={
+        "tick": 3,
+        "intervention": {"patch": {"next_path": "join_startup"}},
+    })
+    assert response.status_code == 200, response.text
+    child = response.json()
+    child_id = child["id"]
+    assert child["fork_tick"] == 3 and child["parent_run_id"] == original_id
+    for tick in range(4):
+        assert app.store.snapshot(child_id, tick) == app.store.snapshot(original_id, tick)
+    # A branch can be resumed after its worker has been recreated.
+    app.runs.workers.pop(child_id)
+    await client.post(f"/api/runs/{child_id}/control", json={"action": "start"})
+    for _ in range(200):
+        future = (await client.get(f"/api/runs/{child_id}/ticks")).json()
+        if future["status"] == "finished":
+            break
+        await asyncio.sleep(0.025)
+    assert future["status"] == "finished"
+    assert future["rows"][:4] == old["rows"][:4]
+    assert app.store.snapshot(child_id, 4)["state"]["goal"] == "startup"
+    assert app.store.snapshot(original_id, 4)["state"]["work"] != "startup"
+    futures = {f["id"]: f for f in (await client.get(f"{url}/futures")).json()["futures"]}
+    assert futures[child_id]["fork_tick"] == 3
+    shared = futures[original_id]["outcomes"]["satisfaction"][:4]
+    assert [tick for tick, _ in shared] == [0, 1, 2, 3]
+    assert futures[child_id]["outcomes"]["satisfaction"][:4] == shared

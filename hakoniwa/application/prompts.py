@@ -503,6 +503,9 @@ LIFE_DESIGN_NOTE = """THIS WORLD IS ABOUT ONE PERSON AT A CROSSROADS (a "life wo
   does at the start and nothing else. Everything afterwards the protagonist decides when asked: a check-in with themselves every
   few ticks and at every turn of events (an offer, a conflict, a layoff, an illness, a chance to go back). Do not script the outcome
   of a path: the same path must be able to go well or badly.
+- Offer later turns through a runtime choice parameter "next_path": use the same option IDs as "path" plus an
+  "unchanged" default. Handle explicit next_path changes in on_params by requesting that course from the current
+  state without resetting time, savings, relationships, or previous events. The outcome still depends on conditions.
 - Time: one tick is a month (or a quarter if the horizon is long); default_ticks covers {horizon}.
 - Metrics must include, with exactly these ids: "satisfaction" (0-100, headline: how the protagonist's life sits with them),
   "regret" (0-100), "regard" (0-100: the average regard of the people around them). Add money, hours, health or others that fit.

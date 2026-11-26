@@ -45,11 +45,15 @@ function niceTicks(lo, hi, n = 4) {
 export function lineChart(host, { series, format, unit, cursor, marks = [], xLabel, clockOf }) {
   host.replaceChildren();
   const W = Math.max(280, host.clientWidth || 380), H = 170, m = { l: 46, r: 14, t: 8, b: 22 };
-  const all = series.flatMap((s) => s.points);
-  if (!all.length) { host.append(el("div", { class: "muted small" }, "–")); return; }
-  let x0 = Math.min(...all.map((p) => p[0])), x1 = Math.max(...all.map((p) => p[0]));
+  let x0 = Infinity, x1 = -Infinity, lo = Infinity, hi = -Infinity;
+  for (const s of series) {
+    for (const [tick, value] of s.points) {
+      x0 = Math.min(x0, tick); x1 = Math.max(x1, tick);
+      lo = Math.min(lo, value); hi = Math.max(hi, value);
+    }
+  }
+  if (x0 === Infinity) { host.append(el("div", { class: "muted small" }, "–")); return; }
   if (x1 === x0) x1 = x0 + 1;
-  let lo = Math.min(...all.map((p) => p[1])), hi = Math.max(...all.map((p) => p[1]));
   if (lo > 0 && lo < hi * 0.6) lo = 0;                 // start at zero unless that would flatten the line
   if (format === "pct" && hi <= 100 && hi > 60) hi = 100;
   const ticks = niceTicks(lo, hi);
@@ -70,12 +74,15 @@ export function lineChart(host, { series, format, unit, cursor, marks = [], xLab
     svg.append(el("line", { x1: X(mk.tick), x2: X(mk.tick), y1: m.t, y2: H - m.b, stroke: "var(--series-7)", "stroke-width": 1, opacity: 0.55 }, el("title", {}, mk.label)));
     svg.append(el("path", { d: `M${X(mk.tick) - 4},${m.t} h8 l-4,6 z`, fill: "var(--series-7)" }, el("title", {}, mk.label)));
   }
-  series.forEach((s) => {
+  const drawingOrder = [...series.filter((s) => !s.selected), ...series.filter((s) => s.selected)];
+  drawingOrder.forEach((s) => {
     if (!s.points.length) return;
     const d = s.points.map((p, i) => (i ? "L" : "M") + X(p[0]).toFixed(1) + "," + Y(p[1]).toFixed(1)).join("");
-    svg.append(el("path", { d, fill: "none", stroke: s.color, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }));
+    svg.append(el("path", { d, fill: "none", stroke: s.color, "stroke-width": s.selected ? 3 : 2,
+      "stroke-dasharray": s.dash, opacity: s.selected === false ? 0.7 : null, "stroke-linejoin": "round", "stroke-linecap": "round" }));
     const last = s.points[s.points.length - 1];
-    svg.append(el("circle", { cx: X(last[0]), cy: Y(last[1]), r: 4, fill: s.color, stroke: "var(--surface-1)", "stroke-width": 2 }));
+    svg.append(el("circle", { cx: X(last[0]), cy: Y(last[1]), r: s.selected ? 5 : 4,
+      fill: s.color, opacity: s.selected === false ? 0.7 : null, stroke: "var(--surface-1)", "stroke-width": 2 }));
   });
   const cross = el("line", { y1: m.t, y2: H - m.b, stroke: "var(--axis)", "stroke-width": 1, visibility: "hidden" });
   const cur = el("line", { y1: m.t, y2: H - m.b, stroke: "var(--text-secondary)", "stroke-width": 1, opacity: 0.5, visibility: "hidden" });
@@ -99,7 +106,8 @@ export function lineChart(host, { series, format, unit, cursor, marks = [], xLab
 }
 
 export function legend(series) {
-  return el("div", { class: "legend" }, series.map((s) => el("span", {}, el("i", { style: { background: s.color } }), s.name)));
+  return el("div", { class: "legend" }, series.map((s) => el("span", { class: s.selected ? "selected" : null },
+    el("i", { style: { background: s.color } }), s.name)));
 }
 
 export function dataTable(series, format, unit) {
@@ -242,20 +250,22 @@ export function worldLines(host, { runs, current, label, onOpen, unit }) {
   const H = top + order.length * rowH + 22;
   const maxT = Math.max(1, ...order.map((r) => Math.max(r.total || 0, r.tick || 0)));
   const X = (t) => padL + t / maxT * (W - padL - padR), Y = (i) => top + i * rowH + 6;
-  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, height: H, class: "lines", role: "img" });
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, height: H, class: "lines", role: "group", "aria-label": label || t("worldLines") });
   for (const v of [0, Math.round(maxT / 2), maxT]) {
     svg.append(el("line", { x1: X(v), x2: X(v), y1: top - 12, y2: H - 18, stroke: "var(--grid)", "stroke-width": 1 }));
     svg.append(el("text", { x: X(v), y: H - 5, "text-anchor": v === 0 ? "start" : v === maxT ? "end" : "middle", class: "lines-axis" }, v === maxT && unit ? `${v} ${unit}` : v));
   }
   for (const r of order) {
-    const i = lane.get(r.id), y = Y(i), col = LANE[i % LANE.length], me = r.id === current;
+    const i = lane.get(r.id), y = Y(i), col = r.color || LANE[i % LANE.length], me = r.id === current;
     const start = r.parent_run_id && lane.has(r.parent_run_id) ? (r.fork_tick ?? 0) : 0;
-    const g = el("g", { class: "lane" + (me ? " me" : ""), style: { cursor: "pointer" } });
+    const g = el("g", { class: "lane" + (me ? " me" : ""), role: "button", tabindex: 0, "aria-label": r.name, "data-run-id": r.id,
+      "aria-pressed": current == null ? null : String(me), style: { cursor: "pointer" } });
     let x0 = X(start);
     if (start > 0 || (r.parent_run_id && lane.has(r.parent_run_id))) {
       const yp = Y(lane.get(r.parent_run_id));
-      x0 = X(start) + 18;
-      g.append(el("path", { d: `M${X(start)},${yp} C${X(start)},${y} ${X(start) + 4},${y} ${x0},${y}`, fill: "none", stroke: col, "stroke-width": me ? 3 : 2, "stroke-linecap": "round" }));
+      x0 = Math.min(X(start) + 18, X(r.tick || 0));
+      g.append(el("path", { d: `M${X(start)},${yp} C${X(start)},${y} ${x0},${y} ${x0},${y}`, fill: "none",
+        stroke: col, "stroke-width": me ? 3 : 2, "stroke-dasharray": r.dash, "stroke-linecap": "round" }));
       svg.append(el("circle", { cx: X(start), cy: yp, r: 4, fill: "var(--surface-1)", stroke: col, "stroke-width": 2 }));
       if (r.diff && r.diff.length) g.append(el("text", { x: x0 + 4, y: y - 7, class: "lines-event" }, r.diff.join(" · ").slice(0, 70)));
     } else {
@@ -263,12 +273,16 @@ export function worldLines(host, { runs, current, label, onOpen, unit }) {
     }
     const planned = X(Math.max(r.total || 0, r.tick || 0)), done = Math.max(x0, X(r.tick || 0));
     g.append(el("line", { x1: x0, x2: planned, y1: y, y2: y, stroke: col, "stroke-width": 2, opacity: 0.25, "stroke-linecap": "round" }));
-    g.append(el("line", { x1: x0, x2: done, y1: y, y2: y, stroke: col, "stroke-width": me ? 4 : 2.5, "stroke-linecap": "round" }));
+    g.append(el("line", { x1: x0, x2: done, y1: y, y2: y, stroke: col, "stroke-width": me ? 4 : 2.5,
+      "stroke-dasharray": r.dash, "stroke-linecap": "round" }));
     g.append(el("circle", { cx: done, cy: y, r: me ? 6 : 4.5, fill: col, stroke: "var(--surface-1)", "stroke-width": 2 }));
     g.append(el("text", { x: planned + 12, y: y + 1, class: "lines-name" + (me ? " me" : "") }, r.name.length > 34 ? r.name.slice(0, 33) + "…" : r.name));
     if (r.result) g.append(el("text", { x: planned + 12, y: y + 14, class: "lines-result" }, r.result));
     g.append(el("rect", { x: 0, y: y - rowH / 2, width: W, height: rowH, fill: "transparent" }));
-    g.addEventListener("click", () => onOpen(r));
+    g.addEventListener("click", () => { hideTip(); onOpen(r); });
+    g.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); onOpen(r); }
+    });
     g.addEventListener("mousemove", (e) => showTip(`<div><b>${esc(r.name)}</b></div><div class="t">${esc(r.statusText || "")} · ${r.tick} / ${r.total}</div>${(r.diff || []).map((d) => `<div>${esc(d)}</div>`).join("")}${r.result ? `<div class="t">${esc(r.result)}</div>` : ""}`, e.clientX, e.clientY));
     g.addEventListener("mouseleave", hideTip);
     svg.append(g);

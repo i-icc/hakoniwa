@@ -1,6 +1,7 @@
 """One tick closes three months: pay, care and the 60 workdays are already history
 when anyone is asked. A reply is an intention for a later household conversation,
 shift, or staffing meeting. The path parameter is read only at initialization.
+The next_path parameter can request a change from a later fork.
 All coefficients not given by the observer are assumptions; no outcome data.
 """
 import random
@@ -35,6 +36,7 @@ SPEECH = {
  "peer":[("I'll share the pager so you can try the design.","設計を試せるよう、当番を分けよう。"),("I need you to take your own tickets for now.","今は自分の担当分を引き受けてほしい。")]
 }
 KEEP = ("keep","Carry on exactly as before","今までどおりにする")
+OPENING_PATHS = {"join_startup":"startup","seek_internal_transfer":"internal","stay_current_role":"current"}
 PATH = [("current","Ask for the original role","元部署の仕事を希望する"),
         ("internal","Apply for the receiving team","異動先を希望する"),
         ("startup","Take up the friend's offer","友人の誘いに応じる"),
@@ -43,7 +45,7 @@ PATH = [("current","Ask for the original role","元部署の仕事を希望す�
         ("usual","Resume ordinary hours and assignments","通常の勤務・担当に戻す")]
 
 def init(p,rng):
-    goal={"join_startup":"startup","seek_internal_transfer":"internal","stay_current_role":"current"}[p["path"]]
+    goal=OPENING_PATHS[p["path"]]
     people=[]
     for i,h in enumerate(p["_data"]["circle"]):
         people.append({"role":ROLES[i],"regard":h["warmth"],"stance":0,"next_stance":0,
@@ -56,6 +58,11 @@ def init(p,rng):
             "learning":0,"wanted_days":0,"maintenance":0,"family_hours":0,"work_hours":0,
             "signals":{k:p[k] for k in SIGNALS},"news":[],"ask":[],"you_asks":0,"ask_you":False,
             "last_meeting":"","feedback":[],"records":[],"care_hours":0}
+
+def on_params(s,p,patch,t):
+    choice=patch.get("next_path")
+    if choice in OPENING_PATHS:
+        s["intention"]=OPENING_PATHS[choice]
 
 def step(s,p,rng,t):
     old=s["work"]

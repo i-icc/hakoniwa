@@ -143,6 +143,9 @@ class RunWorker:
             assert self.sb is not None
             pre_events: list[dict] = []
             pre_events.extend(await self._chance(self.tick + 1))
+            # A branch may be paused or restored before the first step on its new path.
+            if self.tick == self.config.get("fork_tick") and self.config.get("fork_intervention"):
+                pre_events.extend(await self._apply_intervention(self.config["fork_intervention"]))
             people: list[dict] = []                # the observer steps in on single residents this tick
             while self.pending:
                 iv = self.pending.pop(0)
@@ -570,6 +573,8 @@ class RunManager:
             if k in DEFAULT_CONFIG and v is not None:
                 cfg[k] = v
         cfg = merged_config(world["spec"], cfg)
+        if intervention and intervention.get("patch"):
+            cfg.update(fork_tick=tick, fork_intervention=intervention)
         if cfg.get("schedule"):                    # the branch meets the same events; those after the fork have not happened yet
             cfg["schedule"] = [{k: v for k, v in s.items() if k != "prev" or s["tick"] <= tick} for s in cfg["schedule"]]
         for memory in ("told", "life"):            # what single residents heard or lived through after the fork point is not theirs yet
@@ -581,7 +586,7 @@ class RunManager:
         self.db.copy_history(run_id, new_id, tick)
         self.db.set_run(new_id, status="paused", tick=tick)
         w = self.worker(new_id)
-        if intervention:
+        if intervention and not intervention.get("patch"):
             w.pending.append(intervention)
         return new_id
 

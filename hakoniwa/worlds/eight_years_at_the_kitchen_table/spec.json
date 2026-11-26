@@ -135,6 +135,21 @@
    ]
   },
   {
+   "id": "next_path",
+   "type": "choice",
+   "default": "unchanged",
+   "label": {"en": "Request a change of direction", "ja": "進路変更の希望"},
+   "group": {"en": "Career", "ja": "仕事"},
+   "source": "observer",
+   "runtime": true,
+   "choices": [
+    {"id": "unchanged", "label": {"en": "Leave to the protagonist", "ja": "本人に任せる"}},
+    {"id": "stay_current_role", "label": {"en": "Ask for the original role", "ja": "元の部署での仕事を希望する"}},
+    {"id": "seek_internal_transfer", "label": {"en": "Request an internal transfer", "ja": "社内異動を希望する"}},
+    {"id": "join_startup", "label": {"en": "Take up the friend’s offer", "ja": "友人の誘いに応じる"}}
+   ]
+  },
+  {
    "id": "cash_start",
    "type": "int",
    "default": 2400000,
